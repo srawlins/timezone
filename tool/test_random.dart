@@ -11,8 +11,8 @@ final int minEpochTime = new DateTime.utc(1890).millisecondsSinceEpoch ~/ 1000;
 final int maxEpochTime = new DateTime.utc(2020).millisecondsSinceEpoch ~/ 1000;
 
 Future<String> dateCmd(int time, String tz) {
-  return Process.run('date', ['-d', '@$time', '+%Y-%m-%d %H:%M:%S'], environment: {'TZ': tz})
-      .then((r) {
+  return Process
+      .run('date', ['-d', '@$time', '+%Y-%m-%d %H:%M:%S'], environment: {'TZ': tz}).then((r) {
     return r.stdout;
   });
 }

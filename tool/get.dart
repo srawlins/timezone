@@ -45,10 +45,10 @@ Future<String> downloadTzData(String version, String dest) async {
   final client = new HttpClient();
   try {
     var uri;
-    if (version == 'latest') uri =
-        Uri.parse('https://www.iana.org/time-zones/repository/tzdata-$version.tar.gz');
-    else uri =
-        Uri.parse('https://www.iana.org/time-zones/repository/releases/tzdata$version.tar.gz');
+    if (version == 'latest')
+      uri = Uri.parse('https://www.iana.org/time-zones/repository/tzdata-$version.tar.gz');
+    else
+      uri = Uri.parse('https://www.iana.org/time-zones/repository/releases/tzdata$version.tar.gz');
 
     final req = await client.getUrl(uri);
     final resp = await req.close();
