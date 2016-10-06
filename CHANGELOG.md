@@ -1,3 +1,10 @@
+# 0.5.0-dev
+
+- Support a package-directory-free environment. In Dart 1.19, timezone is now
+  compatible with `pub get --no-packages-dir`.
+- **Breaking:** Remove initializeTimeZoneSync method; it is incompatible with
+  the async method for resolving package URIs.
+
 # 0.4.3
 
 - Fix Dart 1.14 incompatibility further.
