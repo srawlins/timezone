@@ -17,7 +17,6 @@ library timezone.standalone;
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
-import 'dart:mirrors';
 import 'package:path/path.dart' as path;
 import 'package:timezone/timezone.dart';
 
@@ -47,8 +46,6 @@ Future<List<int>> _loadAsBytes(String p) async {
     var uri = await Isolate.resolvePackageUri(new Uri(scheme: 'package', path: 'timezone/$p'));
     return new File(path.fromUri(uri)).readAsBytes();
   }
-
-  return new Future.error(new UnimplementedError('Unknown script scheme: $scheme'));
 }
 
 /// Initialize Time Zone database.
