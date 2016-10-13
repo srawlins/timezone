@@ -15,6 +15,8 @@ class TZDateTime implements DateTime {
   /// Minimum value for time instants.
   static const int minMillisecondsSinceEpoch = -maxMillisecondsSinceEpoch;
 
+  static DateTime _toNative(DateTime t) => t is TZDateTime ? t._utc : t;
+
   Location _location;
 
   TimeZone _timeZone;
@@ -286,7 +288,7 @@ class TZDateTime implements DateTime {
       new TZDateTime.from(_utc.subtract(duration), _location);
 
   /// Returns a [Duration] with the difference between [this] and [other].
-  Duration difference(TZDateTime other) => _utc.difference(other._utc);
+  Duration difference(DateTime other) => _utc.difference(_toNative(other));
 
   /// Returns true if [other] is a [TZDateTime] at the same moment and in the
   /// same [Location].
@@ -300,7 +302,6 @@ class TZDateTime implements DateTime {
   /// ````
   ///
   /// See [isAtSameMomentAs] for a comparison that adjusts for time zone.
-  // TODO(hcameron) should this accept DateTimes as well?
   bool operator ==(other) {
     return identical(this, other) ||
         other is TZDateTime &&
@@ -347,7 +348,7 @@ class TZDateTime implements DateTime {
   ///
   /// assert(berlinWallFell.isAtSameMomentAs(moonLanding) == false);
   /// ```
-  bool isAtSameMomentAs(TZDateTime other) => _utc == other._utc;
+  bool isAtSameMomentAs(DateTime other) => _utc == _toNative(other);
 
   /// Compares this [TZDateTime] object to [other],
   /// returning zero if the values are equal.
@@ -355,7 +356,7 @@ class TZDateTime implements DateTime {
   /// This function returns a negative integer
   /// if this [TZDateTime] is smaller (earlier) than [other],
   /// or a positive integer if it is greater (later).
-  int compareTo(TZDateTime other) => _utc.compareTo(other._utc);
+  int compareTo(DateTime other) => _utc.compareTo(_toNative(other));
 
   int get hashCode => _utc.hashCode;
 
