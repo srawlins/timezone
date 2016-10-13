@@ -168,8 +168,7 @@ class TZDateTime implements DateTime {
   /// final detroitTime = new TZDateTime.from(detroit, laTime);
   /// ```
   TZDateTime.from(DateTime other, Location location)
-      : this._from(
-            other is TZDateTime ? other._utcDateTime : other.toUtc, location);
+      : this._from(_toNative(other).toUtc(), location);
 
   TZDateTime._from(DateTime other, Location location, {otherIsUtc: true})
       : this._fromWithTimeZone(
