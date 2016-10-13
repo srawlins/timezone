@@ -2,7 +2,6 @@
 // file for details. All rights reserved. Use of this source code is governed
 // by a BSD-style license that can be found in the LICENSE file.
 
-///
 /// TimeZone Location Info.
 ///
 /// Most of this code were taken from the go standard library
@@ -106,7 +105,7 @@ class Location {
   /// as milliseconds since January 1, 1970 00:00:00 UTC.
   TzInstant lookupTimeZone(int millisecondsSinceEpoch) {
     if (zones.isEmpty) {
-      return const TzInstant(const TimeZone(0, false, 'UTC'), minTime, maxTime);
+      return const TzInstant(TimeZone.UTC, minTime, maxTime);
     }
 
     if (_cacheZone != null &&
@@ -229,6 +228,8 @@ class Location {
 
 /// A [TimeZone] represents a single time zone such as CEST or CET.
 class TimeZone {
+  static const TimeZone UTC = const TimeZone(0, false, 'UTC');
+
   /// Milliseconds east of UTC.
   final int offset;
 

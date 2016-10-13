@@ -62,7 +62,7 @@ void initializeDatabase(List<int> rawData) {
   }
 
   if (_UTC == null) {
-    _UTC = new Location('UTC', [minTime], [0], [const TimeZone(0, false, 'UTC')]);
+    _UTC = new Location('UTC', [minTime], [0], [TimeZone.UTC]);
   }
 
   if (_local == null) {
