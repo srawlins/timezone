@@ -21,9 +21,10 @@ class TZDateTime implements DateTime {
 
   TimeZone _timeZone;
 
-  /// Native [DateTime] is used as a Calendar object
+  /// Native [DateTime] used as a Calendar object.
   DateTime _localDateTime;
 
+  /// Native [DateTime] used as canonical, utc representation.
   DateTime _utc;
 
   /// The number of milliseconds since
@@ -36,6 +37,17 @@ class TZDateTime implements DateTime {
   /// In other words: [:millisecondsSinceEpoch.abs() <= 8640000000000000:].
   int get millisecondsSinceEpoch => _utc.millisecondsSinceEpoch;
 
+  /// The number of microseconds since the "Unix epoch"
+  /// 1970-01-01T00:00:00Z (UTC).
+  ///
+  /// This value is independent of the time zone.
+  ///
+  /// This value is at most 8,640,000,000,000,000,000us (100,000,000 days) from
+  /// the Unix epoch. In other words:
+  /// microsecondsSinceEpoch.abs() <= 8640000000000000000.
+  ///
+  /// Note that this value does not fit into 53 bits (the size of a IEEE
+  /// double).  A JavaScript number is not able to hold this value.
   int get microsecondsSinceEpoch => _utc.microsecondsSinceEpoch;
 
   /// [Location]
@@ -89,7 +101,6 @@ class TZDateTime implements DateTime {
       _timeZone = const TimeZone(0, false, 'UTC');
       _utc = _localDateTime;
     } else {
-      // TODO(hcameron) fix this.
       var unix = _localDateTime.millisecondsSinceEpoch;
       var tzData = _location.lookupTimeZone(unix);
       if (tzData.timeZone.offset != 0) {
@@ -102,7 +113,7 @@ class TZDateTime implements DateTime {
         unix -= tzData.timeZone.offset;
       }
       _timeZone = _location.timeZone(unix);
-      _localDateTime = _utc.subtract(timeZoneOffset);
+      _utc = _localDateTime.subtract(timeZoneOffset);
     }
   }
 
@@ -252,8 +263,8 @@ class TZDateTime implements DateTime {
   String toString() => toIso8601String();
 
   /// Returns an ISO-8601 full-precision extended format representation.
-  /// The format is "YYYY-MM-DDTHH:mm:ss.sss[sss]Z" for UTC time, and
-  /// "YYYY-MM-DDTHH:mm:ss.sss[sss]±hhmm" (no trailing "Z") for non-UTC time.
+  /// The format is "YYYY-MM-DDTHH:mm:ss.mmm[uuu]Z" for UTC time, and
+  /// "YYYY-MM-DDTHH:mm:ss.mmm[uuu]±hhmm" for non-UTC time.
   String toIso8601String() {
     var offset = _timeZone.offset;
 
@@ -351,7 +362,7 @@ class TZDateTime implements DateTime {
   bool isAtSameMomentAs(DateTime other) => _utc == _toNative(other);
 
   /// Compares this [TZDateTime] object to [other],
-  /// returning zero if the values are equal.
+  /// returning zero if the values occur at the same moment.
   ///
   /// This function returns a negative integer
   /// if this [TZDateTime] is smaller (earlier) than [other],
