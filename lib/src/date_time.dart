@@ -118,7 +118,8 @@ class TZDateTime implements DateTime {
       int microsecond = 0])
       : this.from(
             _utcFromLocalDateTime(
-                new DateTime.utc(year, month, day, hour, minute, second,
+            st
+            new DateTime.utc(year, month, day, hour, minute, second,
                     millisecond, microsecond),
                 location),
             location);
@@ -214,7 +215,7 @@ class TZDateTime implements DateTime {
   /// The function parses a subset of ISO 8601
   /// which includes the subset accepted by RFC 3339.
   ///
-  /// The result is always converted to the provided time zone.
+  /// The result is always in the time zone of the provided location.
   ///
   /// Examples of accepted strings:
   ///
