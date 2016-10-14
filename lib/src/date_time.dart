@@ -118,8 +118,7 @@ class TZDateTime implements DateTime {
       int microsecond = 0])
       : this.from(
             _utcFromLocalDateTime(
-            st
-            new DateTime.utc(year, month, day, hour, minute, second,
+                new DateTime.utc(year, month, day, hour, minute, second,
                     millisecond, microsecond),
                 location),
             location);
@@ -270,32 +269,50 @@ class TZDateTime implements DateTime {
   /// It does not support internationalized strings.
   /// Use the [intl](http://pub.dartlang.org/packages/intl) package
   /// at the pub shared packages repo.
-  String toString() => toIso8601String();
+  String toString() => _toString(iso8601: false);
 
   /// Returns an ISO-8601 full-precision extended format representation.
-  /// The format is "YYYY-MM-DDTHH:mm:ss.mmm[uuu]Z" for UTC time, and
-  /// "YYYY-MM-DDTHH:mm:ss.mmm[uuu]±hhmm" for non-UTC time.
-  String toIso8601String() {
+  ///
+  /// The format is yyyy-MM-ddTHH:mm:ss.mmmuuuZ for UTC time, and
+  /// yyyy-MM-ddTHH:mm:ss.mmmuuu±hhmm for local/non-UTC time, where:
+  ///
+  /// *   yyyy is a, possibly negative, four digit representation of the year,
+  ///     if the year is in the range -9999 to 9999, otherwise it is a signed
+  ///     six digit representation of the year.
+  /// *   MM is the month in the range 01 to 12,
+  /// *   dd is the day of the month in the range 01 to 31,
+  /// *   HH are hours in the range 00 to 23,
+  /// *   mm are minutes in the range 00 to 59,
+  /// *   ss are seconds in the range 00 to 59 (no leap seconds),
+  /// *   mmm are milliseconds in the range 000 to 999, and
+  /// *   uuu are microseconds in the range 001 to 999. If microsecond equals 0,
+  ///     then this part is omitted.
+  ///
+  ///The resulting string can be parsed back using parse.
+  String toIso8601String() => _toString(iso8601: true);
+
+  String _toString({iso8601: true}) {
     var offset = timeZone.offset;
 
     String y = _fourDigits(year);
     String m = _twoDigits(month);
     String d = _twoDigits(day);
+    String sep = iso8601 ? "T" : " ";
     String h = _twoDigits(hour);
     String min = _twoDigits(minute);
     String sec = _twoDigits(second);
     String ms = _threeDigits(millisecond);
     String us = microsecond == 0 ? "" : _threeDigits(microsecond);
 
-    if (isUtc || offset == 0) {
-      return "$y-$m-$d $h:$min:$sec.$ms${us}Z";
+    if (isUtc) {
+      return "$y-$m-$d$sep$h:$min:$sec.$ms${us}Z";
     } else {
-      String offSign = offset.sign > 0 ? '+' : '-';
+      String offSign = offset.sign >= 0 ? '+' : '-';
       offset = offset.abs() ~/ 1000;
       String offH = _twoDigits(offset ~/ 3600);
       String offM = _twoDigits((offset % 3600) ~/ 60);
 
-      return "$y-$m-$d $h:$min:$sec.$ms$us$offSign$offH$offM";
+      return "$y-$m-$d$sep$h:$min:$sec.$ms$us$offSign$offH$offM";
     }
   }
 
@@ -341,8 +358,7 @@ class TZDateTime implements DateTime {
   ///
   /// assert(berlinWallFell.isBefore(moonLanding) == false);
   /// ```
-  bool isBefore(DateTime other) =>
-      _native.isBefore(other is TZDateTime ? other._native : other);
+  bool isBefore(DateTime other) => _native.isBefore(_toNative(other));
 
   /// Returns true if [this] occurs after [other].
   ///
@@ -355,8 +371,7 @@ class TZDateTime implements DateTime {
   ///
   /// assert(berlinWallFell.isAfter(moonLanding) == true);
   /// ```
-  bool isAfter(DateTime other) =>
-      _native.isAfter(other is TZDateTime ? other._native : other);
+  bool isAfter(DateTime other) => _native.isAfter(_toNative(other));
 
   /// Returns true if [this] occurs at the same moment as [other].
   ///
