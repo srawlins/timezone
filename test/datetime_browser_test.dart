@@ -27,8 +27,15 @@ main() async {
     });
 
     test('fromMilliseconds', () {
-      final t = new TZDateTime.fromMillisecondsSinceEpoch(newYork, 1262430245006);
+      final t =
+          new TZDateTime.fromMillisecondsSinceEpoch(newYork, 1262430245006);
       expect(t.toString(), equals('2010-01-02 06:04:05.006-0500'));
+    });
+
+    test('fromMicroseconds', () {
+      final t =
+          new TZDateTime.fromMicrosecondsSinceEpoch(newYork, 1262430245006007);
+      expect(t.toString(), equals('2010-01-02 06:04:05.006007-0500'));
     });
 
     test('utc', () {
@@ -89,35 +96,45 @@ main() async {
     group('America/Detroit to UTC', () {
       group('EWT/EPT boundaries', () {
         final x1 = new TZDateTime(detroit, 1945, 9, 30, 1);
-        final u1 = new DateTime.fromMillisecondsSinceEpoch(x1.millisecondsSinceEpoch, isUtc: true);
+        final u1 = new DateTime.fromMillisecondsSinceEpoch(
+            x1.millisecondsSinceEpoch,
+            isUtc: true);
 
         test('$x1 => 1945-09-30 05:00:00.000Z', () {
           expect(u1.toString(), '1945-09-30 05:00:00.000Z');
         });
 
         final x2 = x1.subtract(const Duration(milliseconds: 1));
-        final u2 = new DateTime.fromMillisecondsSinceEpoch(x2.millisecondsSinceEpoch, isUtc: true);
+        final u2 = new DateTime.fromMillisecondsSinceEpoch(
+            x2.millisecondsSinceEpoch,
+            isUtc: true);
 
         test('$x2 => 1945-09-30 04:59:59.999Z', () {
           expect(u2.toString(), equals('1945-09-30 04:59:59.999Z'));
         });
 
         final x3 = x1.add(const Duration(milliseconds: 1));
-        final u3 = new DateTime.fromMillisecondsSinceEpoch(x3.millisecondsSinceEpoch, isUtc: true);
+        final u3 = new DateTime.fromMillisecondsSinceEpoch(
+            x3.millisecondsSinceEpoch,
+            isUtc: true);
 
         test('$x3 => 1945-09-30 05:00:00.001Z', () {
           expect(u3.toString(), equals('1945-09-30 05:00:00.001Z'));
         });
 
         final x4 = x1.add(const Duration(hours: 1));
-        final u4 = new DateTime.fromMillisecondsSinceEpoch(x4.millisecondsSinceEpoch, isUtc: true);
+        final u4 = new DateTime.fromMillisecondsSinceEpoch(
+            x4.millisecondsSinceEpoch,
+            isUtc: true);
 
         test('$x4 => 1945-09-30 06:00:00.000Z', () {
           expect(u4.toString(), equals('1945-09-30 06:00:00.000Z'));
         });
 
         final x5 = x2.add(const Duration(hours: 1));
-        final u5 = new DateTime.fromMillisecondsSinceEpoch(x5.millisecondsSinceEpoch, isUtc: true);
+        final u5 = new DateTime.fromMillisecondsSinceEpoch(
+            x5.millisecondsSinceEpoch,
+            isUtc: true);
 
         test('$x5 => 1945-09-30 05:59:59.999Z', () {
           expect(u5.toString(), equals('1945-09-30 05:59:59.999Z'));
