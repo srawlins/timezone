@@ -116,7 +116,7 @@ class TZDateTime implements DateTime {
       int second = 0,
       int millisecond = 0,
       int microsecond = 0])
-      : this._fromUtc(
+      : this.from(
             _utcFromLocalDateTime(
                 new DateTime.utc(year, month, day, hour, minute, second,
                     millisecond, microsecond),
