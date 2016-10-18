@@ -1,5 +1,6 @@
 /// Print Location details
 import 'dart:io';
+
 import 'package:args/args.dart';
 import 'package:timezone/standalone.dart';
 import 'package:timezone/timezone.dart';
@@ -16,7 +17,7 @@ void main(List<String> arguments) {
   final String location = argResults['location'];
 
   if (source.isEmpty || location == null || location.isEmpty) {
-    print(parser.getUsage());
+    print(parser.usage);
     exit(64);
   }
 

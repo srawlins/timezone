@@ -16,13 +16,21 @@ library timezone.browser;
 import 'dart:async';
 import 'dart:html';
 import 'dart:typed_data';
+
 import 'package:timezone/timezone.dart';
 
 export 'package:timezone/timezone.dart'
-    show getLocation, setLocalLocation, TZDateTime, Location, TimeZone, timeZoneDatabase;
+    show
+        getLocation,
+        setLocalLocation,
+        TZDateTime,
+        Location,
+        TimeZone,
+        timeZoneDatabase;
 
 /// Path to the Time Zone default database.
-const String tzDataDefaultPath = 'packages/timezone/data/$tzDataDefaultFilename';
+const String tzDataDefaultPath =
+    'packages/timezone/data/$tzDataDefaultFilename';
 
 /// Initialize Time Zone database.
 ///
@@ -39,15 +47,18 @@ const String tzDataDefaultPath = 'packages/timezone/data/$tzDataDefaultFilename'
 Future initializeTimeZone([String path = tzDataDefaultPath]) {
   return HttpRequest
       .request(path,
-          method: 'GET', responseType: 'arraybuffer', mimeType: 'application/octet-stream')
+          method: 'GET',
+          responseType: 'arraybuffer',
+          mimeType: 'application/octet-stream')
       .then((req) {
     final response = req.response;
 
     if (response is! ByteBuffer) {
-      throw new TimeZoneInitException('Invalid response type: ${response.runtimeType}');
+      throw new TimeZoneInitException(
+          'Invalid response type: ${response.runtimeType}');
     }
 
-    initializeDatabase(response.asUint8List());
+    initializeDatabase((response as ByteBuffer).asUint8List());
   }).catchError((e) {
     throw new TimeZoneInitException(e.toString());
   }, test: (e) => e is! TimeZoneInitException);
