@@ -53,12 +53,12 @@ Future initializeTimeZone([String path = tzDataDefaultPath]) {
       .then((req) {
     final response = req.response;
 
-    if (response is! ByteBuffer) {
+    if (response is ByteBuffer) {
+      initializeDatabase(response.asUint8List());
+    } else {
       throw new TimeZoneInitException(
           'Invalid response type: ${response.runtimeType}');
     }
-
-    initializeDatabase((response as ByteBuffer).asUint8List());
   }).catchError((e) {
     throw new TimeZoneInitException(e.toString());
   }, test: (e) => e is! TimeZoneInitException);
