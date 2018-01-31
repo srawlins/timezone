@@ -1,18 +1,18 @@
 # TimeZone
 
-This package provides time zone database and time zone aware `DateTime`
-object.
+This package provides the [IANA time zone database] and time zone aware
+`DateTime` class, [`TZDateTime`].
 
-Current Time Zone database version:
-[2015b](http://www.iana.org/time-zones/repository/releases/tzcode2015b.tar.gz)
+The current Time Zone database version is [2018c]. See [the announcement] for details.
+
 
 ## Initialization
 
-TimeZone objects require time zone data, so the first step is to load
+[`TimeZone`] objects require time zone data, so the first step is to load
 one of our [time zone databases](#databases).
 
-We are providing two different APIs for browsers and standalone
-environments.
+We provide two different APIs to load a database: one for browsers and one
+standalone environments.
 
 ### Initialization for browser environment
 
@@ -22,7 +22,7 @@ Import `package:timezone/browser.dart` library and run async function
 ```dart
 import 'package:timezone/browser.dart';
 
-initializeTimeZone().then((_) {
+Future<Null> setup() async {
   final detroit = getLocation('America/Detroit');
   final now = new TZDateTime.now(detroit);
 });
@@ -36,10 +36,11 @@ Import `package:timezone/standalone.dart` library and run async function
 ```dart
 import 'package:timezone/standalone.dart';
 
-initializeTimeZone().then((_) {
+Future<Null> setup() async {
+  await initializeTimeZone();
   final detroit = getLocation('America/Detroit');
   final now = new TZDateTime.now(detroit);
-});
+}
 ```
 
 ### Local Location
@@ -50,10 +51,11 @@ To overwrite local location you can use `setLocalLocation(Location
 location)` function.
 
 ```dart
-initializeTimeZone().then((_) {
+Future<Null> setup() async {
+  await initializeTimeZone();
   final detroit = getLocation('America/Detroit');
   setLocalLocation(detroit);
-});
+}
 ```
 
 ## API
@@ -74,27 +76,27 @@ initializeTimeZone().then((_) {
 >
 > [The tz database](http://www.twinsun.com/tz/tz-link.htm)
 
-#### Get location by Olsen timezone ID
+#### Get location by Olsen time zone ID
 
 ```dart
 final detroit = getLocation('America/Detroit');
 ```
 
-We don't provide any functions to get locations by timezone
-abbreviations because of the ambiguities.
+We don't provide any functions to get locations by time zone abbreviations
+because of the ambiguities.
 
-> Alphabetic time zone abbreviations should not be used as unique
-> identifiers for UTC offsets as they are ambiguous in practice. For
-> example, "EST" denotes 5 hours behind UTC in English-speaking North
-> America, but it denotes 10 or 11 hours ahead of UTC in Australia;
-> and French-speaking North Americans prefer "HNE" to "EST".
+> Alphabetic time zone abbreviations should not be used as unique identifiers
+> for UTC offsets as they are ambiguous in practice. For example, "EST" denotes
+> 5 hours behind UTC in English-speaking North America, but it denotes 10 or 11
+> hours ahead of UTC in Australia; and French-speaking North Americans prefer
+> "HNE" to "EST".
 >
 > [The tz database](http://www.twinsun.com/tz/tz-link.htm)
 
 ### TimeZone
 
-TimeZone object represents time zone and contains offset, dst flag,
-and name in the abbreviated form.
+TimeZone objects represents time zone and contains offset, DST flag, and name
+in the abbreviated form.
 
 ```dart
 final timeInUtc = new DateTime.utc(1995, 1, 1);
@@ -103,27 +105,25 @@ final timeZone = detroit.timeZone(timeInUtc.millisecondsSinceEpoch);
 
 ### TimeZone aware DateTime
 
-`TZDateTime` object implements standard `DateTime` interface and
-contains information about location and time zone.
+The `TZDateTime` class implements the `DateTime` interface from `dart:core`,
+and contains information about location and time zone.
 
 ```dart
 final date = new TZDateTime(detroit, 2014, 11, 17);
 ```
 
-#### Converting DateTimes between Time Zones
+#### Converting DateTimes between time zones
 
-To convert between time zones, just create a new `TZDateTime` object
-using `from` constructor and pass `Location` and `DateTime` to the
-constructor.
+To convert between time zones, just create a new `TZDateTime` object using
+`from` constructor and pass `Location` and `DateTime` to the constructor.
 
 ```dart
 final localTime = new DateTime(2010, 1, 1);
 final detroitTime = new TZDateTime.from(time, detroit);
 ```
 
-This constructor supports any objects that implements `DateTime`
-interface, so you can pass native `DateTime` object or ours
-`TZDateTime`.
+This constructor supports any objects that implement `DateTime` interface, so
+you can pass a native `DateTime` object or our `TZDateTime`.
 
 ## <a name="databases"></a> Time Zone databases
 
@@ -132,22 +132,25 @@ to build our databases.
 
 We are currently building three different database variants:
 
-- default (doesn't contain deprecated and historical zones with some
-  exceptions like US/Eastern). 308kb/72kb gzip
-- all (contains all data from the
-  [IANA Time Zone Database](http://www.iana.org/time-zones)). 370kb/100kb
-  gzip
-- 2010-2020 (default database that contains historical data from 2010
-  until 2020). 71kb/16kb gzip
+- default (doesn't contain deprecated and historical zones with some exceptions
+  like US/Eastern). 351kb
+- all (contains all data from the [IANA time zone database]). 433kb
+- 2010-2020 (default database that contains historical data from 2010 until
+  2020). 86kb
 
 ### Updating Time Zone databases
 
-Script for updating Time Zone database, it will automatically download
-[the IANA Time Zone Database](http://www.iana.org/time-zones) and
-compile into our native format.
+Script for updating Time Zone database, it will automatically download the
+[IANA time zone database] and compile into our native format.
 
 ```sh
 $ pub run tool/get -s 2014h
 ```
 
-Argument `-s` is for specifying source version.
+The argument `-s` is for specifying source version.
+
+[2018c]: http://www.iana.org/time-zones/repository/releases/tzcode2018c.tar.gz
+[IANA time zone database]: https://www.iana.org/time-zones
+[`TZDateTime`]: https://www.dartdocs.org/documentation/timezone/latest/timezone/TZDateTime-class.html
+[`TimeZone`]: https://www.dartdocs.org/documentation/timezone/latest/timezone/TimeZone-class.html
+[the announcement]: http://mm.icann.org/pipermail/tz-announce/2018-January/000048.html
