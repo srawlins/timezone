@@ -22,8 +22,8 @@
 [2016a]: http://mm.icann.org/pipermail/tz-announce/2016-January/000035.html
 [2016b]: http://mm.icann.org/pipermail/tz-announce/2016-March/000036.html
 [2016c]: http://mm.icann.org/pipermail/tz-announce/2016-March/000037.html
-[2016d]: http://mm.icann.org/pipermail/tz-announce/2016-April/thread.html
-[2016e]: http://mm.icann.org/pipermail/tz-announce/2016-June/thread.html
+[2016d]: http://mm.icann.org/pipermail/tz-announce/2016-April/000038.html
+[2016e]: http://mm.icann.org/pipermail/tz-announce/2016-June/000039.html
 [2016f]: http://mm.icann.org/pipermail/tz-announce/2016-July/000040.html
 [2016g]: http://mm.icann.org/pipermail/tz-announce/2016-September/000041.html
 [2016h]: http://mm.icann.org/pipermail/tz-announce/2016-October/000042.html
