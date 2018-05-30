@@ -340,7 +340,7 @@ class TZDateTime implements DateTime {
   /// ````
   ///
   /// See [isAtSameMomentAs] for a comparison that adjusts for time zone.
-  bool operator ==(other) {
+  bool operator ==(dynamic other) {
     return identical(this, other) ||
         other is TZDateTime &&
             _native.isAtSameMomentAs(other._native) &&

@@ -241,7 +241,7 @@ class TimeZone {
 
   const TimeZone(this.offset, this.isDst, this.abbr);
 
-  bool operator ==(other) {
+  bool operator ==(dynamic other) {
     return identical(this, other) ||
         other is TimeZone &&
             offset == other.offset &&
