@@ -5,7 +5,7 @@
 library timezone.src.tzdata.zicfile;
 
 import 'dart:collection';
-import 'dart:convert';
+import 'dart:convert' show ascii;
 import 'dart:typed_data';
 
 /// Time Zone information file magic header "TZif"
@@ -75,11 +75,11 @@ class _Header {
 String _readByteString(Uint8List data, int offset) {
   for (var i = offset; i < data.length; i++) {
     if (data[i] == 0) {
-      return ASCII.decode(
+      return ascii.decode(
           data.buffer.asUint8List(data.offsetInBytes + offset, i - offset));
     }
   }
-  return ASCII.decode(data.buffer.asUint8List(data.offsetInBytes + offset));
+  return ascii.decode(data.buffer.asUint8List(data.offsetInBytes + offset));
 }
 
 /// This exception is thrown when Zone Info data is invalid.

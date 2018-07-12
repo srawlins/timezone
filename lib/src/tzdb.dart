@@ -6,7 +6,7 @@
 library timezone.src.tzdb;
 
 import 'dart:collection';
-import 'dart:convert';
+import 'dart:convert' show ascii;
 import 'dart:typed_data';
 import 'location_database.dart';
 import 'location.dart';
@@ -74,7 +74,7 @@ Uint8List _serializeLocation(Location location) {
     zoneAbbrOffsets.add(ai);
   }
 
-  final List<int> encName = ASCII.encode(location.name);
+  final List<int> encName = ascii.encode(location.name);
 
   final int nameOffset = 32;
   final int nameLength = encName.length;
@@ -167,7 +167,7 @@ Location _deserializeLocation(Uint8List data) {
   final int transitionsLength = bdata.getUint32(28);
 
   final String name =
-      ASCII.decode(data.buffer.asUint8List(data.offsetInBytes + nameOffset, nameLength));
+      ascii.decode(data.buffer.asUint8List(data.offsetInBytes + nameOffset, nameLength));
   final List<String> abbrs = <String>[];
   final List<TimeZone> zones = <TimeZone>[];
   final List<int> transitionAt = <int>[];
@@ -180,7 +180,7 @@ Location _deserializeLocation(Uint8List data) {
   final int abbrsEnd = abbrsOffset + abbrsLength;
   for (int i = abbrsOffset; i < abbrsEnd; i++) {
     if (data[i] == 0) {
-      final abbr = ASCII.decode(data.buffer.asUint8List(data.offsetInBytes + offset, i - offset));
+      final abbr = ascii.decode(data.buffer.asUint8List(data.offsetInBytes + offset, i - offset));
       abbrs.add(abbr);
       offset = i + 1;
     }
