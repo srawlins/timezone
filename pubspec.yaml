@@ -6,7 +6,7 @@ authors:
 description: Time zone database and time zone aware DateTime.
 homepage: https://github.com/srawlins/timezone
 environment:
-  sdk: '>=1.14.0'
+  sdk: '>=1.14.0  <3.0.0'
 dependencies:
   path: '^1.3.0'
 dev_dependencies:
