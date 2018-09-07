@@ -6,7 +6,7 @@
 library timezone.src.tzdb;
 
 import 'dart:collection';
-import 'dart:convert';
+import 'dart:convert' show ascii;
 import 'dart:typed_data';
 import 'location_database.dart';
 import 'location.dart';
