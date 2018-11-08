@@ -20,6 +20,14 @@ main() async {
       expect(t.toString(), equals('2010-01-01 22:04:05.006-0500'));
     });
 
+    test('from local DateTime', () {
+      final localTime = DateTime(2010, 1, 2, 3, 4, 5, 6);
+      final newYorkTime = TZDateTime.from(localTime, newYork);
+      // New York time should be 5 hours behind UTC.
+      expect(newYorkTime.hour,
+          equals(localTime.toUtc().subtract(Duration(hours: 5)).hour));
+    });
+
     test('from TZDateTime', () {
       final laTime = new TZDateTime(la, 2010, 1, 2, 3, 4, 5, 6);
       final t = new TZDateTime.from(laTime, newYork);

@@ -194,7 +194,7 @@ class TZDateTime implements DateTime {
   /// ```
   TZDateTime.from(DateTime other, Location location)
       : this._(
-            _toNative(other),
+            _toNative(other).toUtc(),
             location,
             _isUtc(location)
                 ? TimeZone.UTC
