@@ -54,7 +54,7 @@ void setLocalLocation(Location location) {
 /// Initialize Time zone database.
 void initializeDatabase(List<int> rawData) {
   if (_database == null) {
-    _database = new LocationDatabase();
+    _database = LocationDatabase();
   }
 
   for (final Location l in tzdbDeserialize(rawData)) {
@@ -62,7 +62,7 @@ void initializeDatabase(List<int> rawData) {
   }
 
   if (_UTC == null) {
-    _UTC = new Location('UTC', [minTime], [0], [TimeZone.UTC]);
+    _UTC = Location('UTC', [minTime], [0], [TimeZone.UTC]);
   }
 
   if (_local == null) {

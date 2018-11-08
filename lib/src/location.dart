@@ -36,7 +36,7 @@ class Location {
 
   /// [TimeZone] for the current time.
   TimeZone get currentTimeZone =>
-      timeZone(new DateTime.now().millisecondsSinceEpoch);
+      timeZone(DateTime.now().millisecondsSinceEpoch);
 
   // Most lookups will be for the current time.
   // To avoid the binary search through tx, keep a
@@ -47,7 +47,7 @@ class Location {
   // The units for cacheStart and cacheEnd are milliseconds
   // since January 1, 1970 UTC, to match the argument
   // to lookup.
-  static int _cacheNow = new DateTime.now().millisecondsSinceEpoch;
+  static int _cacheNow = DateTime.now().millisecondsSinceEpoch;
   int _cacheStart = 0;
   int _cacheEnd = 0;
   TimeZone _cacheZone;
@@ -111,14 +111,14 @@ class Location {
     if (_cacheZone != null &&
         millisecondsSinceEpoch >= _cacheStart &&
         millisecondsSinceEpoch < _cacheEnd) {
-      return new TzInstant(_cacheZone, _cacheStart, _cacheEnd);
+      return TzInstant(_cacheZone, _cacheStart, _cacheEnd);
     }
 
     if (transitionAt.isEmpty || millisecondsSinceEpoch < transitionAt[0]) {
       final zone = _firstZone();
       final start = minTime;
       final end = transitionAt.isEmpty ? maxTime : transitionAt.first;
-      return new TzInstant(zone, start, end);
+      return TzInstant(zone, start, end);
     }
 
     // Binary search for entry with largest millisecondsSinceEpoch <= sec.
@@ -138,7 +138,7 @@ class Location {
       }
     }
 
-    return new TzInstant(zones[transitionZone[lo]], transitionAt[lo], end);
+    return TzInstant(zones[transitionZone[lo]], transitionAt[lo], end);
   }
 
   /// timeZone method returns [TimeZone] in use at an instant in time expressed
@@ -228,7 +228,7 @@ class Location {
 
 /// A [TimeZone] represents a single time zone such as CEST or CET.
 class TimeZone {
-  static const TimeZone UTC = const TimeZone(0, false, 'UTC');
+  static const TimeZone UTC = TimeZone(0, false, 'UTC');
 
   /// Milliseconds east of UTC.
   final int offset;

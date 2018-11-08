@@ -45,8 +45,7 @@ const String tzDataDefaultPath =
 /// });
 /// ```
 Future initializeTimeZone([String path = tzDataDefaultPath]) {
-  return HttpRequest
-      .request(path,
+  return HttpRequest.request(path,
           method: 'GET',
           responseType: 'arraybuffer',
           mimeType: 'application/octet-stream')
@@ -56,10 +55,10 @@ Future initializeTimeZone([String path = tzDataDefaultPath]) {
     if (response is ByteBuffer) {
       initializeDatabase(response.asUint8List());
     } else {
-      throw new TimeZoneInitException(
+      throw TimeZoneInitException(
           'Invalid response type: ${response.runtimeType}');
     }
   }).catchError((e) {
-    throw new TimeZoneInitException(e.toString());
+    throw TimeZoneInitException(e.toString());
   }, test: (e) => e is! TimeZoneInitException);
 }

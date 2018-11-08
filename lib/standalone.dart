@@ -21,7 +21,13 @@ import 'package:path/path.dart' as path;
 import 'package:timezone/timezone.dart';
 
 export 'package:timezone/timezone.dart'
-    show getLocation, setLocalLocation, TZDateTime, Location, TimeZone, timeZoneDatabase;
+    show
+        getLocation,
+        setLocalLocation,
+        TZDateTime,
+        Location,
+        TimeZone,
+        timeZoneDatabase;
 
 final String tzDataDefaultPath = path.join('data', tzDataDefaultFilename);
 
@@ -32,19 +38,24 @@ Future<List<int>> _loadAsBytes(String p) async {
 
   if (scheme.startsWith('http')) {
     // TODO: This path is not tested. How would one get to this situation?
-    return new HttpClient()
-        .getUrl(new Uri(scheme: script.scheme, host: script.host, port: script.port, path: p))
+    return HttpClient()
+        .getUrl(Uri(
+            scheme: script.scheme,
+            host: script.host,
+            port: script.port,
+            path: p))
         .then((req) {
       return req.close();
     }).then((response) {
       // join byte buffers
-      return response.fold(new BytesBuilder(), (b, d) => b..add(d)).then((builder) {
+      return response.fold(BytesBuilder(), (b, d) => b..add(d)).then((builder) {
         return builder.takeBytes();
       });
     });
   } else {
-    var uri = await Isolate.resolvePackageUri(new Uri(scheme: 'package', path: 'timezone/$p'));
-    return new File(path.fromUri(uri)).readAsBytes();
+    var uri = await Isolate.resolvePackageUri(
+        Uri(scheme: 'package', path: 'timezone/$p'));
+    return File(path.fromUri(uri)).readAsBytes();
   }
 }
 
@@ -67,6 +78,6 @@ Future initializeTimeZone([String p]) {
   return _loadAsBytes(p).then((rawData) {
     initializeDatabase(rawData);
   }).catchError((e) {
-    throw new TimeZoneInitException(e.toString());
+    throw TimeZoneInitException(e.toString());
   });
 }

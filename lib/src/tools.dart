@@ -9,7 +9,7 @@ import 'dart:collection';
 import 'package:timezone/timezone.dart';
 import 'package:timezone/tzdata.dart' as tzfile;
 
-const allLocations = const [
+const allLocations = [
   'Africa/Abidjan',
   'Africa/Accra',
   'Africa/Addis_Ababa',
@@ -593,7 +593,7 @@ const allLocations = const [
   'Zulu'
 ];
 
-const commonLocations = const [
+const commonLocations = [
   'Africa/Abidjan',
   'Africa/Accra',
   'Africa/Addis_Ababa',
@@ -1045,13 +1045,13 @@ class FilteredLocationDatabase {
 }
 
 FilteredLocationDatabase filterTimeZoneData(LocationDatabase db,
-    {int dateFrom: TZDateTime.minMillisecondsSinceEpoch,
-    int dateTo: TZDateTime.maxMillisecondsSinceEpoch,
-    List<String> locations: allLocations}) {
-  final report = new FilterReport();
-  final result = new LocationDatabase();
+    {int dateFrom = TZDateTime.minMillisecondsSinceEpoch,
+    int dateTo = TZDateTime.maxMillisecondsSinceEpoch,
+    List<String> locations = allLocations}) {
+  final report = FilterReport();
+  final result = LocationDatabase();
 
-  final locationsSet = new HashSet<String>.from(locations);
+  final locationsSet = HashSet<String>.from(locations);
 
   report.originalLocationsCount = db.locations.length;
 
@@ -1067,8 +1067,7 @@ FilteredLocationDatabase filterTimeZoneData(LocationDatabase db,
     final newTransitionZone = <int>[];
 
     if (transitionsCount == 0) {
-      result.add(
-          new Location(l.name, newTransitionAt, newTransitionZone, l.zones));
+      result.add(Location(l.name, newTransitionAt, newTransitionZone, l.zones));
       continue;
     }
 
@@ -1095,12 +1094,11 @@ FilteredLocationDatabase filterTimeZoneData(LocationDatabase db,
       newTransitionZone.add(l.transitionZone[i - 1]);
     }
 
-    result
-        .add(new Location(l.name, newTransitionAt, newTransitionZone, l.zones));
+    result.add(Location(l.name, newTransitionAt, newTransitionZone, l.zones));
     report.newLocationsCount++;
   }
 
-  return new FilteredLocationDatabase(result, report);
+  return FilteredLocationDatabase(result, report);
 }
 
 /// Convert [tzfile.Location] to [Location]
@@ -1114,8 +1112,8 @@ Location tzfileLocationToNativeLocation(tzfile.Location loc) {
   final zones = <TimeZone>[];
 
   for (final z in loc.zones) {
-    zones.add(new TimeZone(z.offset * 1000, z.isDst, loc.abbrs[z.abbrIndex]));
+    zones.add(TimeZone(z.offset * 1000, z.isDst, loc.abbrs[z.abbrIndex]));
   }
 
-  return new Location(loc.name, transitionAt, loc.transitionZone, zones);
+  return Location(loc.name, transitionAt, loc.transitionZone, zones);
 }

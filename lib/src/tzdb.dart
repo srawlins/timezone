@@ -23,7 +23,7 @@ List<int> tzdbSerialize(LocationDatabase db) {
     bufferLength = _align(bufferLength, 8);
   }
 
-  final Uint8List r = new Uint8List(bufferLength);
+  final Uint8List r = Uint8List(bufferLength);
   final ByteData rb = r.buffer.asByteData();
 
   int offset = 0;
@@ -39,8 +39,10 @@ List<int> tzdbSerialize(LocationDatabase db) {
 
 /// Deserialize TimeZone Database
 Iterable<Location> tzdbDeserialize(List<int> rawData) sync* {
-  final Uint8List data = rawData is Uint8List ? rawData : new Uint8List.fromList(rawData);
-  final ByteData bdata = data.buffer.asByteData(data.offsetInBytes, data.lengthInBytes);
+  final Uint8List data =
+      rawData is Uint8List ? rawData : Uint8List.fromList(rawData);
+  final ByteData bdata =
+      data.buffer.asByteData(data.offsetInBytes, data.lengthInBytes);
 
   int offset = 0;
   while (offset < data.length) {
@@ -49,7 +51,8 @@ Iterable<Location> tzdbDeserialize(List<int> rawData) sync* {
     assert((length % 8) == 0);
     offset += 8;
 
-    yield _deserializeLocation(data.buffer.asUint8List(data.offsetInBytes + offset, length));
+    yield _deserializeLocation(
+        data.buffer.asUint8List(data.offsetInBytes + offset, length));
     offset += length;
   }
 }
@@ -58,7 +61,7 @@ Uint8List _serializeLocation(Location location) {
   int offset = 0;
 
   final List<String> abbrs = <String>[];
-  final HashMap<String, int> abbrsIndex = new HashMap<String, int>();
+  final HashMap<String, int> abbrsIndex = HashMap<String, int>();
   final List<int> zoneAbbrOffsets = <int>[];
 
   int _abbrsLength = 0;
@@ -87,8 +90,8 @@ Uint8List _serializeLocation(Location location) {
 
   final int bufferLength = _align(transitionsOffset + transitionsLength * 9, 8);
 
-  final Uint8List result = new Uint8List(bufferLength);
-  final ByteData buffer = new ByteData.view(result.buffer);
+  final Uint8List result = Uint8List(bufferLength);
+  final ByteData buffer = ByteData.view(result.buffer);
 
   // write header
   buffer.setUint32(0, nameOffset);
@@ -142,7 +145,8 @@ Uint8List _serializeLocation(Location location) {
 }
 
 Location _deserializeLocation(Uint8List data) {
-  final ByteData bdata = data.buffer.asByteData(data.offsetInBytes, data.lengthInBytes);
+  final ByteData bdata =
+      data.buffer.asByteData(data.offsetInBytes, data.lengthInBytes);
   int offset = 0;
 
   // Header
@@ -166,8 +170,8 @@ Location _deserializeLocation(Uint8List data) {
   final int transitionsOffset = bdata.getUint32(24);
   final int transitionsLength = bdata.getUint32(28);
 
-  final String name =
-      ascii.decode(data.buffer.asUint8List(data.offsetInBytes + nameOffset, nameLength));
+  final String name = ascii.decode(
+      data.buffer.asUint8List(data.offsetInBytes + nameOffset, nameLength));
   final List<String> abbrs = <String>[];
   final List<TimeZone> zones = <TimeZone>[];
   final List<int> transitionAt = <int>[];
@@ -180,7 +184,8 @@ Location _deserializeLocation(Uint8List data) {
   final int abbrsEnd = abbrsOffset + abbrsLength;
   for (int i = abbrsOffset; i < abbrsEnd; i++) {
     if (data[i] == 0) {
-      final abbr = ascii.decode(data.buffer.asUint8List(data.offsetInBytes + offset, i - offset));
+      final abbr = ascii.decode(
+          data.buffer.asUint8List(data.offsetInBytes + offset, i - offset));
       abbrs.add(abbr);
       offset = i + 1;
     }
@@ -201,7 +206,7 @@ Location _deserializeLocation(Uint8List data) {
     final int zoneIsDst = bdata.getUint8(offset + 4);
     final int zoneAbbrIndex = bdata.getUint8(offset + 5);
     offset += 8;
-    zones.add(new TimeZone(zoneOffset, zoneIsDst == 1, abbrs[zoneAbbrIndex]));
+    zones.add(TimeZone(zoneOffset, zoneIsDst == 1, abbrs[zoneAbbrIndex]));
   }
 
   // Transitions
@@ -220,7 +225,7 @@ Location _deserializeLocation(Uint8List data) {
     offset += 1;
   }
 
-  return new Location(name, transitionAt, transitionZone, zones);
+  return Location(name, transitionAt, transitionZone, zones);
 }
 
 int _align(int offset, int boundary) {

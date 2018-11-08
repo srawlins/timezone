@@ -17,7 +17,7 @@ import 'exceptions.dart';
 ///
 class LocationDatabase {
   /// Mapping between [Location] name and [Location].
-  final Map<String, Location> _locations = new Map<String, Location>();
+  final Map<String, Location> _locations = Map<String, Location>();
 
   Map<String, Location> get locations => _locations;
 
@@ -30,7 +30,8 @@ class LocationDatabase {
   Location get(String name) {
     final loc = _locations[name];
     if (loc == null) {
-      throw new LocationNotFoundException('Location with the name "$name" doesn\'t exist');
+      throw LocationNotFoundException(
+          'Location with the name "$name" doesn\'t exist');
     }
     return loc;
   }

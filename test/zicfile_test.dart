@@ -9,15 +9,17 @@ import 'package:test/test.dart';
 import 'package:timezone/tzdata.dart' as tzdata;
 
 tzdata.TimeZone z(int offset, bool isDst, int abbrevIndex) {
-  return new tzdata.TimeZone(offset, isDst, abbrevIndex);
+  return tzdata.TimeZone(offset, isDst, abbrevIndex);
 }
 
 main() {
   test('Read US/Eastern 2014h tzfile', () async {
-    var location = currentMirrorSystem().findLibrary(#timezone.test.zicfile_test).uri.path;
+    var location =
+        currentMirrorSystem().findLibrary(#timezone.test.zicfile_test).uri.path;
     var locationDir = path.dirname(location);
-    var rawData = await new File(path.join(locationDir, 'data/US/Eastern')).readAsBytes();
-    final loc = new tzdata.Location.fromBytes('US/Eastern', rawData);
+    var rawData =
+        await File(path.join(locationDir, 'data/US/Eastern')).readAsBytes();
+    final loc = tzdata.Location.fromBytes('US/Eastern', rawData);
 
     expect(loc.name, equals('US/Eastern'));
     expect(loc.abbrs, equals(['LMT', 'EDT', 'EST', 'EWT', 'EPT']));

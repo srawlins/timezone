@@ -31,7 +31,7 @@ class TZDateTime implements DateTime {
       }
       unix -= tzData.timeZone.offset;
     }
-    return new DateTime.fromMillisecondsSinceEpoch(unix, isUtc: true);
+    return DateTime.fromMillisecondsSinceEpoch(unix, isUtc: true);
   }
 
   /// Native [DateTime] used as a Calendar object.
@@ -118,7 +118,7 @@ class TZDateTime implements DateTime {
       int microsecond = 0])
       : this.from(
             _utcFromLocalDateTime(
-                new DateTime.utc(year, month, day, hour, minute, second,
+                DateTime.utc(year, month, day, hour, minute, second,
                     millisecond, microsecond),
                 location),
             location);
@@ -163,7 +163,7 @@ class TZDateTime implements DateTime {
   ///
   /// final thisInstant = new TZDateTime.now(detroit);
   /// ```
-  TZDateTime.now(Location location) : this.from(new DateTime.now(), location);
+  TZDateTime.now(Location location) : this.from(DateTime.now(), location);
 
   /// Constructs a new [TZDateTime] instance with the given
   /// [millisecondsSinceEpoch].
@@ -174,14 +174,14 @@ class TZDateTime implements DateTime {
   TZDateTime.fromMillisecondsSinceEpoch(
       Location location, int millisecondsSinceEpoch)
       : this.from(
-            new DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch,
+            DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch,
                 isUtc: true),
             location);
 
   TZDateTime.fromMicrosecondsSinceEpoch(
       Location location, int microsecondsSinceEpoch)
       : this.from(
-            new DateTime.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch,
+            DateTime.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch,
                 isUtc: true),
             location);
 
@@ -229,18 +229,18 @@ class TZDateTime implements DateTime {
   /// * `"-123450101 00:00:00 Z"`: in the year -12345.
   /// * `"2002-02-27T14:00:00-0500"`: Same as `"2002-02-27T19:00:00Z"`
   static TZDateTime parse(Location location, String formattedString) {
-    return new TZDateTime.from(DateTime.parse(formattedString), location);
+    return TZDateTime.from(DateTime.parse(formattedString), location);
   }
 
   /// Returns this DateTime value in the UTC time zone.
   ///
   /// Returns [this] if it is already in UTC.
-  TZDateTime toUtc() => isUtc ? this : new TZDateTime.from(_native, UTC);
+  TZDateTime toUtc() => isUtc ? this : TZDateTime.from(_native, UTC);
 
   /// Returns this DateTime value in the local time zone.
   ///
   /// Returns [this] if it is already in the local time zone.
-  TZDateTime toLocal() => isLocal ? this : new TZDateTime.from(_native, local);
+  TZDateTime toLocal() => isLocal ? this : TZDateTime.from(_native, local);
 
   static String _fourDigits(int n) {
     int absN = n.abs();
@@ -291,7 +291,7 @@ class TZDateTime implements DateTime {
   ///The resulting string can be parsed back using parse.
   String toIso8601String() => _toString(iso8601: true);
 
-  String _toString({iso8601: true}) {
+  String _toString({iso8601 = true}) {
     var offset = timeZone.offset;
 
     String y = _fourDigits(year);
@@ -318,12 +318,12 @@ class TZDateTime implements DateTime {
 
   /// Returns a new [TZDateTime] instance with [duration] added to [this].
   TZDateTime add(Duration duration) =>
-      new TZDateTime.from(_native.add(duration), location);
+      TZDateTime.from(_native.add(duration), location);
 
   /// Returns a new [TZDateTime] instance with [duration] subtracted from
   /// [this].
   TZDateTime subtract(Duration duration) =>
-      new TZDateTime.from(_native.subtract(duration), location);
+      TZDateTime.from(_native.subtract(duration), location);
 
   /// Returns a [Duration] with the difference between [this] and [other].
   Duration difference(DateTime other) => _native.difference(_toNative(other));
@@ -412,7 +412,7 @@ class TZDateTime implements DateTime {
   Duration get timeZoneOffset => _timeZoneOffset(timeZone);
 
   static Duration _timeZoneOffset(TimeZone timeZone) =>
-      new Duration(milliseconds: timeZone.offset);
+      Duration(milliseconds: timeZone.offset);
 
   /// The year.
   int get year => _localDateTime.year;

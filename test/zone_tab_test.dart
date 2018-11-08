@@ -10,10 +10,14 @@ import 'package:timezone/tzdata.dart' as tzdata;
 
 void main() {
   test('Read zone1970.tab file', () async {
-    var location = currentMirrorSystem().findLibrary(#timezone.test.zone_tab_test).uri.path;
+    var location = currentMirrorSystem()
+        .findLibrary(#timezone.test.zone_tab_test)
+        .uri
+        .path;
     var locationDir = path.dirname(location);
-    var rawData = await new File(path.join(locationDir, 'data/zone1970.tab')).readAsString();
-    final db = new tzdata.LocationDescriptionDatabase.fromString(rawData);
+    var rawData =
+        await File(path.join(locationDir, 'data/zone1970.tab')).readAsString();
+    final db = tzdata.LocationDescriptionDatabase.fromString(rawData);
 
     expect(db.locations[0].name, equals('Europe/Andorra'));
     expect(db.locations[0].countryCodes, equals(['AD']));

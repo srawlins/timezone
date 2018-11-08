@@ -53,8 +53,7 @@ class _Header {
   }
 
   factory _Header.fromBytes(List<int> rawData) {
-    final data =
-        rawData is Uint8List ? rawData : new Uint8List.fromList(rawData);
+    final data = rawData is Uint8List ? rawData : Uint8List.fromList(rawData);
 
     final bdata =
         data.buffer.asByteData(data.offsetInBytes, data.lengthInBytes);
@@ -66,7 +65,7 @@ class _Header {
     final tzh_typecnt = bdata.getInt32(16);
     final tzh_charcnt = bdata.getInt32(20);
 
-    return new _Header(tzh_ttisgmtcnt, tzh_ttisstdcnt, tzh_leapcnt, tzh_timecnt,
+    return _Header(tzh_ttisgmtcnt, tzh_ttisstdcnt, tzh_leapcnt, tzh_timecnt,
         tzh_typecnt, tzh_charcnt);
   }
 }
@@ -141,15 +140,14 @@ class Location {
 
   /// Deserialize [Location] from bytes
   factory Location.fromBytes(String name, List<int> rawData) {
-    final data =
-        rawData is Uint8List ? rawData : new Uint8List.fromList(rawData);
+    final data = rawData is Uint8List ? rawData : Uint8List.fromList(rawData);
 
     final bdata =
         data.buffer.asByteData(data.offsetInBytes, data.lengthInBytes);
 
     final magic1 = bdata.getUint32(0);
     if (magic1 != _ziMagic) {
-      throw new InvalidZoneInfoDataException('Invalid magic header "$magic1"');
+      throw InvalidZoneInfoDataException('Invalid magic header "$magic1"');
     }
     final version1 = bdata.getUint8(4);
 
@@ -157,8 +155,8 @@ class Location {
 
     switch (version1) {
       case 0:
-        final header = new _Header.fromBytes(
-            new Uint8List.view(bdata.buffer, offset, _Header.size));
+        final header = _Header.fromBytes(
+            Uint8List.view(bdata.buffer, offset, _Header.size));
 
         // calculating data offsets
         final dataOffset = offset + _Header.size;
@@ -190,7 +188,7 @@ class Location {
         final abbrsData = data.buffer
             .asUint8List(data.offsetInBytes + abbrsOffset, header.tzh_charcnt);
         final abbrs = <String>[];
-        final abbrsCache = new HashMap<int, int>();
+        final abbrsCache = HashMap<int, int>();
         int readAbbrev(offset) {
           var result = abbrsCache[offset];
           if (result == null) {
@@ -211,8 +209,7 @@ class Location {
           final tt_abbrind = bdata.getUint8(offset + 5);
           offset += 6;
 
-          zones.add(
-              new TimeZone(tt_gmtoff, tt_isdst == 1, readAbbrev(tt_abbrind)));
+          zones.add(TimeZone(tt_gmtoff, tt_isdst == 1, readAbbrev(tt_abbrind)));
         }
 
         // read leap seconds
@@ -244,32 +241,32 @@ class Location {
           offset += 1;
         }
 
-        return new Location(name, transitionAt, transitionZone, abbrs, zones,
+        return Location(name, transitionAt, transitionZone, abbrs, zones,
             leapAt, leapDiff, isStd, isUtc);
 
       case 50:
       case 51:
         // skip old version header/data
-        final header1 = new _Header.fromBytes(
-            new Uint8List.view(bdata.buffer, offset, _Header.size));
+        final header1 = _Header.fromBytes(
+            Uint8List.view(bdata.buffer, offset, _Header.size));
         offset += _Header.size + header1.dataLength(4);
 
         final magic2 = bdata.getUint32(offset);
         if (magic2 != _ziMagic) {
-          throw new InvalidZoneInfoDataException(
+          throw InvalidZoneInfoDataException(
               'Invalid second magic header "$magic2"');
         }
 
         final version2 = bdata.getUint8(offset + 4);
         if (version2 != version1) {
-          throw new InvalidZoneInfoDataException(
+          throw InvalidZoneInfoDataException(
               'Second version "$version2" doesn\'t match first version "$version1"');
         }
 
         offset += 20;
 
-        final header2 = new _Header.fromBytes(
-            new Uint8List.view(bdata.buffer, offset, _Header.size));
+        final header2 = _Header.fromBytes(
+            Uint8List.view(bdata.buffer, offset, _Header.size));
 
         // calculating data offsets
         final dataOffset = offset + _Header.size;
@@ -301,7 +298,7 @@ class Location {
         final abbrsData = data.buffer
             .asUint8List(data.offsetInBytes + abbrsOffset, header2.tzh_charcnt);
         final abbrs = <String>[];
-        final abbrsCache = new HashMap<int, int>();
+        final abbrsCache = HashMap<int, int>();
         int readAbbrev(offset) {
           var result = abbrsCache[offset];
           if (result == null) {
@@ -322,8 +319,7 @@ class Location {
           final tt_abbrind = bdata.getUint8(offset + 5);
           offset += 6;
 
-          zones.add(
-              new TimeZone(tt_gmtoff, tt_isdst == 1, readAbbrev(tt_abbrind)));
+          zones.add(TimeZone(tt_gmtoff, tt_isdst == 1, readAbbrev(tt_abbrind)));
         }
 
         // read leap seconds
@@ -355,11 +351,11 @@ class Location {
           offset += 1;
         }
 
-        return new Location(name, transitionAt, transitionZone, abbrs, zones,
+        return Location(name, transitionAt, transitionZone, abbrs, zones,
             leapAt, leapDiff, isStd, isUtc);
 
       default:
-        throw new InvalidZoneInfoDataException('Unknown version: $version1');
+        throw InvalidZoneInfoDataException('Unknown version: $version1');
     }
   }
 }
