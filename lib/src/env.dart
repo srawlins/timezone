@@ -9,7 +9,7 @@ import 'location_database.dart';
 import 'tzdb.dart';
 
 /// Latest version of the Time Zone database.
-const String tzDataLatestVersion = '2018c';
+const String tzDataLatestVersion = '2018g';
 
 /// Time Zone database file extension.
 const String tzDataExtension = 'tzf';
