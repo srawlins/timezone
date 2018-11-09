@@ -10,12 +10,12 @@ import 'package:timezone/tzdata.dart' as tzdata;
 
 void main() {
   test('Read zone1970.tab file', () async {
-    var packageUri = new Uri(scheme: 'package', path: 'timezone/timezone.dart');
+    var packageUri = Uri(scheme: 'package', path: 'timezone/timezone.dart');
     var packagePath = p
         .dirname(p.dirname((await Isolate.resolvePackageUri(packageUri)).path));
     var locationDir = p.join(packagePath, 'test');
     var rawData =
-        await new File(p.join(locationDir, 'data/zone1970.tab')).readAsString();
+        await File(p.join(locationDir, 'data/zone1970.tab')).readAsString();
     final db = tzdata.LocationDescriptionDatabase.fromString(rawData);
 
     expect(db.locations[0].name, equals('Europe/Andorra'));

@@ -9,17 +9,17 @@ import 'package:test/test.dart';
 import 'package:timezone/tzdata.dart' as tzdata;
 
 tzdata.TimeZone z(int offset, bool isDst, int abbrevIndex) {
-  return new tzdata.TimeZone(offset, isDst, abbrevIndex);
+  return tzdata.TimeZone(offset, isDst, abbrevIndex);
 }
 
 main() {
   test('Read US/Eastern 2014h tzfile', () async {
-    var packageUri = new Uri(scheme: 'package', path: 'timezone/timezone.dart');
+    var packageUri = Uri(scheme: 'package', path: 'timezone/timezone.dart');
     var packagePath = p
         .dirname(p.dirname((await Isolate.resolvePackageUri(packageUri)).path));
     var locationDir = p.join(packagePath, 'test');
     var rawData =
-        await new File(p.join(locationDir, 'data/US/Eastern')).readAsBytes();
+        await File(p.join(locationDir, 'data/US/Eastern')).readAsBytes();
     final loc = tzdata.Location.fromBytes('US/Eastern', rawData);
 
     expect(loc.name, equals('US/Eastern'));
