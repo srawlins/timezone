@@ -1,3 +1,13 @@
+# 0.5.1
+
+- Time zone database updated to 2018g. For your convenience here are the
+  announcements for [2018d], [2018e], [2018f], and [2018g].
+
+[2018d]: http://mm.icann.org/pipermail/tz-announce/2018-March/000049.html
+[2018e]: http://mm.icann.org/pipermail/tz-announce/2018-May/000050.html
+[2018f]: http://mm.icann.org/pipermail/tz-announce/2018-October/000051.html
+[2018g]: http://mm.icann.org/pipermail/tz-announce/2018-October/000052.html
+
 # 0.5.0
 
 - Support a package-directory-free environment. In Dart 1.19, timezone is now

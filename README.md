@@ -3,7 +3,8 @@
 This package provides the [IANA time zone database] and time zone aware
 `DateTime` class, [`TZDateTime`].
 
-The current Time Zone database version is [2018c]. See [the announcement] for details.
+The current Time Zone database version is [2018g]. See [the announcement] for
+details.
 
 
 ## Initialization
@@ -149,8 +150,8 @@ $ pub run tool/get -s 2014h
 
 The argument `-s` is for specifying source version.
 
-[2018c]: http://www.iana.org/time-zones/repository/releases/tzcode2018c.tar.gz
+[2018g]: http://www.iana.org/time-zones/repository/releases/tzcode2018g.tar.gz
 [IANA time zone database]: https://www.iana.org/time-zones
-[`TZDateTime`]: https://www.dartdocs.org/documentation/timezone/latest/timezone/TZDateTime-class.html
-[`TimeZone`]: https://www.dartdocs.org/documentation/timezone/latest/timezone/TimeZone-class.html
-[the announcement]: http://mm.icann.org/pipermail/tz-announce/2018-January/000048.html
+[`TZDateTime`]: https://pub.dartlang.org/documentation/timezone/latest/timezone.standalone/TZDateTime-class.html
+[`TimeZone`]: https://pub.dartlang.org/documentation/timezone/latest/timezone.standalone/TimeZone-class.html
+[the announcement]: http://mm.icann.org/pipermail/tz-announce/2018-October/000052.html
