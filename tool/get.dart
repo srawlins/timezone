@@ -10,7 +10,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:args/args.dart';
 import 'package:logging/logging.dart';
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as p;
 import 'package:glob/glob.dart';
 
 import 'package:timezone/tzdata.dart' as tzfile;
@@ -18,9 +18,9 @@ import 'package:timezone/timezone.dart';
 import 'package:timezone/src/tools.dart';
 import 'package:timezone/src/tzdb.dart';
 
-final outPath = path.join('lib', 'data');
+final outPath = p.join('lib', 'data');
 
-const _zicDataFiles = const [
+const _zicDataFiles = [
   'africa',
   'antarctica',
   'asia',
@@ -33,26 +33,26 @@ const _zicDataFiles = const [
   'backward'
 ];
 
+const _repositoryUri = 'https://www.iana.org/time-zones/repository';
+
 /// Load [tzfile.Location] from tzfile.
-Future<tzfile.Location> loadTzfileLocation(String name, String p) async {
-  final rawData = await new File(p).readAsBytes();
-  return new tzfile.Location.fromBytes(name, rawData);
+Future<tzfile.Location> loadTzfileLocation(String name, String path) async {
+  final rawData = await File(path).readAsBytes();
+  return tzfile.Location.fromBytes(name, rawData);
 }
 
 /// Download IANA Time Zone database to [dest] directory.
 Future<String> downloadTzData(String version, String dest) async {
-  final outPath = path.join(dest, 'tzdata$version.tar.gz');
-  final client = new HttpClient();
+  final outPath = p.join(dest, 'tzdata$version.tar.gz');
+  final client = HttpClient();
   try {
-    var uri;
-    if (version == 'latest')
-      uri = Uri.parse('https://www.iana.org/time-zones/repository/tzdata-$version.tar.gz');
-    else
-      uri = Uri.parse('https://www.iana.org/time-zones/repository/releases/tzdata$version.tar.gz');
+    var uri = version == 'latest'
+        ? Uri.parse('$_repositoryUri/tzdata-$version.tar.gz')
+        : Uri.parse('$_repositoryUri/releases/tzdata$version.tar.gz');
 
     final req = await client.getUrl(uri);
     final resp = await req.close();
-    final out = new File(outPath);
+    final out = File(outPath);
     final sink = out.openWrite();
     try {
       await sink.addStream(resp);
@@ -67,11 +67,12 @@ Future<String> downloadTzData(String version, String dest) async {
 
 /// Unpack IANA Time Zone database to [dest] directory.
 Future unpackTzData(String archivePath, String dest) async {
-  final result = await Process.run('tar', ['--directory=$dest', '-zxf', archivePath]);
+  final result =
+      await Process.run('tar', ['--directory=$dest', '-zxf', archivePath]);
   if (result.exitCode == 0) {
     return true;
   }
-  throw new Exception(result.stderr);
+  throw Exception(result.stderr);
 }
 
 /// Compile IANA Time Zone file with zic compiler.
@@ -80,7 +81,7 @@ Future zic(String src, String dest) async {
   if (result.exitCode == 0) {
     return true;
   }
-  throw new Exception(result.stderr);
+  throw Exception(result.stderr);
 }
 
 Future main(List<String> arguments) async {
@@ -89,10 +90,11 @@ Future main(List<String> arguments) async {
   Logger.root.onRecord.listen((LogRecord rec) {
     print('${rec.level.name}: ${rec.time}: ${rec.message}');
   });
-  final Logger log = new Logger('main');
+  final Logger log = Logger('main');
 
   // Parse CLI arguments
-  final parser = new ArgParser()..addOption('source', abbr: 's', defaultsTo: 'latest');
+  final parser = ArgParser()
+    ..addOption('source', abbr: 's', defaultsTo: 'latest');
   final argResults = parser.parse(arguments);
 
   final source = argResults['source'];
@@ -111,20 +113,20 @@ Future main(List<String> arguments) async {
     await unpackTzData(archivePath, tmpDir.path);
 
     log.info('Creating zic directory');
-    final zicDirPath = path.join(tmpDir.path, 'zic');
-    await new Directory(zicDirPath).create();
+    final zicDirPath = p.join(tmpDir.path, 'zic');
+    await Directory(zicDirPath).create();
 
     log.info('Compiling timezone data with zic compiler');
     for (final i in _zicDataFiles) {
       log.info('- $i');
-      await zic(path.join(tmpDir.path, i), zicDirPath);
+      await zic(p.join(tmpDir.path, i), zicDirPath);
     }
 
     log.info('Importing tzfile Locations');
-    final files = await new Glob('**/*').list(root: zicDirPath).toList();
+    final files = await Glob('**/*').list(root: zicDirPath).toList();
     for (final f in files) {
       if (f is File) {
-        final name = path.relative(f.path, from: zicDirPath);
+        final name = p.relative(f.path, from: zicDirPath);
         log.info('- $name');
         final loc = await loadTzfileLocation(name, f.path);
         tzfileLocations.add(loc);
@@ -136,13 +138,15 @@ Future main(List<String> arguments) async {
   }
 
   log.info('Converting tzfile Locations to native Locations');
-  final db = new LocationDatabase();
+  final db = LocationDatabase();
   for (final loc in tzfileLocations) {
     db.add(tzfileLocationToNativeLocation(loc));
   }
   logReport(r) {
-    log.info('  + locations: ${r.originalLocationsCount} => ${r.newLocationsCount}');
-    log.info('  + transitions: ${r.originalTransitionsCount} => ${r.newTransitionsCount}');
+    log.info('  + locations: ${r.originalLocationsCount} => '
+        '${r.newLocationsCount}');
+    log.info('  + transitions: ${r.originalTransitionsCount} => '
+        '${r.newTransitionsCount}');
   }
 
   log.info('Building location databases:');
@@ -157,18 +161,20 @@ Future main(List<String> arguments) async {
 
   log.info('- [2010 - 2020 years] from common locations');
   final common_2010_2020_Db = filterTimeZoneData(commonDb.db,
-      dateFrom: new DateTime.utc(2010, 1, 1).millisecondsSinceEpoch,
-      dateTo: new DateTime.utc(2020, 1, 1).millisecondsSinceEpoch,
+      dateFrom: DateTime.utc(2010, 1, 1).millisecondsSinceEpoch,
+      dateTo: DateTime.utc(2020, 1, 1).millisecondsSinceEpoch,
       locations: commonLocations);
   logReport(common_2010_2020_Db.report);
 
   log.info('Serializing location databases');
-  final allOut = new File(path.join(outPath, '${source}_all.$tzDataExtension'));
-  final commonOut = new File(path.join(outPath, '${source}.$tzDataExtension'));
-  final common_2010_2020_Out = new File(path.join(outPath, '${source}_2010-2020.$tzDataExtension'));
+  final allOut = File(p.join(outPath, '${source}_all.$tzDataExtension'));
+  final commonOut = File(p.join(outPath, '${source}.$tzDataExtension'));
+  final common_2010_2020_Out =
+      File(p.join(outPath, '${source}_2010-2020.$tzDataExtension'));
   await allOut.writeAsBytes(tzdbSerialize(allDb.db), flush: true);
   await commonOut.writeAsBytes(tzdbSerialize(commonDb.db), flush: true);
-  await common_2010_2020_Out.writeAsBytes(tzdbSerialize(common_2010_2020_Db.db), flush: true);
+  await common_2010_2020_Out.writeAsBytes(tzdbSerialize(common_2010_2020_Db.db),
+      flush: true);
 
   exit(0);
 }

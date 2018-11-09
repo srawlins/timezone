@@ -2,21 +2,20 @@
 library timezone.test.zone_tab_test;
 
 import 'dart:io';
-import 'dart:mirrors';
+import 'dart:isolate';
 
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 import 'package:timezone/tzdata.dart' as tzdata;
 
 void main() {
   test('Read zone1970.tab file', () async {
-    var location = currentMirrorSystem()
-        .findLibrary(#timezone.test.zone_tab_test)
-        .uri
-        .path;
-    var locationDir = path.dirname(location);
+    var packageUri = new Uri(scheme: 'package', path: 'timezone/timezone.dart');
+    var packagePath = p
+        .dirname(p.dirname((await Isolate.resolvePackageUri(packageUri)).path));
+    var locationDir = p.join(packagePath, 'test');
     var rawData =
-        await File(path.join(locationDir, 'data/zone1970.tab')).readAsString();
+        await new File(p.join(locationDir, 'data/zone1970.tab')).readAsString();
     final db = tzdata.LocationDescriptionDatabase.fromString(rawData);
 
     expect(db.locations[0].name, equals('Europe/Andorra'));

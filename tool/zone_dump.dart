@@ -7,7 +7,7 @@ import 'package:timezone/timezone.dart';
 
 void main(List<String> arguments) {
   // Parse CLI arguments
-  final parser = new ArgParser()
+  final parser = ArgParser()
     ..addOption('source', abbr: 'd', defaultsTo: tzDataDefaultPath)
     ..addOption('location', abbr: 'l');
 
@@ -28,7 +28,7 @@ void main(List<String> arguments) {
       final t = l.transitionAt[i];
       final z = l.zones[l.transitionZone[i]];
 
-      final dt = new DateTime.fromMillisecondsSinceEpoch(t, isUtc: true);
+      final dt = DateTime.fromMillisecondsSinceEpoch(t, isUtc: true);
       print('${dt.toIso8601String()} $z');
     }
 

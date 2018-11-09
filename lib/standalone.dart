@@ -17,7 +17,7 @@ library timezone.standalone;
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as p;
 import 'package:timezone/timezone.dart';
 
 export 'package:timezone/timezone.dart'
@@ -29,10 +29,10 @@ export 'package:timezone/timezone.dart'
         TimeZone,
         timeZoneDatabase;
 
-final String tzDataDefaultPath = path.join('data', tzDataDefaultFilename);
+final String tzDataDefaultPath = p.join('data', tzDataDefaultFilename);
 
 // Load file
-Future<List<int>> _loadAsBytes(String p) async {
+Future<List<int>> _loadAsBytes(String path) async {
   final script = Platform.script;
   final scheme = Platform.script.scheme;
 
@@ -43,7 +43,7 @@ Future<List<int>> _loadAsBytes(String p) async {
             scheme: script.scheme,
             host: script.host,
             port: script.port,
-            path: p))
+            path: path))
         .then((req) {
       return req.close();
     }).then((response) {
@@ -54,8 +54,8 @@ Future<List<int>> _loadAsBytes(String p) async {
     });
   } else {
     var uri = await Isolate.resolvePackageUri(
-        Uri(scheme: 'package', path: 'timezone/$p'));
-    return File(path.fromUri(uri)).readAsBytes();
+        Uri(scheme: 'package', path: 'timezone/$path'));
+    return File(p.fromUri(uri)).readAsBytes();
   }
 }
 
@@ -71,11 +71,11 @@ Future<List<int>> _loadAsBytes(String p) async {
 ///   final detroitNow = new TZDateTime.now(detroit);
 /// });
 /// ```
-Future initializeTimeZone([String p]) {
-  if (p == null) {
-    p = tzDataDefaultPath;
+Future initializeTimeZone([String path]) {
+  if (path == null) {
+    path = tzDataDefaultPath;
   }
-  return _loadAsBytes(p).then((rawData) {
+  return _loadAsBytes(path).then((rawData) {
     initializeDatabase(rawData);
   }).catchError((e) {
     throw TimeZoneInitException(e.toString());
