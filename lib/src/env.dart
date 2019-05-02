@@ -17,8 +17,9 @@ const String tzDataExtension = 'tzf';
 /// File name of the Time Zone default database.
 const String tzDataDefaultFilename = '$tzDataLatestVersion.$tzDataExtension';
 
+final Location _UTC = Location('UTC', [minTime], [0], [TimeZone.UTC]);
+
 LocationDatabase _database;
-Location _UTC;
 Location _local;
 
 /// Global TimeZone database
@@ -59,10 +60,6 @@ void initializeDatabase(List<int> rawData) {
 
   for (final Location l in tzdbDeserialize(rawData)) {
     _database.add(l);
-  }
-
-  if (_UTC == null) {
-    _UTC = Location('UTC', [minTime], [0], [TimeZone.UTC]);
   }
 
   if (_local == null) {
