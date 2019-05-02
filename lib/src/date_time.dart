@@ -31,7 +31,12 @@ class TZDateTime implements DateTime {
       }
       unix -= tzData.timeZone.offset;
     }
-    return DateTime.fromMillisecondsSinceEpoch(unix, isUtc: true);
+    // Ensure original microseconds are preserved regardless of TZ shift.
+    final microsecondsSinceEpoch =
+        Duration(milliseconds: unix, microseconds: local.microsecond)
+            .inMicroseconds;
+    return DateTime.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch,
+        isUtc: true);
   }
 
   /// Native [DateTime] used as a Calendar object.
