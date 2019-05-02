@@ -9,9 +9,6 @@
 /// and ported to Dart.
 library timezone.src.location;
 
-/// Zone Info header size.
-const int _zoneInfoHeaderSize = 16;
-
 /// Maximum value for time instants.
 const int maxTime = 8640000000000000;
 
