@@ -10,14 +10,14 @@ main() async {
 
   group('Constructors', () {
     test('Default', () {
-      final t = TZDateTime(la, 2010, 1, 2, 3, 4, 5, 6);
-      expect(t.toString(), equals('2010-01-02 03:04:05.006-0800'));
+      final t = TZDateTime(la, 2010, 1, 2, 3, 4, 5, 6, 7);
+      expect(t.toString(), equals('2010-01-02 03:04:05.006007-0800'));
     });
 
     test('from DateTime', () {
-      final utcTime = DateTime.utc(2010, 1, 2, 3, 4, 5, 6);
+      final utcTime = DateTime.utc(2010, 1, 2, 3, 4, 5, 6, 7);
       final t = TZDateTime.from(utcTime, newYork);
-      expect(t.toString(), equals('2010-01-01 22:04:05.006-0500'));
+      expect(t.toString(), equals('2010-01-01 22:04:05.006007-0500'));
     });
 
     test('from local DateTime', () {
@@ -29,9 +29,9 @@ main() async {
     });
 
     test('from TZDateTime', () {
-      final laTime = TZDateTime(la, 2010, 1, 2, 3, 4, 5, 6);
+      final laTime = TZDateTime(la, 2010, 1, 2, 3, 4, 5, 6, 7);
       final t = TZDateTime.from(laTime, newYork);
-      expect(t.toString(), equals('2010-01-02 06:04:05.006-0500'));
+      expect(t.toString(), equals('2010-01-02 06:04:05.006007-0500'));
     });
 
     test('fromMilliseconds', () {
@@ -46,8 +46,8 @@ main() async {
     });
 
     test('utc', () {
-      final t = TZDateTime.utc(2010, 1, 2, 3, 4, 5, 6);
-      expect(t.toString(), equals('2010-01-02 03:04:05.006Z'));
+      final t = TZDateTime.utc(2010, 1, 2, 3, 4, 5, 6, 7);
+      expect(t.toString(), equals('2010-01-02 03:04:05.006007Z'));
     });
   });
 
