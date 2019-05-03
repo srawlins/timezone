@@ -1,3 +1,9 @@
+# 0.5.4
+
+- TZDateTime.utc is accessible before time zone database is initialized (thanks
+  @jsmarr).
+- Fix dropping microseconds when creating TZDateTime (thanks @jsmarr).
+
 # 0.5.3
 
 - Time zone database updated to 2019a. For your convenience here is the
