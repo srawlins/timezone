@@ -59,6 +59,46 @@ Future<Null> setup() async {
 }
 ```
 
+### Initialization for Flutter Apps
+
+Flutter apps need to be initialized slightly differently, as the timezone
+database file needs to be bundled with your application assets.
+
+### Add the database to your pubspec.yaml
+
+Under the `assets` section of your application's `pubspec.yaml`, add
+a reference to the timezone database file:
+
+```yaml
+assets:
+  - packages/timezone/data/2019a.tzf
+```
+
+If you don't want to have to change the bundled filename when this
+library updates, you can have flutter bundle the directory instead:
+
+```yaml
+assets:
+  - packages/timezone/data/
+```
+
+### Initialize the library in your application startup
+
+The database needs to be loaded before using the library. A good place
+to do this is in your app's main function before running the Flutter app.
+Here we load the database file from assets, and initialize the library.
+
+```dart
+import 'package:timezone/timezone.dart';
+
+void main() async {
+  var byteData = await rootBundle
+      .load('packages/timezone/data/${tzDataDefaultFilename}');
+  initializeDatabase(byteData.buffer.asUint8List());
+  runApp(MyApp());
+}
+```
+
 ## API
 
 ### Location
