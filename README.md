@@ -23,7 +23,8 @@ Import `package:timezone/browser.dart` library and run async function
 ```dart
 import 'package:timezone/browser.dart';
 
-Future<Null> setup() async {
+Future<void> setup() async {
+  await initializeTimeZone();
   final detroit = getLocation('America/Detroit');
   final now = new TZDateTime.now(detroit);
 });
@@ -37,7 +38,7 @@ Import `package:timezone/standalone.dart` library and run async function
 ```dart
 import 'package:timezone/standalone.dart';
 
-Future<Null> setup() async {
+Future<void> setup() async {
   await initializeTimeZone();
   final detroit = getLocation('America/Detroit');
   final now = new TZDateTime.now(detroit);
@@ -52,7 +53,7 @@ To overwrite local location you can use `setLocalLocation(Location
 location)` function.
 
 ```dart
-Future<Null> setup() async {
+Future<void> setup() async {
   await initializeTimeZone();
   final detroit = getLocation('America/Detroit');
   setLocalLocation(detroit);
@@ -115,7 +116,7 @@ void main() async {
 > regions like Starke County, Indiana, which switched from central to
 > eastern time in 1991 and switched back in 2006.
 >
-> [The tz database](http://www.twinsun.com/tz/tz-link.htm)
+> [The tz database](https://www.iana.org/time-zones)
 
 #### Get location by Olsen time zone ID
 
@@ -132,7 +133,7 @@ because of the ambiguities.
 > hours ahead of UTC in Australia; and French-speaking North Americans prefer
 > "HNE" to "EST".
 >
-> [The tz database](http://www.twinsun.com/tz/tz-link.htm)
+> [The tz database](https://www.iana.org/time-zones)
 
 ### TimeZone
 
