@@ -8,14 +8,8 @@ import 'location.dart';
 import 'location_database.dart';
 import 'tzdb.dart';
 
-/// Latest version of the Time Zone database.
-const String tzDataLatestVersion = '2019b';
-
-/// Time Zone database file extension.
-const String tzDataExtension = 'tzf';
-
 /// File name of the Time Zone default database.
-const String tzDataDefaultFilename = '$tzDataLatestVersion.$tzDataExtension';
+const String tzDataDefaultFilename = 'latest.tzf';
 
 final Location _UTC = Location('UTC', [minTime], [0], [TimeZone.UTC]);
 

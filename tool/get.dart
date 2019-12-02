@@ -167,10 +167,9 @@ Future main(List<String> arguments) async {
   logReport(common_2015_2025_Db.report);
 
   log.info('Serializing location databases');
-  final allOut = File(p.join(outPath, '${source}_all.$tzDataExtension'));
-  final commonOut = File(p.join(outPath, '${source}.$tzDataExtension'));
-  final common_2015_2025_Out =
-      File(p.join(outPath, '${source}_2015-2025.$tzDataExtension'));
+  final allOut = File(p.join(outPath, '${source}_all.tzf'));
+  final commonOut = File(p.join(outPath, '${source}.tzf'));
+  final common_2015_2025_Out = File(p.join(outPath, '${source}_2015-2025.tzf'));
   await allOut.writeAsBytes(tzdbSerialize(allDb.db), flush: true);
   await commonOut.writeAsBytes(tzdbSerialize(commonDb.db), flush: true);
   await common_2015_2025_Out.writeAsBytes(tzdbSerialize(common_2015_2025_Db.db),
