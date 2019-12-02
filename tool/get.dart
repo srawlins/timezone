@@ -33,7 +33,7 @@ const _zicDataFiles = [
   'backward'
 ];
 
-const _repositoryUri = 'https://www.iana.org/time-zones/repository';
+const _repositoryUri = 'https://data.iana.org/time-zones';
 
 /// Load [tzfile.Location] from tzfile.
 Future<tzfile.Location> loadTzfileLocation(String name, String path) async {
