@@ -16,7 +16,8 @@ List<int> tzdbSerialize(LocationDatabase db) {
   final List<List<int>> locationsInBytes = <List<int>>[];
   int bufferLength = 0;
 
-  for (final Location l in db.locations.values) {
+  for (final Location l in db.locations.values.toList()
+    ..sort((l, r) => l.name.compareTo(r.name))) {
     final List<int> b = _serializeLocation(l);
     locationsInBytes.add(b);
     bufferLength += 8 + b.length;
