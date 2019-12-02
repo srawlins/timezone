@@ -1,3 +1,10 @@
+# 0.5.6
+
+- Time zone database updated to 2019c. For your convenience here is the
+  announcement for [2019c].
+
+[2019c]: http://mm.icann.org/pipermail/tz-announce/2019-September/000057.html
+
 # 0.5.5
 
 - Time zone database updated to 2019b. For your convenience here is the
