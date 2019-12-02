@@ -152,7 +152,7 @@ Future main(List<String> arguments) async {
   log.info('Building location databases:');
 
   log.info('- all locations');
-  final allDb = filterTimeZoneData(db, locations: allLocations);
+  final allDb = filterTimeZoneData(db);
   logReport(allDb.report);
 
   log.info('- common locations from all locations');
