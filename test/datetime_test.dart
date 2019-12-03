@@ -1,9 +1,10 @@
 @TestOn('vm')
 import 'package:test/test.dart';
-import 'package:timezone/standalone.dart';
+import 'package:timezone/timezone.dart';
+import 'package:timezone/data/latest.dart';
 
 main() async {
-  await initializeTimeZone();
+  initializeTimeZones();
   final detroit = getLocation('America/Detroit');
   final la = getLocation('America/Los_Angeles');
   final newYork = getLocation('America/New_York');

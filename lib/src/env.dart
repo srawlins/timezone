@@ -4,6 +4,9 @@
 
 library timezone.src.env;
 
+import 'dart:convert';
+
+import 'exceptions.dart';
 import 'location.dart';
 import 'location_database.dart';
 import 'tzdb.dart';
@@ -58,5 +61,19 @@ void initializeDatabase(List<int> rawData) {
 
   if (_local == null) {
     _local = _UTC;
+  }
+}
+
+/// Initialize Time Zone database from [encodedDatabase].
+///
+/// Throws [TimeZoneInitException] when something is wrong.
+///
+/// This function is private to this package.
+void initializeTimeZonesFromBase64(String encodedDatabase) {
+  try {
+    var rawData = base64Decode(encodedDatabase);
+    initializeDatabase(rawData);
+  } catch (e) {
+    throw TimeZoneInitException(e.toString());
   }
 }

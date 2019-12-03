@@ -2,6 +2,8 @@
 
 - Time zone database updated to 2019c. For your convenience here is the
   announcement for [2019c].
+- Dart-importable databases made available in `lib/data`. README.md has more
+  details.
 
 [2019c]: http://mm.icann.org/pipermail/tz-announce/2019-September/000057.html
 
