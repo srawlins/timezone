@@ -15,6 +15,18 @@ one of our [time zone databases](#databases).
 We provide three different APIs to load a database: one which is base64-encoded
 into a Dart library, one for browsers, and one for standalone environments.
 
+### Database variants
+
+We offer three different variants of the IANA database:
+
+- **default**: doesn't contain deprecated and historical zones with some
+  exceptions like "US/Eastern" and "Etc/UTC"; this is about 75% the size of the
+  **all**database.
+- **all**: contains all data from the [IANA time zone database].
+- **2015-2025**: default database truncated to contain historical data from
+  2015 through 2025; this database is about 25% the size of the default
+  database.
+
 ### Initialization from Dart library
 
 This is the recommended way to initialize a time zone database for non-browser
@@ -28,6 +40,10 @@ void main() {
   initializeTimeZones();
 }
 ```
+
+To initialize the **all** database variant, `import
+'package:timezone/data/latest_all.dart'`. To initialize the **2015-2025**
+database variant, `import 'package:timezone/data/latest_2015-2025.dart'`.
 
 ### Initialization for browser environment
 
@@ -44,6 +60,11 @@ Future<void> setup() async {
 });
 ```
 
+To initialize the **all** database variant, call
+`initializeTimeZone('packages/timezone/data/latest_all.tzf')`. To initialize
+the **2015-2025** database variant, call
+`initializeTimeZone('packages/timezone/data/latest_2015-2025.tzf')`.
+
 ### Initialization for standalone environment
 
 Import `package:timezone/standalone.dart` library and run async function
@@ -58,6 +79,12 @@ Future<void> setup() async {
   final now = new TZDateTime.now(detroit);
 }
 ```
+
+Note: This method likely will not work in a Flutter environment.
+
+To initialize the **all** database variant, call
+`initializeTimeZone('data/latest_all.tzf')`. To initialize the **2015-2025**
+database variant, call `initializeTimeZone('data/latest_2015-2025.tzf')`.
 
 ### Local Location
 
@@ -147,7 +174,7 @@ you can pass a native `DateTime` object or our `TZDateTime`.
 We are using [IANA Time Zone Database](http://www.iana.org/time-zones)
 to build our databases.
 
-We are currently building three different database variants:
+We currently build three different database variants:
 
 - default (doesn't contain deprecated and historical zones with some exceptions
   like US/Eastern). 361kb
