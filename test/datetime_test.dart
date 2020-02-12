@@ -15,6 +15,15 @@ main() async {
       expect(t.toString(), equals('2010-01-02 03:04:05.006007-0800'));
     });
 
+    test('Default, only year argument', () {
+      final t = TZDateTime(la, 2010);
+      expect(t.toString(), equals('2010-01-01 00:00:00.000-0800'));
+    });
+
+    test('Default, null argument', () {
+      expect(() => TZDateTime(null, 2010), throwsA(isA<AssertionError>()));
+    });
+
     test('from DateTime', () {
       final utcTime = DateTime.utc(2010, 1, 2, 3, 4, 5, 6, 7);
       final t = TZDateTime.from(utcTime, newYork);

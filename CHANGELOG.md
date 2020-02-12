@@ -1,3 +1,7 @@
+# 0.5.7-dev
+
+- Earlier null checking on some TZDateTime constructor arguments.
+
 # 0.5.6
 
 - Time zone database updated to 2019c. For your convenience here is the
