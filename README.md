@@ -35,9 +35,9 @@ environments. Each Dart libary found in `lib/data`, for example
 `initializeTimeZones`.
 
 ```dart
-import 'package:timezone/data/latest.dart';
+import 'package:timezone/data/latest.dart' as tz;
 void main() {
-  initializeTimeZones();
+  tz.initializeTimeZones();
 }
 ```
 
@@ -51,13 +51,13 @@ Import `package:timezone/browser.dart` library and run async function
 `Future initializeTimeZone([String path])`.
 
 ```dart
-import 'package:timezone/browser.dart';
+import 'package:timezone/browser.dart' as tz;
 
 Future<void> setup() async {
-  await initializeTimeZone();
-  final detroit = getLocation('America/Detroit');
-  final now = new TZDateTime.now(detroit);
-});
+  await tz.initializeTimeZone();
+  var detroit = tz.getLocation('America/Detroit');
+  var now = tz.TZDateTime.now(detroit);
+}
 ```
 
 To initialize the **all** database variant, call
@@ -71,12 +71,12 @@ Import `package:timezone/standalone.dart` library and run async function
 `Future initializeTimeZone([String path])`.
 
 ```dart
-import 'package:timezone/standalone.dart';
+import 'package:timezone/standalone.dart' as tz;
 
 Future<void> setup() async {
-  await initializeTimeZone();
-  final detroit = getLocation('America/Detroit');
-  final now = new TZDateTime.now(detroit);
+  await tz.initializeTimeZone();
+  var detroit = tz.getLocation('America/Detroit');
+  var now = tz.TZDateTime.now(detroit);
 }
 ```
 
@@ -95,14 +95,20 @@ location)` function.
 
 ```dart
 Future<void> setup() async {
-  await initializeTimeZone();
-  final detroit = getLocation('America/Detroit');
-  setLocalLocation(detroit);
+  await tz.initializeTimeZone();
+  var detroit = tz.getLocation('America/Detroit');
+  tz.setLocalLocation(detroit);
 }
 ```
 
 
 ## API
+
+### Library Namespace
+
+The public interfaces expose several top-level functions. It is recommended
+then to import the libraries with a prefix (the prefix `tz` is common), or to
+import specific members via a `show` clause.
 
 ### Location
 
@@ -123,7 +129,7 @@ Future<void> setup() async {
 #### Get location by Olsen time zone ID
 
 ```dart
-final detroit = getLocation('America/Detroit');
+final detroit = tz.getLocation('America/Detroit');
 ```
 
 We don't provide any functions to get locations by time zone abbreviations
@@ -143,8 +149,8 @@ TimeZone objects represents time zone and contains offset, DST flag, and name
 in the abbreviated form.
 
 ```dart
-final timeInUtc = new DateTime.utc(1995, 1, 1);
-final timeZone = detroit.timeZone(timeInUtc.millisecondsSinceEpoch);
+var timeInUtc = DateTime.utc(1995, 1, 1);
+var timeZone = detroit.timeZone(timeInUtc.millisecondsSinceEpoch);
 ```
 
 ### TimeZone aware DateTime
@@ -153,7 +159,7 @@ The `TZDateTime` class implements the `DateTime` interface from `dart:core`,
 and contains information about location and time zone.
 
 ```dart
-final date = new TZDateTime(detroit, 2014, 11, 17);
+var date = tz.TZDateTime(detroit, 2014, 11, 17);
 ```
 
 #### Converting DateTimes between time zones
@@ -162,12 +168,30 @@ To convert between time zones, just create a new `TZDateTime` object using
 `from` constructor and pass `Location` and `DateTime` to the constructor.
 
 ```dart
-final localTime = new DateTime(2010, 1, 1);
-final detroitTime = new TZDateTime.from(time, detroit);
+var localTime = tz.DateTime(2010, 1, 1);
+var detroitTime = tz.TZDateTime.from(time, detroit);
 ```
 
 This constructor supports any objects that implement `DateTime` interface, so
 you can pass a native `DateTime` object or our `TZDateTime`.
+
+### Listing known time zones
+
+After initializing the time zone database, the `timeZoneDatabase` top-level
+member contains all of the known time zones. Examples:
+
+```dart
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
+
+void main() {
+  tz.initializeTimeZones();
+  var locations = tz.timeZoneDatabase.locations;
+  print(locations.length); // => 429
+  print(locations.keys.first); // => "Africa/Abidjan"
+  print(locations.keys.last); // => "US/Pacific"
+}
+```
 
 ## <a name="databases"></a> Time Zone databases
 
