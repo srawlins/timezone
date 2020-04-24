@@ -3,7 +3,11 @@
 /// Usage example:
 ///
 /// ```sh
-/// $ pub run tool/get -s 2014h
+/// $ pub run tool/get -s 2020a
+/// $ rm -rf lib/data/latest*
+/// $ ln -s lib/data/{2020a,latest}.tzf
+/// $ ln -s lib/data/{2020a,latest}_all.tzf
+/// $ ln -s lib/data/{2020a,latest}_2015-2025.tzf
 /// ```
 
 import 'dart:async';
