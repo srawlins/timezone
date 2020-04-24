@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 import 'package:timezone/timezone.dart';
 import 'package:timezone/standalone.dart';
 
-main() async {
+Future<void> main() async {
   const timeStep = 15 * 60 * 1000; // 15 minutes
   final startTime =
       (DateTime.now().millisecondsSinceEpoch ~/ timeStep) * timeStep;

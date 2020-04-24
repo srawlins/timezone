@@ -87,7 +87,8 @@ class InvalidZoneInfoDataException implements Exception {
 
   InvalidZoneInfoDataException(this.msg);
 
-  String toString() => msg == null ? 'InvalidZoneInfoDataException' : msg;
+  @override
+  String toString() => msg ?? 'InvalidZoneInfoDataException';
 }
 
 /// TimeZone data

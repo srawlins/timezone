@@ -72,9 +72,7 @@ Future<List<int>> _loadAsBytes(String path) async {
 /// });
 /// ```
 Future initializeTimeZone([String path]) {
-  if (path == null) {
-    path = tzDataDefaultPath;
-  }
+  path ??= tzDataDefaultPath;
   return _loadAsBytes(path).then((rawData) {
     initializeDatabase(rawData);
   }).catchError((e) {

@@ -62,6 +62,7 @@ class TZDateTime implements DateTime {
   /// This value is at most
   /// 8,640,000,000,000,000ms (100,000,000 days) from the Unix epoch.
   /// In other words: [:millisecondsSinceEpoch.abs() <= 8640000000000000:].
+  @override
   int get millisecondsSinceEpoch => _native.millisecondsSinceEpoch;
 
   /// The number of microseconds since the "Unix epoch"
@@ -75,6 +76,7 @@ class TZDateTime implements DateTime {
   ///
   /// Note that this value does not fit into 53 bits (the size of a IEEE
   /// double).  A JavaScript number is not able to hold this value.
+  @override
   int get microsecondsSinceEpoch => _native.microsecondsSinceEpoch;
 
   /// [Location]
@@ -90,6 +92,7 @@ class TZDateTime implements DateTime {
   /// assert(dDay.isUtc);
   /// ```
   ///
+  @override
   bool get isUtc => _isUtc(location);
 
   static bool _isUtc(Location l) => identical(l, UTC);
@@ -243,11 +246,13 @@ class TZDateTime implements DateTime {
   /// Returns this DateTime value in the UTC time zone.
   ///
   /// Returns [this] if it is already in UTC.
+  @override
   TZDateTime toUtc() => isUtc ? this : TZDateTime.from(_native, UTC);
 
   /// Returns this DateTime value in the local time zone.
   ///
   /// Returns [this] if it is already in the local time zone.
+  @override
   TZDateTime toLocal() => isLocal ? this : TZDateTime.from(_native, local);
 
   static String _fourDigits(int n) {
@@ -277,6 +282,7 @@ class TZDateTime implements DateTime {
   /// It does not support internationalized strings.
   /// Use the [intl](http://pub.dartlang.org/packages/intl) package
   /// at the pub shared packages repo.
+  @override
   String toString() => _toString(iso8601: false);
 
   /// Returns an ISO-8601 full-precision extended format representation.
@@ -297,6 +303,7 @@ class TZDateTime implements DateTime {
   ///     then this part is omitted.
   ///
   ///The resulting string can be parsed back using parse.
+  @override
   String toIso8601String() => _toString(iso8601: true);
 
   String _toString({iso8601 = true}) {
@@ -325,15 +332,18 @@ class TZDateTime implements DateTime {
   }
 
   /// Returns a new [TZDateTime] instance with [duration] added to [this].
+  @override
   TZDateTime add(Duration duration) =>
       TZDateTime.from(_native.add(duration), location);
 
   /// Returns a new [TZDateTime] instance with [duration] subtracted from
   /// [this].
+  @override
   TZDateTime subtract(Duration duration) =>
       TZDateTime.from(_native.subtract(duration), location);
 
   /// Returns a [Duration] with the difference between [this] and [other].
+  @override
   Duration difference(DateTime other) => _native.difference(_toNative(other));
 
   /// Returns true if [other] is a [TZDateTime] at the same moment and in the
@@ -348,6 +358,7 @@ class TZDateTime implements DateTime {
   /// ````
   ///
   /// See [isAtSameMomentAs] for a comparison that adjusts for time zone.
+  @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         other is TZDateTime &&
@@ -366,6 +377,7 @@ class TZDateTime implements DateTime {
   ///
   /// assert(berlinWallFell.isBefore(moonLanding) == false);
   /// ```
+  @override
   bool isBefore(DateTime other) => _native.isBefore(_toNative(other));
 
   /// Returns true if [this] occurs after [other].
@@ -379,6 +391,7 @@ class TZDateTime implements DateTime {
   ///
   /// assert(berlinWallFell.isAfter(moonLanding) == true);
   /// ```
+  @override
   bool isAfter(DateTime other) => _native.isAfter(_toNative(other));
 
   /// Returns true if [this] occurs at the same moment as [other].
@@ -392,6 +405,7 @@ class TZDateTime implements DateTime {
   ///
   /// assert(berlinWallFell.isAtSameMomentAs(moonLanding) == false);
   /// ```
+  @override
   bool isAtSameMomentAs(DateTime other) =>
       _native.isAtSameMomentAs(_toNative(other));
 
@@ -401,12 +415,15 @@ class TZDateTime implements DateTime {
   /// This function returns a negative integer
   /// if this [TZDateTime] is smaller (earlier) than [other],
   /// or a positive integer if it is greater (later).
+  @override
   int compareTo(DateTime other) => _native.compareTo(_toNative(other));
 
+  @override
   int get hashCode => _native.hashCode;
 
   /// The abbreviated time zone name&mdash;for example,
   /// [:"CET":] or [:"CEST":].
+  @override
   String get timeZoneName => timeZone.abbr;
 
   /// The time zone offset, which is the difference between time at [location]
@@ -417,38 +434,48 @@ class TZDateTime implements DateTime {
   /// Note, that JavaScript, Python and C return the difference between UTC and
   /// local time. Java, C# and Ruby return the difference between local time and
   /// UTC.
+  @override
   Duration get timeZoneOffset => _timeZoneOffset(timeZone);
 
   static Duration _timeZoneOffset(TimeZone timeZone) =>
       Duration(milliseconds: timeZone.offset);
 
   /// The year.
+  @override
   int get year => _localDateTime.year;
 
   /// The month [1..12].
+  @override
   int get month => _localDateTime.month;
 
   /// The day of the month [1..31].
+  @override
   int get day => _localDateTime.day;
 
   /// The hour of the day, expressed as in a 24-hour clock [0..23].
+  @override
   int get hour => _localDateTime.hour;
 
   /// The minute [0...59].
+  @override
   int get minute => _localDateTime.minute;
 
   /// The second [0...59].
+  @override
   int get second => _localDateTime.second;
 
   /// The millisecond [0...999].
+  @override
   int get millisecond => _localDateTime.millisecond;
 
   /// The microsecond [0...999].
+  @override
   int get microsecond => _localDateTime.microsecond;
 
   /// The day of the week.
   ///
   /// In accordance with ISO 8601
   /// a week starts with Monday, which has the value 1.
+  @override
   int get weekday => _localDateTime.weekday;
 }

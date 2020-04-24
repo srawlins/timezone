@@ -44,7 +44,7 @@ class Location {
   // The units for cacheStart and cacheEnd are milliseconds
   // since January 1, 1970 UTC, to match the argument
   // to lookup.
-  static int _cacheNow = DateTime.now().millisecondsSinceEpoch;
+  static final int _cacheNow = DateTime.now().millisecondsSinceEpoch;
   int _cacheStart = 0;
   int _cacheEnd = 0;
   TimeZone _cacheZone;
@@ -220,6 +220,7 @@ class Location {
     return false;
   }
 
+  @override
   String toString() => '$name';
 }
 
@@ -238,6 +239,7 @@ class TimeZone {
 
   const TimeZone(this.offset, this.isDst, this.abbr);
 
+  @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         other is TimeZone &&
@@ -246,6 +248,7 @@ class TimeZone {
             abbr == other.abbr;
   }
 
+  @override
   int get hashCode {
     var result = 17;
     result = 37 * result + offset.hashCode;
@@ -254,6 +257,7 @@ class TimeZone {
     return result;
   }
 
+  @override
   String toString() => '[$abbr offset=$offset dst=$isDst]';
 }
 

@@ -17,7 +17,7 @@ import 'exceptions.dart';
 ///
 class LocationDatabase {
   /// Mapping between [Location] name and [Location].
-  final Map<String, Location> _locations = Map<String, Location>();
+  final _locations = <String, Location>{};
 
   Map<String, Location> get locations => _locations;
 

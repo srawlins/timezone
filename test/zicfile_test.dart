@@ -12,7 +12,7 @@ tzdata.TimeZone z(int offset, bool isDst, int abbrevIndex) {
   return tzdata.TimeZone(offset, isDst, abbrevIndex);
 }
 
-main() {
+void main() {
   test('Read US/Eastern 2014h tzfile', () async {
     var packageUri = Uri(scheme: 'package', path: 'timezone/timezone.dart');
     var packagePath = p

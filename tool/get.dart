@@ -151,7 +151,7 @@ Future main(List<String> arguments) async {
   for (final loc in tzfileLocations) {
     db.add(tzfileLocationToNativeLocation(loc));
   }
-  logReport(r) {
+  void logReport(r) {
     log.info('  + locations: ${r.originalLocationsCount} => '
         '${r.newLocationsCount}');
     log.info('  + transitions: ${r.originalTransitionsCount} => '

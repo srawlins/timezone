@@ -2,7 +2,7 @@
 import 'package:test/test.dart';
 import 'package:timezone/browser.dart';
 
-main() async {
+Future<void> main() async {
   await initializeTimeZone();
   final detroit = getLocation('America/Detroit');
   final la = getLocation('America/Los_Angeles');

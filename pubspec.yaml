@@ -13,5 +13,5 @@ dev_dependencies:
   args: any
   glob: any
   logging: any
-  pedantic: ^1.4.0
+  pedantic: ^1.9.0
   test: ^1.10.0
