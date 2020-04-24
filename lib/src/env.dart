@@ -53,7 +53,7 @@ void setLocalLocation(Location location) {
 void initializeDatabase(List<int> rawData) {
   _database ??= LocationDatabase();
 
-  for (final Location l in tzdbDeserialize(rawData)) {
+  for (final l in tzdbDeserialize(rawData)) {
     _database.add(l);
   }
 

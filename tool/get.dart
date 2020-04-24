@@ -99,7 +99,7 @@ Future main(List<String> arguments) async {
   Logger.root.onRecord.listen((LogRecord rec) {
     print('${rec.level.name}: ${rec.time}: ${rec.message}');
   });
-  final Logger log = Logger('main');
+  final log = Logger('main');
 
   // Parse CLI arguments
   final parser = ArgParser()

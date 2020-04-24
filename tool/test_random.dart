@@ -23,7 +23,7 @@ void main(List<String> arguments) {
   Logger.root.onRecord.listen((LogRecord rec) {
     print('${rec.level.name}: ${rec.time}: ${rec.message}');
   });
-  final Logger log = Logger('main');
+  final log = Logger('main');
 
   // Parse CLI arguments
   final parser = ArgParser()
