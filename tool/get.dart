@@ -75,7 +75,7 @@ Future<String> downloadTzData(String version, String dest) async {
 }
 
 /// Unpack IANA Time Zone database to [dest] directory.
-Future unpackTzData(String archivePath, String dest) async {
+Future<bool> unpackTzData(String archivePath, String dest) async {
   final result =
       await Process.run('tar', ['--directory=$dest', '-zxf', archivePath]);
   if (result.exitCode == 0) {
@@ -85,7 +85,7 @@ Future unpackTzData(String archivePath, String dest) async {
 }
 
 /// Compile IANA Time Zone file with zic compiler.
-Future zic(String src, String dest) async {
+Future<bool> zic(String src, String dest) async {
   final result = await Process.run('zic', ['-d', dest, src]);
   if (result.exitCode == 0) {
     return true;
@@ -93,7 +93,7 @@ Future zic(String src, String dest) async {
   throw Exception(result.stderr);
 }
 
-Future main(List<String> arguments) async {
+Future<void> main(List<String> arguments) async {
   // Initialize logger
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((LogRecord rec) {
@@ -108,7 +108,7 @@ Future main(List<String> arguments) async {
 
   final source = argResults['source'];
 
-  final tzfileLocations = [];
+  final tzfileLocations = <tzfile.Location>[];
 
   log.info('Creating temp directory');
 
@@ -151,7 +151,7 @@ Future main(List<String> arguments) async {
   for (final loc in tzfileLocations) {
     db.add(tzfileLocationToNativeLocation(loc));
   }
-  void logReport(r) {
+  void logReport(FilterReport r) {
     log.info('  + locations: ${r.originalLocationsCount} => '
         '${r.newLocationsCount}');
     log.info('  + transitions: ${r.originalTransitionsCount} => '

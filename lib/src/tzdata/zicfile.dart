@@ -261,7 +261,8 @@ class Location {
         final version2 = bdata.getUint8(offset + 4);
         if (version2 != version1) {
           throw InvalidZoneInfoDataException(
-              'Second version "$version2" doesn\'t match first version "$version1"');
+              'Second version "$version2" doesn\'t match first version '
+              '"$version1"');
         }
 
         offset += 20;

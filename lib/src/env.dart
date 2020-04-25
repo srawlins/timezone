@@ -69,7 +69,9 @@ void initializeTimeZonesFromBase64(String encodedDatabase) {
   try {
     var rawData = base64Decode(encodedDatabase);
     initializeDatabase(rawData);
-  } catch (e) {
+  }
+// ignore: avoid_catches_without_on_clauses
+  catch (e) {
     throw TimeZoneInitException(e.toString());
   }
 }

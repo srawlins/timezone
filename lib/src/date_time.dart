@@ -4,8 +4,8 @@
 
 library timezone.src.date_time;
 
-import 'location.dart';
 import 'env.dart';
+import 'location.dart';
 
 /// TimeZone aware DateTime
 class TZDateTime implements DateTime {

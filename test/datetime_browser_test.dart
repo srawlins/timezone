@@ -31,7 +31,8 @@ Future<void> main() async {
       expect(t.toString(), equals('2010-01-02 06:04:05.006-0500'));
     });
 
-    // This started failing, because Chrome is temporarily disallowing microsecond timestamps?
+    // This started failing, because Chrome is temporarily disallowing
+    // microsecond timestamps?
     test('fromMicroseconds', () {
       final t =
           TZDateTime.fromMicrosecondsSinceEpoch(newYork, 1262430245006007);
