@@ -1,8 +1,9 @@
-# 0.5.7-dev
+# 0.5.7
 
 - Time zone database updated to 2020a. For your convenience here is the
   announcement for [2020a].
 - Earlier null checking on some TZDateTime constructor arguments.
+- Many internal changes; should not affect API.
 
 [2020a]: http://mm.icann.org/pipermail/tz-announce/2020-April/000058.html
 
