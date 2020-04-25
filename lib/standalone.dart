@@ -71,11 +71,11 @@ Future<List<int>> _loadAsBytes(String path) async {
 ///   final detroitNow = new TZDateTime.now(detroit);
 /// });
 /// ```
-Future initializeTimeZone([String path]) {
+Future<void> initializeTimeZone([String path]) {
   path ??= tzDataDefaultPath;
   return _loadAsBytes(path).then((rawData) {
     initializeDatabase(rawData);
-  }).catchError((e) {
+  }).catchError((dynamic e) {
     throw TimeZoneInitException(e.toString());
   });
 }

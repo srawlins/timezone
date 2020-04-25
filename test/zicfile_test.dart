@@ -26,8 +26,8 @@ void main() {
     expect(loc.abbrs, equals(['LMT', 'EDT', 'EST', 'EWT', 'EPT']));
     expect(loc.isStd, equals([0, 0, 0, 0, 1]));
     expect(loc.isUtc, equals([0, 0, 0, 0, 1]));
-    expect(loc.leapAt, equals([]));
-    expect(loc.leapDiff, equals([]));
+    expect(loc.leapAt, equals(<int>[]));
+    expect(loc.leapDiff, equals(<int>[]));
 
     expect(
         loc.transitionAt,

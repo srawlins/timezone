@@ -190,7 +190,7 @@ class Location {
             .asUint8List(data.offsetInBytes + abbrsOffset, header.tzh_charcnt);
         final abbrs = <String>[];
         final abbrsCache = HashMap<int, int>();
-        int readAbbrev(offset) {
+        int readAbbrev(int offset) {
           var result = abbrsCache[offset];
           if (result == null) {
             result = abbrs.length;
@@ -301,7 +301,7 @@ class Location {
             .asUint8List(data.offsetInBytes + abbrsOffset, header2.tzh_charcnt);
         final abbrs = <String>[];
         final abbrsCache = HashMap<int, int>();
-        int readAbbrev(offset) {
+        int readAbbrev(int offset) {
           var result = abbrsCache[offset];
           if (result == null) {
             result = abbrs.length;

@@ -44,7 +44,7 @@ const String tzDataDefaultPath =
 ///   final detroitNow = new TZDateTime.now(detroit);
 /// });
 /// ```
-Future initializeTimeZone([String path = tzDataDefaultPath]) {
+Future<void> initializeTimeZone([String path = tzDataDefaultPath]) {
   return HttpRequest.request(path,
           method: 'GET',
           responseType: 'arraybuffer',
@@ -58,7 +58,7 @@ Future initializeTimeZone([String path = tzDataDefaultPath]) {
       throw TimeZoneInitException(
           'Invalid response type: ${response.runtimeType}');
     }
-  }).catchError((e) {
+  }).catchError((dynamic e) {
     throw TimeZoneInitException(e.toString());
   }, test: (e) => e is! TimeZoneInitException);
 }
