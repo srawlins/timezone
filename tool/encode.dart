@@ -13,7 +13,7 @@ Future<void> main(List<String> args) async {
 // This is a generated file. Do not edit.
 //
 // This file contains a base64-encoded timezone database, generated from
-// $tzDataPath by ${p.basename(Platform.script.path)} on ${DateTime.now()}.
+// $tzDataPath by ${p.basename(Platform.script.path)}.
 import "package:timezone/src/env.dart" show initializeTimeZonesFromBase64;
 ''');
   buffer.writeln('const _encodedTzData = "$encodedString";');
