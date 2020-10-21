@@ -14,7 +14,6 @@
 /// ```
 library timezone.standalone;
 
-import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 import 'package:path/path.dart' as p;
