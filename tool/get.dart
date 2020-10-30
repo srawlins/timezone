@@ -3,16 +3,10 @@
 /// Usage example:
 ///
 /// ```sh
-/// pub run tool/get -s 2020a
-/// pushd lib/data
-/// rm -rf latest*
-/// ln -s {2020a,latest}.tzf
-/// ln -s {2020a,latest}_all.tzf
-/// ln -s {2020a,latest}_2015-2025.tzf
-/// popd
+/// pub run tool/get
 /// pub run tool/encode lib/data/latest.{tzf,dart}
 /// pub run tool/encode lib/data/latest_all.{tzf,dart}
-/// pub run tool/encode lib/data/latest_2015-2025.{tzf,dart}
+/// pub run tool/encode lib/data/latest_10y.{tzf,dart}
 /// ```
 
 import 'dart:async';
@@ -167,20 +161,20 @@ Future<void> main(List<String> arguments) async {
   final commonDb = filterTimeZoneData(allDb.db, locations: commonLocations);
   logReport(commonDb.report);
 
-  log.info('- [2015 - 2025 years] from common locations');
-  final common_2015_2025_Db = filterTimeZoneData(commonDb.db,
-      dateFrom: DateTime.utc(2015, 1, 1).millisecondsSinceEpoch,
-      dateTo: DateTime.utc(2025, 1, 1).millisecondsSinceEpoch,
+  log.info('- [+- 5 years] from common locations');
+  final common_10y_Db = filterTimeZoneData(commonDb.db,
+      dateFrom: DateTime(DateTime.now().year - 5, 1, 1).millisecondsSinceEpoch,
+      dateTo: DateTime(DateTime.now().year + 5, 1, 1).millisecondsSinceEpoch,
       locations: commonLocations);
-  logReport(common_2015_2025_Db.report);
+  logReport(common_10y_Db.report);
 
   log.info('Serializing location databases');
   final allOut = File(p.join(outPath, '${source}_all.tzf'));
   final commonOut = File(p.join(outPath, '${source}.tzf'));
-  final common_2015_2025_Out = File(p.join(outPath, '${source}_2015-2025.tzf'));
+  final common_10y_Out = File(p.join(outPath, '${source}_10y.tzf'));
   await allOut.writeAsBytes(tzdbSerialize(allDb.db), flush: true);
   await commonOut.writeAsBytes(tzdbSerialize(commonDb.db), flush: true);
-  await common_2015_2025_Out.writeAsBytes(tzdbSerialize(common_2015_2025_Db.db),
+  await common_10y_Out.writeAsBytes(tzdbSerialize(common_10y_Db.db),
       flush: true);
 
   exit(0);

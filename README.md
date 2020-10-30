@@ -23,9 +23,9 @@ We offer three different variants of the IANA database:
   exceptions like "US/Eastern" and "Etc/UTC"; this is about 75% the size of the
   **all** database.
 - **all**: contains all data from the [IANA time zone database].
-- **2015-2025**: default database truncated to contain historical data from
-  2015 through 2025; this database is about 25% the size of the default
-  database.
+- **10y**: default database truncated to contain historical data from 5 years 
+  ago until 5 years in the future; this database is about 25% the size of the
+  default database.
 
 ### Initialization from Dart library
 
@@ -42,8 +42,8 @@ void main() {
 ```
 
 To initialize the **all** database variant, `import
-'package:timezone/data/latest_all.dart'`. To initialize the **2015-2025**
-database variant, `import 'package:timezone/data/latest_2015-2025.dart'`.
+'package:timezone/data/latest_all.dart'`. To initialize the **10y**
+database variant, `import 'package:timezone/data/latest_10y.dart'`.
 
 ### Initialization for browser environment
 
@@ -62,8 +62,8 @@ Future<void> setup() async {
 
 To initialize the **all** database variant, call
 `initializeTimeZone('packages/timezone/data/latest_all.tzf')`. To initialize
-the **2015-2025** database variant, call
-`initializeTimeZone('packages/timezone/data/latest_2015-2025.tzf')`.
+the **10y** database variant, call
+`initializeTimeZone('packages/timezone/data/latest_10y.tzf')`.
 
 ### Initialization for standalone environment
 
@@ -83,8 +83,8 @@ Future<void> setup() async {
 Note: This method likely will not work in a Flutter environment.
 
 To initialize the **all** database variant, call
-`initializeTimeZone('data/latest_all.tzf')`. To initialize the **2015-2025**
-database variant, call `initializeTimeZone('data/latest_2015-2025.tzf')`.
+`initializeTimeZone('data/latest_all.tzf')`. To initialize the **10y**
+database variant, call `initializeTimeZone('data/latest_10y.tzf')`.
 
 ### Local Location
 
@@ -203,8 +203,8 @@ We currently build three different database variants:
 - default (doesn't contain deprecated and historical zones with some exceptions
   like US/Eastern). 361kb
 - all (contains all data from the [IANA time zone database]). 443kb
-- 2015-2025 (default database that contains historical data from 2015 until
-  2025). 85kb
+- 10y (default database that contains historical data from the last and future 5
+  years). 85kb
 
 ### Updating Time Zone databases
 
@@ -212,10 +212,11 @@ Script for updating Time Zone database, it will automatically download the
 [IANA time zone database] and compile into our native format.
 
 ```sh
-$ pub run tool/get -s 2014h
+$ pub run tool/get [-s 2014h]
 ```
 
-The argument `-s` is for specifying source version.
+The argument `-s` is for specifying source version. It defaults to the current
+version.
 
 [2020d]: http://www.iana.org/time-zones/repository/releases/tzcode2020d.tar.gz
 [IANA time zone database]: https://www.iana.org/time-zones
