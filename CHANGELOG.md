@@ -1,3 +1,11 @@
+# 0.6.1
+
+- Updated the `get` script (now `encode_tzf`) to work with a `zoneinfo`
+  directory (as created by the `zic` tool) as input. Fetching and compiling this
+  directory is now done by a bash script (`refresh.sh`) using standard tools.
+
+  This allows pointing the tool at a custom `zoneinfo` directory.
+
 # 0.6.0
 
 - Stopping internal versioning of time zone data. Only the latest data will be

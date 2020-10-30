@@ -3,8 +3,11 @@
 This package provides the [IANA time zone database] and time zone aware
 `DateTime` class, [`TZDateTime`].
 
-The current Time Zone database version is [2020d]. See [the announcement] for
+The current time zone database version is [2020d]. See [the announcement] for
 details.
+
+You can update to the current IANA time zone database by running
+`tool/refresh.sh`.
 
 
 ## Initialization
@@ -212,11 +215,9 @@ Script for updating Time Zone database, it will automatically download the
 [IANA time zone database] and compile into our native format.
 
 ```sh
-$ pub run tool/get [-s 2014h]
+$ chmod +x tool/refresh.sh
+$ tool/refresh.sh
 ```
-
-The argument `-s` is for specifying source version. It defaults to the current
-version.
 
 [2020d]: http://www.iana.org/time-zones/repository/releases/tzcode2020d.tar.gz
 [IANA time zone database]: https://www.iana.org/time-zones
