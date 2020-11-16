@@ -14,7 +14,9 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
+import 'package:file/file.dart' as pkg_file;
 import 'package:glob/glob.dart';
+import 'package:glob/list_local_fs.dart';
 
 import 'package:timezone/tzdata.dart' as tzfile;
 import 'package:timezone/timezone.dart';
@@ -127,7 +129,7 @@ Future<void> main(List<String> arguments) async {
     log.info('Importing tzfile Locations');
     final files = await Glob('**/*').list(root: zicDirPath).toList();
     for (final f in files) {
-      if (f is File) {
+      if (f is pkg_file.File) {
         final name = p.relative(f.path, from: zicDirPath);
         log.info('- $name');
         final loc = await loadTzfileLocation(name, f.path);
