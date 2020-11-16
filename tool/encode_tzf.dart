@@ -11,6 +11,7 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
+import 'package:file/file.dart' as pkg_file;
 import 'package:glob/glob.dart';
 import 'package:glob/list_local_fs.dart';
 
@@ -46,7 +47,7 @@ Future<void> main(List<String> arguments) async {
   log.info('Importing zoneinfo files');
   final files = await Glob('**/*').list(root: zoneinfoPath).toList();
   for (final f in files) {
-    if (f is File) {
+    if (f is pkg_file.File) {
       final name = p.relative(f.path, from: zoneinfoPath);
       log.info('- $name');
       db.add(tzfileLocationToNativeLocation(
