@@ -16,8 +16,8 @@ const String tzDataDefaultFilename = 'latest.tzf';
 
 final Location _UTC = Location('UTC', [minTime], [0], [TimeZone.UTC]);
 
-LocationDatabase _database;
-Location _local;
+late final LocationDatabase _database;
+late Location _local;
 
 /// Global TimeZone database
 LocationDatabase get timeZoneDatabase => _database;
@@ -51,13 +51,13 @@ void setLocalLocation(Location location) {
 
 /// Initialize Time zone database.
 void initializeDatabase(List<int> rawData) {
-  _database ??= LocationDatabase();
+  _database = LocationDatabase();
 
   for (final l in tzdbDeserialize(rawData)) {
     _database.add(l);
   }
 
-  _local ??= _UTC;
+  _local = _UTC;
 }
 
 /// Initialize Time Zone database from [encodedDatabase].

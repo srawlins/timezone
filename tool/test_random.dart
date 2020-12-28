@@ -1,5 +1,7 @@
 /// Run random tests against `date(1)` unix command
 
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';

@@ -20,8 +20,6 @@ class TZDateTime implements DateTime {
 
   /// Converts a [_localDateTime] into a correct [DateTime].
   static DateTime _utcFromLocalDateTime(DateTime local, Location location) {
-    assert(local != null, "DateTime argument must not be null");
-    assert(location != null, "Location argument must not be null");
     var unix = local.millisecondsSinceEpoch;
     var tzData = location.lookupTimeZone(unix);
     if (tzData.timeZone.offset != 0) {
@@ -211,8 +209,7 @@ class TZDateTime implements DateTime {
                 : location.timeZone(other.millisecondsSinceEpoch));
 
   TZDateTime._(DateTime native, Location location, TimeZone timeZone)
-      : assert(location != null, "Location argument must not be null"),
-        _native = native,
+      : _native = native,
         _localDateTime =
             _isUtc(location) ? native : native.add(_timeZoneOffset(timeZone)),
         location = location,

@@ -47,7 +47,9 @@ Future<List<int>> _loadAsBytes(String path) async {
       return req.close();
     }).then((response) {
       // join byte buffers
-      return response.fold(BytesBuilder(), (b, d) => b..add(d)).then((builder) {
+      return response
+          .fold(BytesBuilder(), (BytesBuilder b, d) => b..add(d))
+          .then((builder) {
         return builder.takeBytes();
       });
     });
@@ -70,7 +72,7 @@ Future<List<int>> _loadAsBytes(String path) async {
 ///   final detroitNow = new TZDateTime.now(detroit);
 /// });
 /// ```
-Future<void> initializeTimeZone([String path]) {
+Future<void> initializeTimeZone([String? path]) {
   path ??= tzDataDefaultPath;
   return _loadAsBytes(path).then((rawData) {
     initializeDatabase(rawData);

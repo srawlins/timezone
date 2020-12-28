@@ -1,4 +1,7 @@
 /// Print Location details
+
+// @dart=2.9
+
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -14,7 +17,7 @@ void main(List<String> arguments) {
   final argResults = parser.parse(arguments);
 
   final String source = argResults['source'];
-  final String location = argResults['location'];
+  final String /*?*/ location = argResults['location'];
 
   if (source.isEmpty || location == null || location.isEmpty) {
     print(parser.usage);
@@ -22,7 +25,7 @@ void main(List<String> arguments) {
   }
 
   initializeTimeZone(source).then((_) {
-    final l = getLocation(location);
+    final l = getLocation(location /*!*/);
 
     for (var i = 0; i < l.transitionAt.length; i++) {
       final t = l.transitionAt[i];

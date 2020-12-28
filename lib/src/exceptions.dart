@@ -10,7 +10,7 @@ class TimeZoneInitException implements Exception {
   TimeZoneInitException(this.msg);
 
   @override
-  String toString() => msg ?? 'TimeZoneInitException';
+  String toString() => msg;
 }
 
 class LocationNotFoundException implements Exception {
@@ -19,5 +19,5 @@ class LocationNotFoundException implements Exception {
   LocationNotFoundException(this.msg);
 
   @override
-  String toString() => msg ?? 'LocationNotFoundException';
+  String toString() => msg;
 }

@@ -1,3 +1,7 @@
+# 0.7.0
+
+- Migrate to Dart's null safety language feature
+
 # 0.6.1
 
 - Updated the `get` script (now `encode_tzf`) to work with a `zoneinfo`

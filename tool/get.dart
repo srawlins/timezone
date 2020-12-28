@@ -9,6 +9,8 @@
 /// pub run tool/encode lib/data/latest_10y.{tzf,dart}
 /// ```
 
+// @dart=2.9
+
 import 'dart:async';
 import 'dart:io';
 import 'package:args/args.dart';
@@ -101,7 +103,12 @@ Future<void> main(List<String> arguments) async {
     ..addOption('source', abbr: 's', defaultsTo: 'latest');
   final argResults = parser.parse(arguments);
 
-  final source = argResults['source'];
+  final source = argResults['source'] as String /*?*/;
+
+  if (source == null || source.isEmpty) {
+    print(parser.usage);
+    exit(64);
+  }
 
   final tzfileLocations = <tzfile.Location>[];
 
@@ -111,7 +118,7 @@ Future<void> main(List<String> arguments) async {
   log.info('Temp directory created: ${tmpDir.path}');
   try {
     log.info('Downloading timezone data');
-    final archivePath = await downloadTzData(source, tmpDir.path);
+    final archivePath = await downloadTzData(source /*!*/, tmpDir.path);
 
     log.info('Unpacking timezone data: $archivePath');
     await unpackTzData(archivePath, tmpDir.path);

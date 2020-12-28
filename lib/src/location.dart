@@ -47,7 +47,7 @@ class Location {
   static final int _cacheNow = DateTime.now().millisecondsSinceEpoch;
   int _cacheStart = 0;
   int _cacheEnd = 0;
-  TimeZone _cacheZone;
+  late TimeZone _cacheZone;
 
   Location(this.name, this.transitionAt, this.transitionZone, this.zones) {
     // Fill in the cache with information about right now,
@@ -105,8 +105,7 @@ class Location {
       return const TzInstant(TimeZone.UTC, minTime, maxTime);
     }
 
-    if (_cacheZone != null &&
-        millisecondsSinceEpoch >= _cacheStart &&
+    if (millisecondsSinceEpoch >= _cacheStart &&
         millisecondsSinceEpoch < _cacheEnd) {
       return TzInstant(_cacheZone, _cacheStart, _cacheEnd);
     }

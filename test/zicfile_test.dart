@@ -15,8 +15,8 @@ tzdata.TimeZone z(int offset, bool isDst, int abbrevIndex) {
 void main() {
   test('Read US/Eastern 2014h tzfile', () async {
     var packageUri = Uri(scheme: 'package', path: 'timezone/timezone.dart');
-    var packagePath = p
-        .dirname(p.dirname((await Isolate.resolvePackageUri(packageUri)).path));
+    var packagePath = p.dirname(
+        p.dirname((await Isolate.resolvePackageUri(packageUri))!.path));
     var locationDir = p.join(packagePath, 'test');
     var rawData =
         await File(p.join(locationDir, 'data/US/Eastern')).readAsBytes();
