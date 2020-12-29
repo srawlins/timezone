@@ -21,12 +21,12 @@ class LocationDatabase {
 
   Map<String, Location> get locations => _locations;
 
-  /// Add [Location] to the database.
+  /// Adds [Location] to the database.
   void add(Location location) {
     _locations[location.name] = location;
   }
 
-  /// Find [Location] by its name.
+  /// Finds [Location] by its name.
   Location get(String name) {
     final loc = _locations[name];
     if (loc == null) {
@@ -35,4 +35,10 @@ class LocationDatabase {
     }
     return loc;
   }
+
+  /// Clears the database of all [Location] entries.
+  void clear() => _locations.clear();
+
+  /// Returns whether the database is empty, or has [Location] entries.
+  bool get isEmpty => _locations.isEmpty;
 }

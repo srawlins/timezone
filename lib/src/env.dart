@@ -14,9 +14,9 @@ import 'tzdb.dart';
 /// File name of the Time Zone default database.
 const String tzDataDefaultFilename = 'latest.tzf';
 
-final Location _UTC = Location('UTC', [minTime], [0], [TimeZone.UTC]);
+final _UTC = Location('UTC', [minTime], [0], [TimeZone.UTC]);
 
-late final LocationDatabase _database;
+final _database = LocationDatabase();
 late Location _local;
 
 /// Global TimeZone database
@@ -51,7 +51,7 @@ void setLocalLocation(Location location) {
 
 /// Initialize Time zone database.
 void initializeDatabase(List<int> rawData) {
-  _database = LocationDatabase();
+  _database.clear();
 
   for (final l in tzdbDeserialize(rawData)) {
     _database.add(l);
