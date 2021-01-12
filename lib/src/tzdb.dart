@@ -59,30 +59,29 @@ Iterable<Location> tzdbDeserialize(List<int> rawData) sync* {
 Uint8List _serializeLocation(Location location) {
   var offset = 0;
 
-  final abbrs = <String>[];
-  final abbrsIndex = HashMap<String, int>();
-  final zoneAbbrOffsets = <int>[];
+  final abbreviations = <String>[];
+  final abbreviationsIndex = HashMap<String, int>();
+  final zoneAbbreviationOffsets = <int>[];
 
-  var _abbrsLength = 0;
-  // number of bytes of all abbrevs
+  // The number of bytes of all abbreviations.
+  var abbreviationsLength = 0;
   for (final z in location.zones) {
-    final ai = abbrsIndex.putIfAbsent(z.abbr, () {
-      final ret = abbrs.length;
-      _abbrsLength += z.abbr.length + 1; // abbr + '\0'
-      abbrs.add(z.abbr);
+    final ai = abbreviationsIndex.putIfAbsent(z.abbreviation, () {
+      final ret = abbreviations.length;
+      abbreviationsLength += z.abbreviation.length + 1; // abbreviation + '\0'
+      abbreviations.add(z.abbreviation);
       return ret;
     });
 
-    zoneAbbrOffsets.add(ai);
+    zoneAbbreviationOffsets.add(ai);
   }
 
   final List<int> encName = ascii.encode(location.name);
 
   final nameOffset = 32;
   final nameLength = encName.length;
-  final abbrsOffset = nameOffset + nameLength;
-  final abbrsLength = _abbrsLength;
-  final zonesOffset = _align(abbrsOffset + abbrsLength, 4);
+  final abbreviationsOffset = nameOffset + nameLength;
+  final zonesOffset = _align(abbreviationsOffset + abbreviationsLength, 4);
   final zonesLength = location.zones.length;
   final transitionsOffset = _align(zonesOffset + zonesLength * 8, 8);
   final transitionsLength = location.transitionAt.length;
@@ -95,8 +94,8 @@ Uint8List _serializeLocation(Location location) {
   // write header
   buffer.setUint32(0, nameOffset);
   buffer.setUint32(4, nameLength);
-  buffer.setUint32(8, abbrsOffset);
-  buffer.setUint32(12, abbrsLength);
+  buffer.setUint32(8, abbreviationsOffset);
+  buffer.setUint32(12, abbreviationsLength);
   buffer.setUint32(16, zonesOffset);
   buffer.setUint32(20, zonesLength);
   buffer.setUint32(24, transitionsOffset);
@@ -108,9 +107,9 @@ Uint8List _serializeLocation(Location location) {
     buffer.setUint8(offset++, c);
   }
 
-  // write abbrevs
-  offset = abbrsOffset;
-  for (final a in abbrs) {
+  // Write abbreviations.
+  offset = abbreviationsOffset;
+  for (final a in abbreviations) {
     for (final c in a.codeUnits) {
       buffer.setUint8(offset++, c);
     }
@@ -123,7 +122,7 @@ Uint8List _serializeLocation(Location location) {
     final zone = location.zones[i];
     buffer.setInt32(offset, zone.offset ~/ 1000); // convert to sec
     buffer.setUint8(offset + 4, zone.isDst ? 1 : 0);
-    buffer.setUint8(offset + 5, zoneAbbrOffsets[i]);
+    buffer.setUint8(offset + 5, zoneAbbreviationOffsets[i]);
     offset += 8;
   }
 
@@ -161,8 +160,8 @@ Location _deserializeLocation(Uint8List data) {
   //     } header;
   final nameOffset = bdata.getUint32(0);
   final nameLength = bdata.getUint32(4);
-  final abbrsOffset = bdata.getUint32(8);
-  final abbrsLength = bdata.getUint32(12);
+  final abbreviationsOffset = bdata.getUint32(8);
+  final abbreviationsLength = bdata.getUint32(12);
   final zonesOffset = bdata.getUint32(16);
   final zonesLength = bdata.getUint32(20);
   final transitionsOffset = bdata.getUint32(24);
@@ -170,7 +169,7 @@ Location _deserializeLocation(Uint8List data) {
 
   final name = ascii.decode(
       data.buffer.asUint8List(data.offsetInBytes + nameOffset, nameLength));
-  final abbrs = <String>[];
+  final abbreviations = <String>[];
   final zones = <TimeZone>[];
   final transitionAt = <int>[];
   final transitionZone = <int>[];
@@ -178,13 +177,13 @@ Location _deserializeLocation(Uint8List data) {
   // Abbreviations
   //
   // \0 separated strings
-  offset = abbrsOffset;
-  final abbrsEnd = abbrsOffset + abbrsLength;
-  for (var i = abbrsOffset; i < abbrsEnd; i++) {
+  offset = abbreviationsOffset;
+  final abbreviationsEnd = abbreviationsOffset + abbreviationsLength;
+  for (var i = abbreviationsOffset; i < abbreviationsEnd; i++) {
     if (data[i] == 0) {
-      final abbr = ascii.decode(
+      final abbreviation = ascii.decode(
           data.buffer.asUint8List(data.offsetInBytes + offset, i - offset));
-      abbrs.add(abbr);
+      abbreviations.add(abbreviation);
       offset = i + 1;
     }
   }
@@ -202,10 +201,11 @@ Location _deserializeLocation(Uint8List data) {
   for (var i = 0; i < zonesLength; i++) {
     final zoneOffset = bdata.getInt32(offset) * 1000; // convert to ms
     final zoneIsDst = bdata.getUint8(offset + 4);
-    final zoneAbbrIndex = bdata.getUint8(offset + 5);
+    final zoneAbbreviationIndex = bdata.getUint8(offset + 5);
     offset += 8;
     zones.add(TimeZone(zoneOffset,
-        isDst: zoneIsDst == 1, abbr: abbrs[zoneAbbrIndex]));
+        isDst: zoneIsDst == 1,
+        abbreviation: abbreviations[zoneAbbreviationIndex]));
   }
 
   // Transitions

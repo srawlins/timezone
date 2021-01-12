@@ -8,8 +8,10 @@ import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 import 'package:timezone/tzdata.dart' as tzdata;
 
-tzdata.TimeZone z(int offset, {required bool isDst, required int abbrevIndex}) {
-  return tzdata.TimeZone(offset, isDst: isDst, abbrIndex: abbrevIndex);
+tzdata.TimeZone z(int offset,
+    {required bool isDst, required int abbreviationIndex}) {
+  return tzdata.TimeZone(offset,
+      isDst: isDst, abbreviationIndex: abbreviationIndex);
 }
 
 void main() {
@@ -23,7 +25,7 @@ void main() {
     final loc = tzdata.Location.fromBytes('US/Eastern', rawData);
 
     expect(loc.name, equals('US/Eastern'));
-    expect(loc.abbrs, equals(['LMT', 'EDT', 'EST', 'EWT', 'EPT']));
+    expect(loc.abbreviations, equals(['LMT', 'EDT', 'EST', 'EWT', 'EPT']));
     expect(loc.isStd, equals([0, 0, 0, 0, 1]));
     expect(loc.isUtc, equals([0, 0, 0, 0, 1]));
     expect(loc.leapAt, equals(<int>[]));

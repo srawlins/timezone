@@ -2,6 +2,7 @@
 
 - **Breaking change**: Change some of TimeZone's constructor paramters to be
   named instead of positional.
+- **Breaking change**: Rename `TimeZone.abbr` to `TimeZone.abbreviation`.
 - Deprecate `LocationDatabase.isEmpty` in favor of
   `LocationDatabase.isInitialized`.
 

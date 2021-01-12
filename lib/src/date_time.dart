@@ -421,7 +421,7 @@ class TZDateTime implements DateTime {
   /// The abbreviated time zone name&mdash;for example,
   /// [:"CET":] or [:"CEST":].
   @override
-  String get timeZoneName => timeZone.abbr;
+  String get timeZoneName => timeZone.abbreviation;
 
   /// The time zone offset, which is the difference between time at [location]
   /// and UTC.

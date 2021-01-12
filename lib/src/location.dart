@@ -225,7 +225,7 @@ class Location {
 
 /// A [TimeZone] represents a single time zone such as CEST or CET.
 class TimeZone {
-  static const TimeZone UTC = TimeZone(0, isDst: false, abbr: 'UTC');
+  static const TimeZone UTC = TimeZone(0, isDst: false, abbreviation: 'UTC');
 
   /// Milliseconds east of UTC.
   final int offset;
@@ -234,9 +234,10 @@ class TimeZone {
   final bool isDst;
 
   /// Abbreviated name, "CET".
-  final String abbr;
+  final String abbreviation;
 
-  const TimeZone(this.offset, {required this.isDst, required this.abbr});
+  const TimeZone(this.offset,
+      {required this.isDst, required this.abbreviation});
 
   @override
   bool operator ==(dynamic other) {
@@ -244,7 +245,7 @@ class TimeZone {
         other is TimeZone &&
             offset == other.offset &&
             isDst == other.isDst &&
-            abbr == other.abbr;
+            abbreviation == other.abbreviation;
   }
 
   @override
@@ -252,12 +253,12 @@ class TimeZone {
     var result = 17;
     result = 37 * result + offset.hashCode;
     result = 37 * result + isDst.hashCode;
-    result = 37 * result + abbr.hashCode;
+    result = 37 * result + abbreviation.hashCode;
     return result;
   }
 
   @override
-  String toString() => '[$abbr offset=$offset dst=$isDst]';
+  String toString() => '[$abbreviation offset=$offset dst=$isDst]';
 }
 
 /// A [TzInstant] represents a timezone and an instant in time.

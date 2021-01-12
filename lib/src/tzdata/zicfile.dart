@@ -100,9 +100,10 @@ class TimeZone {
   final bool isDst;
 
   /// Index to abbreviation.
-  final int abbrIndex;
+  final int abbreviationIndex;
 
-  const TimeZone(this.offset, {required this.isDst, required this.abbrIndex});
+  const TimeZone(this.offset,
+      {required this.isDst, required this.abbreviationIndex});
 }
 
 /// Location data
@@ -117,7 +118,7 @@ class Location {
   final List<int> transitionZone;
 
   /// List of abbreviations.
-  final List<String> abbrs;
+  final List<String> abbreviations;
 
   /// List of [TimeZone]s.
   final List<TimeZone> zones;
@@ -136,8 +137,16 @@ class Location {
   /// UTC or local time.
   final List<int> isUtc;
 
-  Location(this.name, this.transitionAt, this.transitionZone, this.abbrs,
-      this.zones, this.leapAt, this.leapDiff, this.isStd, this.isUtc);
+  Location(
+      this.name,
+      this.transitionAt,
+      this.transitionZone,
+      this.abbreviations,
+      this.zones,
+      this.leapAt,
+      this.leapDiff,
+      this.isStd,
+      this.isUtc);
 
   /// Deserialize [Location] from bytes
   factory Location.fromBytes(String name, List<int> rawData) {
@@ -164,8 +173,9 @@ class Location {
         final transitionAtOffset = dataOffset;
         final transitionZoneOffset =
             transitionAtOffset + header.tzh_timecnt * 5;
-        final abbrsOffset = transitionZoneOffset + header.tzh_typecnt * 6;
-        final leapOffset = abbrsOffset + header.tzh_charcnt;
+        final abbreviationsOffset =
+            transitionZoneOffset + header.tzh_typecnt * 6;
+        final leapOffset = abbreviationsOffset + header.tzh_charcnt;
         final stdOrWctOffset = leapOffset + header.tzh_leapcnt * 8;
         final utcOrGmtOffset = stdOrWctOffset + header.tzh_ttisstdcnt;
 
@@ -185,17 +195,17 @@ class Location {
           offset += 1;
         }
 
-        // function to read from abbrev buffer
-        final abbrsData = data.buffer
-            .asUint8List(data.offsetInBytes + abbrsOffset, header.tzh_charcnt);
-        final abbrs = <String>[];
-        final abbrsCache = HashMap<int, int>();
-        int readAbbrev(int offset) {
-          var result = abbrsCache[offset];
+        // function to read from abbreviation buffer
+        final abbreviationsData = data.buffer.asUint8List(
+            data.offsetInBytes + abbreviationsOffset, header.tzh_charcnt);
+        final abbreviations = <String>[];
+        final abbreviationsCache = HashMap<int, int>();
+        int readAbbreviation(int offset) {
+          var result = abbreviationsCache[offset];
           if (result == null) {
-            result = abbrs.length;
-            abbrsCache[offset] = result;
-            abbrs.add(_readByteString(abbrsData, offset));
+            result = abbreviations.length;
+            abbreviationsCache[offset] = result;
+            abbreviations.add(_readByteString(abbreviationsData, offset));
           }
           return result;
         }
@@ -211,7 +221,8 @@ class Location {
           offset += 6;
 
           zones.add(TimeZone(tt_gmtoff,
-              isDst: tt_isdst == 1, abbrIndex: readAbbrev(tt_abbrind)));
+              isDst: tt_isdst == 1,
+              abbreviationIndex: readAbbreviation(tt_abbrind)));
         }
 
         // read leap seconds
@@ -243,8 +254,8 @@ class Location {
           offset += 1;
         }
 
-        return Location(name, transitionAt, transitionZone, abbrs, zones,
-            leapAt, leapDiff, isStd, isUtc);
+        return Location(name, transitionAt, transitionZone, abbreviations,
+            zones, leapAt, leapDiff, isStd, isUtc);
 
       case 50:
       case 51:
@@ -276,8 +287,9 @@ class Location {
         final transitionAtOffset = dataOffset;
         final transitionZoneOffset =
             transitionAtOffset + header2.tzh_timecnt * 9;
-        final abbrsOffset = transitionZoneOffset + header2.tzh_typecnt * 6;
-        final leapOffset = abbrsOffset + header2.tzh_charcnt;
+        final abbreviationsOffset =
+            transitionZoneOffset + header2.tzh_typecnt * 6;
+        final leapOffset = abbreviationsOffset + header2.tzh_charcnt;
         final stdOrWctOffset = leapOffset + header2.tzh_leapcnt * 12;
         final utcOrGmtOffset = stdOrWctOffset + header2.tzh_ttisstdcnt;
 
@@ -297,17 +309,17 @@ class Location {
           offset += 1;
         }
 
-        // function to read from abbrev buffer
-        final abbrsData = data.buffer
-            .asUint8List(data.offsetInBytes + abbrsOffset, header2.tzh_charcnt);
-        final abbrs = <String>[];
-        final abbrsCache = HashMap<int, int>();
-        int readAbbrev(int offset) {
-          var result = abbrsCache[offset];
+        // function to read from abbreviation buffer
+        final abbreviationsData = data.buffer.asUint8List(
+            data.offsetInBytes + abbreviationsOffset, header2.tzh_charcnt);
+        final abbreviations = <String>[];
+        final abbreviationsCache = HashMap<int, int>();
+        int readAbbreviation(int offset) {
+          var result = abbreviationsCache[offset];
           if (result == null) {
-            result = abbrs.length;
-            abbrsCache[offset] = result;
-            abbrs.add(_readByteString(abbrsData, offset));
+            result = abbreviations.length;
+            abbreviationsCache[offset] = result;
+            abbreviations.add(_readByteString(abbreviationsData, offset));
           }
           return result;
         }
@@ -323,7 +335,8 @@ class Location {
           offset += 6;
 
           zones.add(TimeZone(tt_gmtoff,
-              isDst: tt_isdst == 1, abbrIndex: readAbbrev(tt_abbrind)));
+              isDst: tt_isdst == 1,
+              abbreviationIndex: readAbbreviation(tt_abbrind)));
         }
 
         // read leap seconds
@@ -355,8 +368,8 @@ class Location {
           offset += 1;
         }
 
-        return Location(name, transitionAt, transitionZone, abbrs, zones,
-            leapAt, leapDiff, isStd, isUtc);
+        return Location(name, transitionAt, transitionZone, abbreviations,
+            zones, leapAt, leapDiff, isStd, isUtc);
 
       default:
         throw InvalidZoneInfoDataException('Unknown version: $version1');
