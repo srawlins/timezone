@@ -1,6 +1,13 @@
+# 0.7.0-nullsafety.1
+
+- **Breaking change**: Change some of TimeZone's constructor paramters to be
+  named instead of positional.
+- Deprecate `LocationDatabase.isEmpty` in favor of
+  `LocationDatabase.isInitialized`.
+
 # 0.7.0-nullsafety.0
 
-- Migrate to Dart's null safety language feature
+- Migrate to Dart's null safety language feature.
 
 # 0.6.1
 
