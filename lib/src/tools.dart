@@ -528,7 +528,8 @@ Location tzfileLocationToNativeLocation(tzfile.Location loc) {
   final zones = <TimeZone>[];
 
   for (final z in loc.zones) {
-    zones.add(TimeZone(z.offset * 1000, z.isDst, loc.abbrs[z.abbrIndex]));
+    zones.add(TimeZone(z.offset * 1000,
+        isDst: z.isDst, abbr: loc.abbrs[z.abbrIndex]));
   }
 
   return Location(loc.name, transitionAt, loc.transitionZone, zones);

@@ -225,7 +225,7 @@ class Location {
 
 /// A [TimeZone] represents a single time zone such as CEST or CET.
 class TimeZone {
-  static const TimeZone UTC = TimeZone(0, false, 'UTC');
+  static const TimeZone UTC = TimeZone(0, isDst: false, abbr: 'UTC');
 
   /// Milliseconds east of UTC.
   final int offset;
@@ -236,7 +236,7 @@ class TimeZone {
   /// Abbreviated name, "CET".
   final String abbr;
 
-  const TimeZone(this.offset, this.isDst, this.abbr);
+  const TimeZone(this.offset, {required this.isDst, required this.abbr});
 
   @override
   bool operator ==(dynamic other) {

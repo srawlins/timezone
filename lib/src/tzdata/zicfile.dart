@@ -102,7 +102,7 @@ class TimeZone {
   /// Index to abbreviation.
   final int abbrIndex;
 
-  const TimeZone(this.offset, this.isDst, this.abbrIndex);
+  const TimeZone(this.offset, {required this.isDst, required this.abbrIndex});
 }
 
 /// Location data
@@ -210,7 +210,8 @@ class Location {
           final tt_abbrind = bdata.getUint8(offset + 5);
           offset += 6;
 
-          zones.add(TimeZone(tt_gmtoff, tt_isdst == 1, readAbbrev(tt_abbrind)));
+          zones.add(TimeZone(tt_gmtoff,
+              isDst: tt_isdst == 1, abbrIndex: readAbbrev(tt_abbrind)));
         }
 
         // read leap seconds
@@ -321,7 +322,8 @@ class Location {
           final tt_abbrind = bdata.getUint8(offset + 5);
           offset += 6;
 
-          zones.add(TimeZone(tt_gmtoff, tt_isdst == 1, readAbbrev(tt_abbrind)));
+          zones.add(TimeZone(tt_gmtoff,
+              isDst: tt_isdst == 1, abbrIndex: readAbbrev(tt_abbrind)));
         }
 
         // read leap seconds

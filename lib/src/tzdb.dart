@@ -204,7 +204,8 @@ Location _deserializeLocation(Uint8List data) {
     final zoneIsDst = bdata.getUint8(offset + 4);
     final zoneAbbrIndex = bdata.getUint8(offset + 5);
     offset += 8;
-    zones.add(TimeZone(zoneOffset, zoneIsDst == 1, abbrs[zoneAbbrIndex]));
+    zones.add(TimeZone(zoneOffset,
+        isDst: zoneIsDst == 1, abbr: abbrs[zoneAbbrIndex]));
   }
 
   // Transitions

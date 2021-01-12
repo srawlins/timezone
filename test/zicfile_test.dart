@@ -8,8 +8,8 @@ import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 import 'package:timezone/tzdata.dart' as tzdata;
 
-tzdata.TimeZone z(int offset, bool isDst, int abbrevIndex) {
-  return tzdata.TimeZone(offset, isDst, abbrevIndex);
+tzdata.TimeZone z(int offset, {required bool isDst, required int abbrevIndex}) {
+  return tzdata.TimeZone(offset, isDst: isDst, abbrIndex: abbrevIndex);
 }
 
 void main() {
