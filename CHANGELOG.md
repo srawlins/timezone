@@ -1,6 +1,6 @@
 # 0.7.0-nullsafety.1
 
-- **Breaking change**: Change some of TimeZone's constructor paramters to be
+- **Breaking change**: Change some of TimeZone's constructor parameters to be
   named instead of positional.
 - **Breaking change**: Rename `TimeZone.abbr` to `TimeZone.abbreviation`.
 - Deprecate `LocationDatabase.isEmpty` in favor of
