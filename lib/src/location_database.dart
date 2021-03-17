@@ -12,7 +12,7 @@ import 'location.dart';
 ///
 ///     List<int> data = load(); // load database
 ///
-///     LocationDatabase db = new LocationDatabase.fromBytes(data);
+///     LocationDatabase db = LocationDatabase.fromBytes(data);
 ///     Location loc = db.get('US/Eastern');
 ///
 class LocationDatabase {

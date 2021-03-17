@@ -5,6 +5,8 @@
 - **Breaking change**: Rename `TimeZone.abbr` to `TimeZone.abbreviation`.
 - Deprecate `LocationDatabase.isEmpty` in favor of
   `LocationDatabase.isInitialized`.
+- Removed `new` usage from examples and fixed a typo in the `TZDateTime.from`
+  example.  
 
 # 0.7.0-nullsafety.0
 

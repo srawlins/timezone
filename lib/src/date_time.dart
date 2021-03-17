@@ -86,7 +86,7 @@ class TZDateTime implements DateTime {
   /// True if this [TZDateTime] is set to UTC time.
   ///
   /// ```dart
-  /// final dDay = new TZDateTime.utc(1944, 6, 6);
+  /// final dDay = TZDateTime.utc(1944, 6, 6);
   /// assert(dDay.isUtc);
   /// ```
   ///
@@ -98,7 +98,7 @@ class TZDateTime implements DateTime {
   /// True if this [TZDateTime] is set to Local time.
   ///
   /// ```dart
-  /// final dDay = new TZDateTime.local(1944, 6, 6);
+  /// final dDay = TZDateTime.local(1944, 6, 6);
   /// assert(dDay.isLocal);
   /// ```
   ///
@@ -113,7 +113,7 @@ class TZDateTime implements DateTime {
   /// ```dart
   /// final detroit = getLocation('America/Detroit');
   ///
-  /// final annularEclipse = new TZDateTime(location,
+  /// final annularEclipse = TZDateTime(location,
   ///     2014, DateTime.APRIL, 29, 6, 4);
   /// ```
   TZDateTime(Location location, int year,
@@ -134,7 +134,7 @@ class TZDateTime implements DateTime {
   /// Constructs a [TZDateTime] instance specified in the UTC time zone.
   ///
   /// ```dart
-  /// final dDay = new TZDateTime.utc(1944, TZDateTime.JUNE, 6);
+  /// final dDay = TZDateTime.utc(1944, TZDateTime.JUNE, 6);
   /// ```
   TZDateTime.utc(int year,
       [int month = 1,
@@ -150,7 +150,7 @@ class TZDateTime implements DateTime {
   /// Constructs a [TZDateTime] instance specified in the local time zone.
   ///
   /// ```dart
-  /// final dDay = new TZDateTime.utc(1944, TZDateTime.JUNE, 6);
+  /// final dDay = TZDateTime.utc(1944, TZDateTime.JUNE, 6);
   /// ```
   TZDateTime.local(int year,
       [int month = 1,
@@ -169,7 +169,7 @@ class TZDateTime implements DateTime {
   /// ```dart
   /// final detroit = getLocation('America/Detroit');
   ///
-  /// final thisInstant = new TZDateTime.now(detroit);
+  /// final thisInstant = TZDateTime.now(detroit);
   /// ```
   TZDateTime.now(Location location) : this.from(DateTime.now(), location);
 
@@ -197,8 +197,8 @@ class TZDateTime implements DateTime {
   /// in the specified [location].
   ///
   /// ```dart
-  /// final laTime = new TZDateTime(la, 2010, 1, 1);
-  /// final detroitTime = new TZDateTime.from(detroit, laTime);
+  /// final laTime = TZDateTime(la, 2010, 1, 1);
+  /// final detroitTime = TZDateTime.from(laTime, detroit);
   /// ```
   TZDateTime.from(DateTime other, Location location)
       : this._(
@@ -348,8 +348,8 @@ class TZDateTime implements DateTime {
   ///
   /// ```dart
   /// final detroit   = getLocation('America/Detroit');
-  /// final dDayUtc   = new TZDateTime.utc(1944, DateTime.JUNE, 6);
-  /// final dDayLocal = new TZDateTime(detroit, 1944, DateTime.JUNE, 6);
+  /// final dDayUtc   = TZDateTime.utc(1944, DateTime.JUNE, 6);
+  /// final dDayLocal = TZDateTime(detroit, 1944, DateTime.JUNE, 6);
   ///
   /// assert(dDayUtc.isAtSameMomentAs(dDayLocal) == false);
   /// ````
@@ -369,8 +369,8 @@ class TZDateTime implements DateTime {
   /// time zone.
   ///
   /// ```dart
-  /// final berlinWallFell = new TZDateTime(UTC, 1989, 11, 9);
-  /// final moonLanding    = new TZDateTime(UTC, 1969, 7, 20);
+  /// final berlinWallFell = TZDateTime(UTC, 1989, 11, 9);
+  /// final moonLanding    = TZDateTime(UTC, 1969, 7, 20);
   ///
   /// assert(berlinWallFell.isBefore(moonLanding) == false);
   /// ```
@@ -383,8 +383,8 @@ class TZDateTime implements DateTime {
   /// time zone.
   ///
   /// ```dart
-  /// final berlinWallFell = new TZDateTime(UTC, 1989, 11, 9);
-  /// final moonLanding    = new TZDateTime(UTC, 1969, 7, 20);
+  /// final berlinWallFell = TZDateTime(UTC, 1989, 11, 9);
+  /// final moonLanding    = TZDateTime(UTC, 1969, 7, 20);
   ///
   /// assert(berlinWallFell.isAfter(moonLanding) == true);
   /// ```
@@ -397,8 +397,8 @@ class TZDateTime implements DateTime {
   /// time zone.
   ///
   /// ```dart
-  /// final berlinWallFell = new TZDateTime(UTC, 1989, 11, 9);
-  /// final moonLanding    = new TZDateTime(UTC, 1969, 7, 20);
+  /// final berlinWallFell = TZDateTime(UTC, 1989, 11, 9);
+  /// final moonLanding    = TZDateTime(UTC, 1969, 7, 20);
   ///
   /// assert(berlinWallFell.isAtSameMomentAs(moonLanding) == false);
   /// ```

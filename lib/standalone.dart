@@ -9,7 +9,7 @@
 ///
 /// initializeTimeZone().then((_) {
 ///  final detroit = getLocation('America/Detroit');
-///  final now = new TZDateTime.now(detroit);
+///  final now = TZDateTime.now(detroit);
 /// });
 /// ```
 library timezone.standalone;
@@ -69,7 +69,7 @@ Future<List<int>> _loadAsBytes(String path) async {
 ///
 /// initializeTimeZone().then(() {
 ///   final detroit = getLocation('America/Detroit');
-///   final detroitNow = new TZDateTime.now(detroit);
+///   final detroitNow = TZDateTime.now(detroit);
 /// });
 /// ```
 Future<void> initializeTimeZone([String? path]) {

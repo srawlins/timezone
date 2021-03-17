@@ -9,7 +9,7 @@
 ///
 /// initializeTimeZone().then((_) {
 ///  final detroit = getLocation('America/Detroit');
-///  final now = new TZDateTime.now(detroit);
+///  final now = TZDateTime.now(detroit);
 /// });
 library timezone.browser;
 
@@ -40,7 +40,7 @@ const String tzDataDefaultPath =
 ///
 /// initializeTimeZone().then(() {
 ///   final detroit = getLocation('America/Detroit');
-///   final detroitNow = new TZDateTime.now(detroit);
+///   final detroitNow = TZDateTime.now(detroit);
 /// });
 /// ```
 Future<void> initializeTimeZone([String path = tzDataDefaultPath]) {
