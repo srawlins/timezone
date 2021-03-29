@@ -1,4 +1,4 @@
-# 0.7.0-nullsafety.1
+# 0.7.0
 
 - **Breaking change**: Change some of TimeZone's constructor parameters to be
   named instead of positional.
@@ -6,10 +6,7 @@
 - Deprecate `LocationDatabase.isEmpty` in favor of
   `LocationDatabase.isInitialized`.
 - Removed `new` usage from examples and fixed a typo in the `TZDateTime.from`
-  example.  
-
-# 0.7.0-nullsafety.0
-
+  example.
 - Migrate to Dart's null safety language feature.
 
 # 0.6.1
