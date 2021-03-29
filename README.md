@@ -3,7 +3,7 @@
 This package provides the [IANA time zone database] and time zone aware
 `DateTime` class, [`TZDateTime`].
 
-The current time zone database version is [2020d]. See [the announcement] for
+The current time zone database version is [2021a]. See [the announcement] for
 details.
 
 You can update to the current IANA time zone database by running
@@ -219,8 +219,8 @@ $ chmod +x tool/refresh.sh
 $ tool/refresh.sh
 ```
 
-[2020d]: http://www.iana.org/time-zones/repository/releases/tzcode2020d.tar.gz
+[2021a]: http://www.iana.org/time-zones/repository/releases/tzcode2021a.tar.gz
 [IANA time zone database]: https://www.iana.org/time-zones
 [`TZDateTime`]: https://pub.dartlang.org/documentation/timezone/latest/timezone.standalone/TZDateTime-class.html
 [`TimeZone`]: https://pub.dartlang.org/documentation/timezone/latest/timezone.standalone/TimeZone-class.html
-[the announcement]: https://mm.icann.org/pipermail/tz-announce/2020-October/000062.html
+[the announcement]: https://mm.icann.org/pipermail/tz-announce/2021-January/000065.html

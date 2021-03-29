@@ -1,3 +1,11 @@
+# 0.7.1
+
+- Time zone database updated to 2021a. For your convenience here is the
+  announcement for [2021a].
+
+[2021a]: https://mm.icann.org/pipermail/tz-announce/2021-January/000065.html
+
+
 # 0.7.0
 
 - **Breaking change**: Change some of TimeZone's constructor parameters to be
