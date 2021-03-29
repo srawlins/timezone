@@ -262,14 +262,14 @@ class TZDateTime implements DateTime {
   }
 
   static String _threeDigits(int n) {
-    if (n >= 100) return "${n}";
-    if (n >= 10) return "0${n}";
-    return "00${n}";
+    if (n >= 100) return "$n";
+    if (n >= 10) return "0$n";
+    return "00$n";
   }
 
   static String _twoDigits(int n) {
-    if (n >= 10) return "${n}";
-    return "0${n}";
+    if (n >= 10) return "$n";
+    return "0$n";
   }
 
   /// Returns a human-readable string for this instance.

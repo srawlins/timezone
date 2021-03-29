@@ -66,7 +66,7 @@ Future<String> downloadTzData(String version, String dest) async {
       await sink.close();
     }
   } finally {
-    await client.close();
+    client.close();
   }
   return outPath;
 }
@@ -179,7 +179,7 @@ Future<void> main(List<String> arguments) async {
 
   log.info('Serializing location databases');
   final allOut = File(p.join(outPath, '${source}_all.tzf'));
-  final commonOut = File(p.join(outPath, '${source}.tzf'));
+  final commonOut = File(p.join(outPath, '$source.tzf'));
   final common_10y_Out = File(p.join(outPath, '${source}_10y.tzf'));
   await allOut.writeAsBytes(tzdbSerialize(allDb.db), flush: true);
   await commonOut.writeAsBytes(tzdbSerialize(commonDb.db), flush: true);
