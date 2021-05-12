@@ -154,5 +154,14 @@ Future<void> main() async {
         });
       });
     });
+  });  
+  
+  group('Timezones', () {
+    test(
+        'getLocation throws $LocationNotFoundException for unrecognized timezone',
+        () {
+      expect(() => getLocation('non-existent-location'),
+          throwsA(TypeMatcher<LocationNotFoundException>()));
+    });
   });
 }

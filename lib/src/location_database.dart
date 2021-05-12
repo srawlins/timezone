@@ -28,6 +28,13 @@ class LocationDatabase {
 
   /// Finds [Location] by its name.
   Location get(String name) {
+    if (!isInitialized) {
+      // Before you can get a location, you need to manually initialize the
+      // timezone location database by calling initializeDatabase or similar.
+      throw LocationNotFoundException(
+          'Tried to get location before initializing timezone database');
+    }
+
     final loc = _locations[name];
     if (loc == null) {
       throw LocationNotFoundException(
