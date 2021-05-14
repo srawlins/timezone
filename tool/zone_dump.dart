@@ -6,7 +6,6 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:timezone/standalone.dart';
-import 'package:timezone/timezone.dart';
 
 void main(List<String> arguments) {
   // Parse CLI arguments

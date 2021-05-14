@@ -1,6 +1,5 @@
 @TestOn('vm')
 import 'package:test/test.dart';
-import 'package:timezone/timezone.dart';
 import 'package:timezone/standalone.dart';
 
 Future<void> main() async {

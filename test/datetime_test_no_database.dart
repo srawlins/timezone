@@ -1,6 +1,5 @@
 @TestOn('vm')
 import 'package:test/test.dart';
-import 'package:timezone/standalone.dart';
 import 'package:timezone/timezone.dart';
 
 void main() {
@@ -10,8 +9,8 @@ void main() {
     });
 
     test(
-        'getLocation throws $LocationNotFoundException with message about the database not being initialized',
-        () {
+        'getLocation throws $LocationNotFoundException with message about the '
+        'database not being initialized', () {
       expect(
           () => getLocation('America/New_York'),
           throwsA(TypeMatcher<LocationNotFoundException>()
