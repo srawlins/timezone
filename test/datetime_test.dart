@@ -1,7 +1,7 @@
 @TestOn('vm')
 import 'package:test/test.dart';
-import 'package:timezone/timezone.dart';
 import 'package:timezone/data/latest.dart';
+import 'package:timezone/timezone.dart';
 
 Future<void> main() async {
   initializeTimeZones();
