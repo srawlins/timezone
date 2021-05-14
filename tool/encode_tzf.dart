@@ -16,10 +16,10 @@ import 'package:glob/list_local_fs.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
 
-import 'package:timezone/timezone.dart';
-import 'package:timezone/tzdata.dart' as tzfile;
 import 'package:timezone/src/tools.dart';
 import 'package:timezone/src/tzdb.dart';
+import 'package:timezone/timezone.dart';
+import 'package:timezone/tzdata.dart' as tzfile;
 
 Future<void> main(List<String> arguments) async {
   // Initialize logger
