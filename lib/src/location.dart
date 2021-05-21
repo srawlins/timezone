@@ -220,11 +220,12 @@ class Location {
   }
 
   @override
-  String toString() => '$name';
+  String toString() => name;
 }
 
 /// A [TimeZone] represents a single time zone such as CEST or CET.
 class TimeZone {
+  // ignore: constant_identifier_names
   static const TimeZone UTC = TimeZone(0, isDst: false, abbreviation: 'UTC');
 
   /// Milliseconds east of UTC.

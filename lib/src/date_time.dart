@@ -208,12 +208,10 @@ class TZDateTime implements DateTime {
                 ? TimeZone.UTC
                 : location.timeZone(other.millisecondsSinceEpoch));
 
-  TZDateTime._(DateTime native, Location location, TimeZone timeZone)
+  TZDateTime._(DateTime native, this.location, this.timeZone)
       : _native = native,
         _localDateTime =
-            _isUtc(location) ? native : native.add(_timeZoneOffset(timeZone)),
-        location = location,
-        timeZone = timeZone;
+            _isUtc(location) ? native : native.add(_timeZoneOffset(timeZone));
 
   /// Constructs a new [TZDateTime] instance based on [formattedString].
   ///

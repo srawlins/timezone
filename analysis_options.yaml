@@ -1,8 +1,9 @@
-include: package:pedantic/analysis_options.yaml
+include: package:lints/recommended.yaml
 
 analyzer:
   errors:
-    prefer_single_quotes: ignore
+    # Just need to clean up existing violations.
+    non_constant_identifier_names: ignore
     todo: ignore
   language:
     strict-inference: true
@@ -10,16 +11,13 @@ analyzer:
 
 linter:
   rules:
+    - always_declare_return_types
     - avoid_catches_without_on_clauses
     - avoid_positional_boolean_parameters
-    - avoid_renaming_method_parameters
     - avoid_unused_constructor_parameters
-    - control_flow_in_finally
     - directives_ordering
     - lines_longer_than_80_chars
     - package_api_docs
     - prefer_asserts_in_initializer_lists
     - prefer_if_elements_to_conditional_expressions
-    - prefer_inlined_adds
-    - provide_deprecation_message
     - unnecessary_parenthesis
