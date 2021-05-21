@@ -59,3 +59,25 @@ jobs:
       - name: Run VM tests
         run: dart test --platform vm
         if: always() && steps.install.outcome == 'success'
+
+  document:
+    needs: analyze
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dart-lang/setup-dart@v1.0
+        with:
+          sdk: dev
+      - id: install
+        name: Install dependencies
+        run: |
+          dart pub get
+          dart pub global activate dartdoc
+      - name: Verify dartdoc
+        run: dart pub global run dartdoc \
+          --no-generate-docs \
+          --errors=unresolved-doc-reference,ambiguous-doc-reference,ambiguous-reexport,broken-link,deprecated,no-library-level-docs,unknown-directive,unknown-macro
