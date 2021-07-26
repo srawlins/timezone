@@ -15,7 +15,7 @@ You can update to the current IANA time zone database by running
 [`TimeZone`] objects require time zone data, so the first step is to load
 one of our [time zone databases](#databases).
 
-We provide three different APIs to load a database: one which is base64-encoded
+We provide three different APIs to load a database: one which is embedded
 into a Dart library, one for browsers, and one for standalone environments.
 
 ### Database variants

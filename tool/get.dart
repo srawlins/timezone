@@ -4,9 +4,9 @@
 ///
 /// ```sh
 /// pub run tool/get
-/// pub run tool/encode lib/data/latest.{tzf,dart}
-/// pub run tool/encode lib/data/latest_all.{tzf,dart}
-/// pub run tool/encode lib/data/latest_10y.{tzf,dart}
+/// pub run tool/encode_dart lib/data/latest.{tzf,dart}
+/// pub run tool/encode_dart lib/data/latest_all.{tzf,dart}
+/// pub run tool/encode_dart lib/data/latest_10y.{tzf,dart}
 /// ```
 
 // @dart=2.9
