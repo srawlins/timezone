@@ -89,6 +89,27 @@ To initialize the **all** database variant, call
 `initializeTimeZone('data/latest_all.tzf')`. To initialize the **10y**
 database variant, call `initializeTimeZone('data/latest_10y.tzf')`.
 
+### Flutter
+
+Import `package:timezone/timezone.dart` and run async call `TimezoneManager.instance.initializeTimezoneConfiguration()`:
+
+```dart
+import 'package:timezone/timezone.dart' as tz;
+
+Future<void> main() async {
+  await tz.TimezoneManager.instance.initializeTimezoneConfiguration([DatabaseVariant]);
+
+  runApp(MyApp());
+}
+```
+
+To initialize properly is needed add an asset in `pubspec.yaml`.
+
+```yaml
+  assets:
+    - packages/timezone/data/latest_all.tzf
+```
+
 ### Local Location
 
 By default, when library is initialized, local location will be `UTC`.
@@ -103,7 +124,6 @@ Future<void> setup() async {
   tz.setLocalLocation(detroit);
 }
 ```
-
 
 ## API
 

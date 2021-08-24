@@ -12,3 +12,4 @@ export 'src/env.dart' hide initializeTimeZonesFromBase64;
 export 'src/exceptions.dart';
 export 'src/location.dart';
 export 'src/location_database.dart';
+export 'src/timezone_manager.dart';
