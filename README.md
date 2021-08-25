@@ -91,13 +91,13 @@ database variant, call `initializeTimeZone('data/latest_10y.tzf')`.
 
 ### Flutter
 
-Import `package:timezone/timezone.dart` and run async call `TimezoneManager.instance.initializeTimezoneConfiguration()`:
+Import `package:timezone/timezone.dart` and run async call `TimezoneManager.instance.initializeTimezoneConfiguration([DatabaseVariant])`:
 
 ```dart
 import 'package:timezone/timezone.dart' as tz;
 
 Future<void> main() async {
-  await tz.TimezoneManager.instance.initializeTimezoneConfiguration([DatabaseVariant]);
+  await tz.TimezoneManager.instance.initializeTimezoneConfiguration(tz.DatabaseVariant.latestAll);
 
   runApp(MyApp());
 }
