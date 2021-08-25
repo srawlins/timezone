@@ -12,7 +12,7 @@ class TimezoneWeb extends TimezoneManager {
   Future<void> initializeTimezoneConfiguration(
     DatabaseVariant databaseVariant,
   ) {
-    return kReleaseMode && kIsWeb
+    return kReleaseMode
         ? releaseModeInitialization(databaseVariant)
         : debugModeInitialization(databaseVariant);
   }
