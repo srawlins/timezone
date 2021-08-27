@@ -1,7 +1,10 @@
-# 0.7.1
+# 0.8.0
 
 - Time zone database updated to 2021a. For your convenience here is the
   announcement for [2021a].
+- Time zone databases encoded with UTF-16 instead of base64.
+- **Breaking change**: Remove `tool/encode.dart` in favor of
+  `tool/encode_dart.dart`.
 
 [2021a]: https://mm.icann.org/pipermail/tz-announce/2021-January/000065.html
 
