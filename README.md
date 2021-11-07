@@ -30,6 +30,45 @@ We offer three different variants of the IANA database:
   ago until 5 years in the future; this database is about 25% the size of the
   default database.
 
+### Initialization from Flutter asset
+
+This is the recommended way for Flutter. It bundles the timezone data as an
+asset and loads asynchronously. It works on all Flutter platforms including
+web.
+
+Include the timezone data as an asset in `pubspec.yaml`:
+```yaml
+flutter:
+  assets:
+    - packages/timezone/data/latest.tzf
+    # or
+    # - packages/timezone/data/latest_all.tzf
+    # or
+    # - packages/timezone/data/latest_10y.tzf
+```
+
+Load asset with `rootBundle` or `DefaultAssetBundle.of(context)`, create a
+`Uint8List` view and call `initializeDatabase`.
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:timezone/timezone.dart' as tz;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final path = 'packages/timezone/data/latest.tzf';
+  // or
+  // final path = 'packages/timezone/data/latest_all.tzf';
+  // or
+  // final path = 'packages/timezone/data/latest_10y.tzf';
+
+  tz.initializeDatabase(Uint8List.sublistView(await rootBundle.load(path)));
+
+  runApp(MyApp());
+}
+```
+
 ### Initialization from Dart library
 
 This is the recommended way to initialize a time zone database for non-browser
@@ -43,6 +82,11 @@ void main() {
   tz.initializeTimeZones();
 }
 ```
+
+This method works in all environments including Flutter. It works on the web
+but is not recommended. On the web, page loads slower because embedded timezone
+data increases JavaScript output. Other methods load timezone data
+asynchronously, they should be used in browser environments.
 
 To initialize the **all** database variant, `import
 'package:timezone/data/latest_all.dart'`. To initialize the **10y**
