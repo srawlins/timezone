@@ -33,7 +33,7 @@ We offer three different variants of the IANA database:
 ### Initialization from Dart library
 
 This is the recommended way to initialize a time zone database for non-browser
-environments. Each Dart libary found in `lib/data`, for example
+environments. Each Dart library found in `lib/data`, for example
 `lib/data/latest.dart`, contains a single no-argument function,
 `initializeTimeZones`.
 
