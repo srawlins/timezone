@@ -1,3 +1,13 @@
+# 0.8.1
+
+- Time zone database updated to 2021e. For your convencience here are the
+  announcements for [2021b], [2021c], [2021d], [2021e].
+
+[2021b]: http://mm.icann.org/pipermail/tz-announce/2021-September/000066.html
+[2021c]: http://mm.icann.org/pipermail/tz-announce/2021-October/000067.html
+[2021d]: http://mm.icann.org/pipermail/tz-announce/2021-October/000068.html
+[2021e]: http://mm.icann.org/pipermail/tz-announce/2021-October/000069.html
+
 # 0.8.0
 
 - Time zone database updated to 2021a. For your convenience here is the
