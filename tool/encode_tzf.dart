@@ -6,8 +6,6 @@
 /// pub run tool/encode_tzf --zoneinfo path/to/zoneinfo
 /// ```
 
-// @dart=2.9
-
 import 'dart:io';
 import 'package:args/args.dart';
 import 'package:file/file.dart' as pkg_file;

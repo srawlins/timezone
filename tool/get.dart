@@ -9,8 +9,6 @@
 /// pub run tool/encode_dart lib/data/latest_10y.{tzf,dart}
 /// ```
 
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:io';
 import 'package:args/args.dart';
@@ -103,7 +101,7 @@ Future<void> main(List<String> arguments) async {
     ..addOption('source', abbr: 's', defaultsTo: 'latest');
   final argResults = parser.parse(arguments);
 
-  final source = argResults['source'] as String /*?*/;
+  final source = argResults['source'] as String?;
 
   if (source == null || source.isEmpty) {
     print(parser.usage);

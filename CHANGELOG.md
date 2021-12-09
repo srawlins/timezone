@@ -2,6 +2,7 @@
 
 - Time zone database updated to 2021e. For your convencience here are the
   announcements for [2021b], [2021c], [2021d], [2021e].
+- Fixed encoding script to not skip a few missing time zones.
 
 [2021b]: http://mm.icann.org/pipermail/tz-announce/2021-September/000066.html
 [2021c]: http://mm.icann.org/pipermail/tz-announce/2021-October/000067.html
