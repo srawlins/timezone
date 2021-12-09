@@ -46,7 +46,7 @@ Future<void> main(List<String> arguments) async {
   final db = LocationDatabase();
 
   log.info('Importing zoneinfo files');
-  final files = await Glob('**/*').list(root: zoneinfoPath).toList();
+  final files = await Glob('**').list(root: zoneinfoPath).toList();
   for (final f in files) {
     if (f is pkg_file.File) {
       final name = p.relative(f.path, from: zoneinfoPath);
