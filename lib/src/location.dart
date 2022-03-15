@@ -227,18 +227,12 @@ class Location {
     return identical(this, other) ||
         other is Location &&
             runtimeType == other.runtimeType &&
-            name == other.name &&
-            transitionAt == other.transitionAt &&
-            transitionZone == other.transitionZone &&
-            zones == other.zones;
+            name == other.name;
   }
 
   @override
   int get hashCode {
-    return name.hashCode ^
-        transitionAt.hashCode ^
-        transitionZone.hashCode ^
-        zones.hashCode;
+    return name.hashCode;
   }
 }
 
