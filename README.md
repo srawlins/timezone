@@ -129,11 +129,13 @@ import specific members via a `show` clause.
 >
 > [The tz database](https://www.iana.org/time-zones)
 
-#### Get location by Olsen time zone ID
+#### Get location by tz database/Olson name
 
 ```dart
 final detroit = tz.getLocation('America/Detroit');
 ```
+
+See [Wikipedia list] for more database entry names.
 
 We don't provide any functions to get locations by time zone abbreviations
 because of the ambiguities.
@@ -221,6 +223,7 @@ $ tool/refresh.sh
 
 [2021a]: http://www.iana.org/time-zones/repository/releases/tzcode2021a.tar.gz
 [IANA time zone database]: https://www.iana.org/time-zones
+[Wikipedia list]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 [`TZDateTime`]: https://pub.dartlang.org/documentation/timezone/latest/timezone.standalone/TZDateTime-class.html
 [`TimeZone`]: https://pub.dartlang.org/documentation/timezone/latest/timezone.standalone/TimeZone-class.html
 [the announcement]: https://mm.icann.org/pipermail/tz-announce/2021-January/000065.html
