@@ -10,6 +10,6 @@ dev_dependencies:
   args: any
   file: ^6.0.0
   glob: ^2.0.0
-  lints: ^1.0.1
+  lints: ^2.0.0
   logging: any
   test: ^1.16.0
