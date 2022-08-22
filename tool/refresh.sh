@@ -22,14 +22,14 @@ popd > /dev/null
 mkdir -p lib/data
 
 # Pass the zoneinfo directory to the encoding script
-dart pub run tool/encode_tzf --zoneinfo $temp/zoneinfo
+dart tool/encode_tzf.dart --zoneinfo $temp/zoneinfo
 
 rm -r $temp
 
 # Create the source embeddings
 for scope in latest latest_all latest_10y; do
   echo "Creating embedding: $scope..."
-  dart pub run tool/encode_dart lib/data/$scope.{tzf,dart}
+  dart tool/encode_dart.dart lib/data/$scope.{tzf,dart}
 done
 
 dart format lib/data
