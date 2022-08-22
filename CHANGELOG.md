@@ -1,6 +1,17 @@
+# 0.9.0
+
+- Time zone database updated to 2022c. For your convenience here are the
+  announcements for [2022a], [2022b], [2022c].
+- Removed named database files in `lib/data` (for example, `lib/data/2021e.tzf`).
+  The only supported database files are all now named `latest_*`.
+
+[2022a]: http://mm.icann.org/pipermail/tz-announce/2022-March/000070.html
+[2022b]: http://mm.icann.org/pipermail/tz-announce/2022-August/000071.html
+[2022c]: http://mm.icann.org/pipermail/tz-announce/2022-August/000072.html
+
 # 0.8.1
 
-- Time zone database updated to 2021e. For your convencience here are the
+- Time zone database updated to 2021e. For your convenience here are the
   announcements for [2021b], [2021c], [2021d], [2021e].
 - Fixed encoding script to not skip a few missing time zones.
 

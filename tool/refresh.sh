@@ -3,7 +3,7 @@ set -e
 
 [[ $0 != 'tool/refresh.sh' ]] && echo "Must be run as tool/refresh.sh" && exit
 
-pub get
+dart pub get
 
 temp=$(mktemp -d -t tzdata-XXXXXXXXXX)
 
@@ -22,14 +22,14 @@ popd > /dev/null
 mkdir -p lib/data
 
 # Pass the zoneinfo directory to the encoding script
-pub run tool/encode_tzf --zoneinfo $temp/zoneinfo
+dart pub run tool/encode_tzf --zoneinfo $temp/zoneinfo
 
 rm -r $temp
 
 # Create the source embeddings
 for scope in latest latest_all latest_10y; do
   echo "Creating embedding: $scope..."
-  pub run tool/encode_dart lib/data/$scope.{tzf,dart}
+  dart pub run tool/encode_dart lib/data/$scope.{tzf,dart}
 done
 
 dart format lib/data
