@@ -14,8 +14,9 @@
 /// ```
 library timezone.standalone;
 
-import 'dart:io';
+import 'dart:io' hide BytesBuilder;
 import 'dart:isolate';
+import 'dart:typed_data';
 import 'package:path/path.dart' as p;
 import 'package:timezone/timezone.dart';
 
