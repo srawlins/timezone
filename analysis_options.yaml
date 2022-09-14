@@ -6,6 +6,7 @@ analyzer:
     non_constant_identifier_names: ignore
     todo: ignore
   language:
+    strict-casts: true
     strict-inference: true
     strict-raw-types: true
 

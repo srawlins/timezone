@@ -35,7 +35,7 @@ Future<void> main(List<String> arguments) async {
     ..addOption('zoneinfo');
   final args = parser.parse(arguments);
 
-  final zoneinfoPath = args['zoneinfo'];
+  final zoneinfoPath = args['zoneinfo'] as String?;
   if (zoneinfoPath == null) {
     print('Usage:\n${parser.usage}');
     exit(1);
@@ -81,7 +81,7 @@ Future<void> main(List<String> arguments) async {
   log.info('Serializing location databases');
   Future<void> write(String file, LocationDatabase db) =>
       File(file).writeAsBytes(tzdbSerialize(db), flush: true);
-  await write(args['output-all'], allDb.db);
-  await write(args['output-common'], commonDb.db);
-  await write(args['output-10y'], common_10y_Db.db);
+  await write(args['output-all'] as String, allDb.db);
+  await write(args['output-common'] as String, commonDb.db);
+  await write(args['output-10y'] as String, common_10y_Db.db);
 }

@@ -18,7 +18,7 @@ Future<String> dateCmd(int time, String tz) {
         'Tool does not support ${Platform.operatingSystem} yet.');
   }
   return Process.run('date', dateArgs, environment: {'TZ': tz}).then((r) {
-    return r.stdout;
+    return r.stdout as String;
   });
 }
 
@@ -33,10 +33,10 @@ void main(List<String> arguments) async {
 
   final randomRange = maxEpochTime - minEpochTime;
 
-  final seed = int.parse(argResults['seed']);
+  final seed = int.parse(argResults['seed'] as String);
   var r = Random(seed);
 
-  final iterations = int.parse(argResults['iterations']);
+  final iterations = int.parse(argResults['iterations'] as String);
   print('Seed: $seed');
   print('Iterations: $iterations');
 
