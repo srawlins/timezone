@@ -1,3 +1,11 @@
+# 0.9.1
+
+- Time zone database updated to 2022e. For your convenience here are the
+  announcements for [2022d], [2022e].
+
+[2022d]: http://mm.icann.org/pipermail/tz-announce/2022-September/000073.html
+[2022e]: http://mm.icann.org/pipermail/tz-announce/2022-October/000074.html
+
 # 0.9.0
 
 - Time zone database updated to 2022c. For your convenience here are the
