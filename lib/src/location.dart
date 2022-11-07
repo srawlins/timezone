@@ -222,6 +222,9 @@ class Location {
   @override
   String toString() => name;
 
+  // Override equals and hashCode to support comparing
+  // Locations created in different isolates.
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
