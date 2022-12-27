@@ -1,5 +1,5 @@
 name: timezone
-version: 0.9.0
+version: 0.9.1
 description: Time zone database and time zone aware DateTime.
 repository: https://github.com/srawlins/timezone
 environment:
