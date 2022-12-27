@@ -4,9 +4,9 @@
 
 library timezone.src.env;
 
-import 'location.dart';
-import 'location_database.dart';
-import 'tzdb.dart';
+import 'package:timezone/src/location.dart';
+import 'package:timezone/src/location_database.dart';
+import 'package:timezone/src/tzdb.dart';
 
 /// File name of the Time Zone default database.
 const String tzDataDefaultFilename = 'latest.tzf';

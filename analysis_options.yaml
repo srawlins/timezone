@@ -13,7 +13,9 @@ analyzer:
 linter:
   rules:
     - always_declare_return_types
+    - always_use_package_imports
     - avoid_catches_without_on_clauses
+    - avoid_dynamic_calls
     - avoid_positional_boolean_parameters
     - avoid_unused_constructor_parameters
     - directives_ordering
@@ -21,4 +23,13 @@ linter:
     - package_api_docs
     - prefer_asserts_in_initializer_lists
     - prefer_if_elements_to_conditional_expressions
+    - unawaited_futures
     - unnecessary_parenthesis
+    - use_super_parameters
+
+    # Enable when using Dart >=2.19.0.
+    #- collection_methods_unrelated_type
+    #- enable_null_safety
+    #- implicit_call_tearoffs
+    #- library_annotations
+    #- unnecessary_library_directive
