@@ -241,7 +241,7 @@ class TimeZone {
       {required this.isDst, required this.abbreviation});
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         other is TimeZone &&
             offset == other.offset &&
