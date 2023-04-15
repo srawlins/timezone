@@ -6,11 +6,6 @@ import 'package:timezone/src/env.dart';
 import 'package:timezone/src/location.dart';
 
 /// TimeZone aware DateTime.
-///
-/// It is possible for two local date-time to overlap. This is when clocks are
-/// set back, typically due to autumn daylight savings change from "summer" to
-/// "winter". If a [TZDateTime] falls in the middle of an overlap, the later
-/// time is used.
 class TZDateTime implements DateTime {
   /// Maximum value for time instants.
   static const int maxMillisecondsSinceEpoch = 8640000000000000;
