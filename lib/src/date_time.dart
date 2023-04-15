@@ -39,18 +39,16 @@ class TZDateTime implements DateTime {
     // If the offsets differ, we must be near a DST boundary
     if (localOffset != adjustedOffset) {
       // We need to ensure that time is always after the DST gap
-      // this happens naturally for positive offsets, but not for negative
-      if (localOffset - adjustedOffset < 0) {
-        // If we just use adjustedOffset then the time is pushed back before the
-        // transition, whereas it should be on or after the transition
-        final localNext = adjustedTimezone.timeZone.offset;
-        final adjustedNext = location
-            .lookupTimeZone(localInstant - adjustedOffset)
-            .timeZone.offset;
-
-        if (localNext != adjustedNext) {
-          milliseconds = adjustedInstant;
-        }
+      // this happens naturally for positive offsets, but not for negative.
+      // If we just use adjustedOffset then the time is pushed back before the
+      // transition, whereas it should be on or after the transition
+      if (localOffset - adjustedOffset < 0 &&
+          adjustedOffset !=
+              location
+                  .lookupTimeZone(localInstant - adjustedOffset)
+                  .timeZone
+                  .offset) {
+        milliseconds = adjustedInstant;
       }
     }
 
