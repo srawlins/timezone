@@ -5,19 +5,6 @@
 import 'package:timezone/src/env.dart';
 import 'package:timezone/src/location.dart';
 
-import 'package:timezone/data/latest.dart' as tz;
-
-void main() {
-  tz.initializeTimeZones();
-
-  final location = getLocation('Europe/Berlin');
-  final datetime = TZDateTime(location, 2023, 10, 29, 2);
-
-  print('local: ${datetime.toString()}');
-  print(datetime.timeZoneName);
-  print(datetime.timeZone.abbreviation);
-}
-
 /// TimeZone aware DateTime.
 ///
 /// It is possible for two local date-time to overlap. This is when clocks are
