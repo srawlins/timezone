@@ -3,7 +3,7 @@
 This package provides the [IANA time zone database] and time zone aware
 `DateTime` class, [`TZDateTime`].
 
-The current time zone database version is [2022g]. See [the announcement] for
+The current time zone database version is [2023c]. See [the announcement] for
 details.
 
 You can update to the current IANA time zone database by running
@@ -225,9 +225,9 @@ Note, on Windows, you may need to follow [these
 steps](https://github.com/srawlins/timezone/issues/60#issuecomment-638411716)
 which use WSL.
 
-[2022g]: https://data.iana.org/time-zones/releases/tzcode2022g.tar.gz
+[2023c]: https://data.iana.org/time-zones/releases/tzcode2023c.tar.gz
 [IANA time zone database]: https://www.iana.org/time-zones
 [Wikipedia list]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 [`TZDateTime`]: https://pub.dartlang.org/documentation/timezone/latest/timezone.standalone/TZDateTime-class.html
 [`TimeZone`]: https://pub.dartlang.org/documentation/timezone/latest/timezone.standalone/TimeZone-class.html
-[the announcement]: http://mm.icann.org/pipermail/tz-announce/2022-October/000074.html
+[the announcement]: http://mm.icann.org/pipermail/tz-announce/2023-March/000079.html
