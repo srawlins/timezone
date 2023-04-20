@@ -4,7 +4,7 @@
   announcements for [2023a], [2023b], [2023c].
 
 [2023a]: http://mm.icann.org/pipermail/tz-announce/2023-March/000077.html
-[2023]: http://mm.icann.org/pipermail/tz-announce/2023-March/000078.html
+[2023b]: http://mm.icann.org/pipermail/tz-announce/2023-March/000078.html
 [2023c]: http://mm.icann.org/pipermail/tz-announce/2023-March/000079.html
 
 # 0.9.1
