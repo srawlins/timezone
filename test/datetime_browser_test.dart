@@ -1,4 +1,6 @@
 @TestOn('browser')
+library;
+
 import 'package:test/test.dart';
 import 'package:timezone/browser.dart';
 

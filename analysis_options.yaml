@@ -18,18 +18,17 @@ linter:
     - avoid_dynamic_calls
     - avoid_positional_boolean_parameters
     - avoid_unused_constructor_parameters
+    - dangling_library_doc_comments
     - directives_ordering
+    - collection_methods_unrelated_type
+    - implicit_call_tearoffs
+    - library_annotations
     - lines_longer_than_80_chars
     - package_api_docs
     - prefer_asserts_in_initializer_lists
     - prefer_if_elements_to_conditional_expressions
     - unawaited_futures
+    - unnecessary_library_directive
     - unnecessary_parenthesis
+    - unreachable_from_main
     - use_super_parameters
-
-    # Enable when using Dart >=2.19.0.
-    #- collection_methods_unrelated_type
-    #- enable_null_safety
-    #- implicit_call_tearoffs
-    #- library_annotations
-    #- unnecessary_library_directive

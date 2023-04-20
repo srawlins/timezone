@@ -5,6 +5,7 @@
 /// ```sh
 /// pub run tool/encode_tzf --zoneinfo path/to/zoneinfo
 /// ```
+library;
 
 import 'dart:io';
 import 'package:args/args.dart';

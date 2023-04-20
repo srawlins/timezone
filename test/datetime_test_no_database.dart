@@ -1,4 +1,6 @@
 @TestOn('vm')
+library;
+
 import 'package:test/test.dart';
 import 'package:timezone/timezone.dart';
 
