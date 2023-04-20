@@ -227,7 +227,7 @@ Future<void> main() async {
     group('Europe/Berlin DST (positive offset)', () {
       // https://www.timeanddate.com/time/change/germany/berlin?year=2023
       final berlin = getLocation('Europe/Berlin');
-      
+
       group('EST/EDT transition', () {
         test('2 months before transition', () {
           final datetime = TZDateTime(berlin, 2023, 1, 26, 2);
