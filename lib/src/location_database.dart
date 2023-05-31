@@ -5,8 +5,8 @@
 /// Locations database
 library timezone.src.location_database;
 
-import 'exceptions.dart';
-import 'location.dart';
+import 'package:timezone/src/exceptions.dart';
+import 'package:timezone/src/location.dart';
 
 /// LocationDatabase provides interface to find [Location]s by their name.
 ///

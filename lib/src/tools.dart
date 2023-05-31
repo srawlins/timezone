@@ -2,8 +2,6 @@
 // file for details. All rights reserved. Use of this source code is governed
 // by a BSD-style license that can be found in the LICENSE file.
 
-library timezone.src.tools;
-
 import 'dart:collection';
 
 import 'package:timezone/timezone.dart';
@@ -347,7 +345,7 @@ const commonLocations = [
   'Europe/Istanbul',
   'Europe/Jersey',
   'Europe/Kaliningrad',
-  'Europe/Kiev',
+  'Europe/Kyiv',
   'Europe/Lisbon',
   'Europe/Ljubljana',
   'Europe/London',

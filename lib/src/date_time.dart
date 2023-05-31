@@ -2,10 +2,8 @@
 // file for details. All rights reserved. Use of this source code is governed
 // by a BSD-style license that can be found in the LICENSE file.
 
-library timezone.src.date_time;
-
-import 'env.dart';
-import 'location.dart';
+import 'package:timezone/src/env.dart';
+import 'package:timezone/src/location.dart';
 
 /// TimeZone aware DateTime
 class TZDateTime implements DateTime {
@@ -354,7 +352,7 @@ class TZDateTime implements DateTime {
   ///
   /// See [isAtSameMomentAs] for a comparison that adjusts for time zone.
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         other is TZDateTime &&
             _native.isAtSameMomentAs(other._native) &&

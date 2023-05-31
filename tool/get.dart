@@ -8,6 +8,7 @@
 /// dart pub run tool/encode_dart lib/data/latest_all.{tzf,dart}
 /// dart pub run tool/encode_dart lib/data/latest_10y.{tzf,dart}
 /// ```
+library;
 
 import 'dart:async';
 import 'dart:io';

@@ -1,5 +1,5 @@
 @TestOn('vm')
-library timezone.test.zicfile_test;
+library;
 
 import 'dart:io';
 import 'dart:isolate';
@@ -7,12 +7,6 @@ import 'dart:isolate';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 import 'package:timezone/tzdata.dart' as tzdata;
-
-tzdata.TimeZone z(int offset,
-    {required bool isDst, required int abbreviationIndex}) {
-  return tzdata.TimeZone(offset,
-      isDst: isDst, abbreviationIndex: abbreviationIndex);
-}
 
 void main() {
   test('Read US/Eastern 2014h tzfile', () async {
