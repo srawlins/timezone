@@ -118,7 +118,7 @@ constructor.
 
 ```dart
 final localTime = new DateTime(2010, 1, 1);
-final detroitTime = new TZDateTime.from(time, detroit);
+final detroitTime = new TZDateTime.from(localTime, detroit);
 ```
 
 This constructor supports any objects that implements `DateTime`
