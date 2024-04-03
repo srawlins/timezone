@@ -18,11 +18,7 @@ linter:
     - avoid_dynamic_calls
     - avoid_positional_boolean_parameters
     - avoid_unused_constructor_parameters
-    - dangling_library_doc_comments
     - directives_ordering
-    - collection_methods_unrelated_type
-    - implicit_call_tearoffs
-    - library_annotations
     - lines_longer_than_80_chars
     - package_api_docs
     - prefer_asserts_in_initializer_lists
@@ -31,4 +27,3 @@ linter:
     - unnecessary_library_directive
     - unnecessary_parenthesis
     - unreachable_from_main
-    - use_super_parameters
