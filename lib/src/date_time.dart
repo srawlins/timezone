@@ -5,7 +5,7 @@
 import 'package:timezone/src/env.dart';
 import 'package:timezone/src/location.dart';
 
-/// TimeZone aware DateTime
+/// TimeZone aware DateTime.
 class TZDateTime implements DateTime {
   /// Maximum value for time instants.
   static const int maxMillisecondsSinceEpoch = 8640000000000000;
@@ -18,20 +18,38 @@ class TZDateTime implements DateTime {
 
   /// Converts a [_localDateTime] into a correct [DateTime].
   static DateTime _utcFromLocalDateTime(DateTime local, Location location) {
-    var unix = local.millisecondsSinceEpoch;
-    var tzData = location.lookupTimeZone(unix);
-    if (tzData.timeZone.offset != 0) {
-      final utc = unix - tzData.timeZone.offset;
-      if (utc < tzData.start) {
-        tzData = location.lookupTimeZone(tzData.start - 1);
-      } else if (utc >= tzData.end) {
-        tzData = location.lookupTimeZone(tzData.end);
+    // Adapted from https://github.com/JodaOrg/joda-time/blob/main/src/main/java/org/joda/time/DateTimeZone.java#L951
+    // Get the offset at local (first estimate).
+    final localInstant = local.millisecondsSinceEpoch;
+    final localTimezone = location.lookupTimeZone(localInstant);
+    final localOffset = localTimezone.timeZone.offset;
+
+    // Adjust localInstant using the estimate and recalculate the offset.
+    final adjustedInstant = localInstant - localOffset;
+    final adjustedTimezone = location.lookupTimeZone(adjustedInstant);
+    final adjustedOffset = adjustedTimezone.timeZone.offset;
+
+    var milliseconds = localInstant - adjustedOffset;
+
+    // If the offsets differ, we must be near a DST boundary
+    if (localOffset != adjustedOffset) {
+      // We need to ensure that time is always after the DST gap
+      // this happens naturally for positive offsets, but not for negative.
+      // If we just use adjustedOffset then the time is pushed back before the
+      // transition, whereas it should be on or after the transition
+      if (localOffset - adjustedOffset < 0 &&
+          adjustedOffset !=
+              location
+                  .lookupTimeZone(localInstant - adjustedOffset)
+                  .timeZone
+                  .offset) {
+        milliseconds = adjustedInstant;
       }
-      unix -= tzData.timeZone.offset;
     }
+
     // Ensure original microseconds are preserved regardless of TZ shift.
     final microsecondsSinceEpoch =
-        Duration(milliseconds: unix, microseconds: local.microsecond)
+        Duration(milliseconds: milliseconds, microseconds: local.microsecond)
             .inMicroseconds;
     return DateTime.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch,
         isUtc: true);

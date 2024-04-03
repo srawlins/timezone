@@ -156,6 +156,142 @@ Future<void> main() async {
         });
       });
     });
+
+    group('America/Detroit DST (negative offset)', () {
+      // https://www.timeanddate.com/time/change/usa/detroit?year=2023
+      group('EST/EDT transition', () {
+        test('2 months before transition', () {
+          final datetime = TZDateTime(detroit, 2023, 1, 12, 4);
+          expect(datetime.toString(), '2023-01-12 04:00:00.000-0500');
+        });
+
+        test('1 hour before transition', () {
+          final datetime = TZDateTime(detroit, 2023, 3, 12, 1);
+          expect(datetime.toString(), '2023-03-12 01:00:00.000-0500');
+        });
+
+        test('lower transition', () {
+          final datetime = TZDateTime(detroit, 2023, 3, 12, 2);
+          expect(datetime.toString(), '2023-03-12 03:00:00.000-0400');
+        });
+
+        test('upper transition', () {
+          final datetime = TZDateTime(detroit, 2023, 3, 12, 3);
+          expect(datetime.toString(), '2023-03-12 03:00:00.000-0400');
+        });
+
+        test('1 hour after transition', () {
+          final datetime = TZDateTime(detroit, 2023, 3, 12, 4);
+          expect(datetime.toString(), '2023-03-12 04:00:00.000-0400');
+        });
+
+        test('2 months after transition', () {
+          final datetime = TZDateTime(detroit, 2023, 5, 12, 4);
+          expect(datetime.toString(), '2023-05-12 04:00:00.000-0400');
+        });
+      });
+
+      group('EDT/EST transition', () {
+        test('2 months before transition', () {
+          final datetime = TZDateTime(detroit, 2023, 9, 5, 1);
+          expect(datetime.toString(), '2023-09-05 01:00:00.000-0400');
+        });
+
+        test('1 hour before transition', () {
+          final datetime = TZDateTime(detroit, 2023, 11, 5);
+          expect(datetime.toString(), '2023-11-05 00:00:00.000-0400');
+        });
+
+        test('lower transition', () {
+          final datetime = TZDateTime(detroit, 2023, 11, 5, 1);
+          expect(datetime.toString(), '2023-11-05 01:00:00.000-0400');
+        });
+
+        test('upper transition', () {
+          final datetime = TZDateTime(detroit, 2023, 11, 5, 2);
+          expect(datetime.toString(), '2023-11-05 02:00:00.000-0500');
+        });
+
+        test('1 hour after transition', () {
+          final datetime = TZDateTime(detroit, 2023, 11, 5, 3);
+          expect(datetime.toString(), '2023-11-05 03:00:00.000-0500');
+        });
+
+        test('2 months after transition', () {
+          final datetime = TZDateTime(detroit, 2024, 1, 5, 2);
+          expect(datetime.toString(), '2024-01-05 02:00:00.000-0500');
+        });
+      });
+    });
+
+    group('Europe/Berlin DST (positive offset)', () {
+      // https://www.timeanddate.com/time/change/germany/berlin?year=2023
+      final berlin = getLocation('Europe/Berlin');
+
+      group('EST/EDT transition', () {
+        test('2 months before transition', () {
+          final datetime = TZDateTime(berlin, 2023, 1, 26, 2);
+          expect(datetime.toString(), '2023-01-26 02:00:00.000+0100');
+        });
+
+        test('1 hour before transition', () {
+          final datetime = TZDateTime(berlin, 2023, 3, 26, 1);
+          expect(datetime.toString(), '2023-03-26 01:00:00.000+0100');
+        });
+
+        test('lower transition', () {
+          final datetime = TZDateTime(berlin, 2023, 3, 26, 2);
+          expect(datetime.toString(), '2023-03-26 03:00:00.000+0200');
+        });
+
+        test('upper transition', () {
+          final datetime = TZDateTime(berlin, 2023, 3, 26, 3);
+          expect(datetime.toString(), '2023-03-26 03:00:00.000+0200');
+        });
+
+        test('1 hour after transition', () {
+          final datetime = TZDateTime(berlin, 2023, 3, 26, 4);
+          expect(datetime.toString(), '2023-03-26 04:00:00.000+0200');
+        });
+
+        test('2 months after transition', () {
+          final datetime = TZDateTime(berlin, 2023, 5, 26, 3);
+          expect(datetime.toString(), '2023-05-26 03:00:00.000+0200');
+        });
+      });
+
+      group('EDT/EST transition', () {
+        test('2 months before transition', () {
+          final datetime = TZDateTime(berlin, 2023, 8, 29, 2);
+          expect(datetime.toString(), '2023-08-29 02:00:00.000+0200');
+        });
+
+        test('1 hour before transition', () {
+          final datetime = TZDateTime(berlin, 2023, 10, 29, 1);
+          expect(datetime.toString(), '2023-10-29 01:00:00.000+0200');
+        });
+
+        test('lower transition', () {
+          final datetime = TZDateTime(berlin, 2023, 10, 29, 2);
+          expect(datetime.toString(), '2023-10-29 02:00:00.000+0100');
+        });
+
+        test('upper transition', () {
+          final datetime = TZDateTime(berlin, 2023, 10, 29, 3);
+          expect(datetime.toString(), '2023-10-29 03:00:00.000+0100');
+        });
+
+        test('1 hour after transition', () {
+          final datetime = TZDateTime(berlin, 2023, 10, 29, 4);
+          expect(datetime.toString(), '2023-10-29 04:00:00.000+0100');
+        });
+
+        test('2 months after transition', () {
+          final datetime = TZDateTime(berlin, 2024, 1, 29, 3);
+          expect(datetime.toString(), '2024-01-29 03:00:00.000+0100');
+        });
+      });
+    });
   });
 
   group('Timezones', () {
