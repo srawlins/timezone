@@ -174,7 +174,7 @@ To convert between time zones, just create a new `TZDateTime` object using
 
 ```dart
 var localTime = tz.DateTime(2010, 1, 1);
-var detroitTime = tz.TZDateTime.from(time, detroit);
+var detroitTime = tz.TZDateTime.from(localTime, detroit);
 ```
 
 This constructor supports any objects that implement `DateTime` interface, so
