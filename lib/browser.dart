@@ -9,20 +9,27 @@
 ///
 /// initializeTimeZone().then((_) {
 ///  final detroit = getLocation('America/Detroit');
-///  final now = new TZDateTime.now(detroit);
+///  final now = TZDateTime.now(detroit);
 /// });
 library timezone.browser;
 
-import 'dart:async';
 import 'dart:html';
 import 'dart:typed_data';
+
 import 'package:timezone/timezone.dart';
 
-export 'package:timezone/timezone.dart' show getLocation, setLocalLocation,
-    TZDateTime, Location, TimeZone, timeZoneDatabase;
+export 'package:timezone/timezone.dart'
+    show
+        getLocation,
+        setLocalLocation,
+        TZDateTime,
+        Location,
+        TimeZone,
+        timeZoneDatabase;
 
 /// Path to the Time Zone default database.
-const String tzDataDefaultPath = 'packages/timezone/data/$tzDataDefaultFilename';
+const String tzDataDefaultPath =
+    'packages/timezone/data/$tzDataDefaultFilename';
 
 /// Initialize Time Zone database.
 ///
@@ -33,25 +40,24 @@ const String tzDataDefaultPath = 'packages/timezone/data/$tzDataDefaultFilename'
 ///
 /// initializeTimeZone().then(() {
 ///   final detroit = getLocation('America/Detroit');
-///   final detroitNow = new TZDateTime.now(detroit);
+///   final detroitNow = TZDateTime.now(detroit);
 /// });
 /// ```
-Future initializeTimeZone([String path = tzDataDefaultPath]) {
-  return HttpRequest.request(
-      path,
-      method: 'GET',
-      responseType: 'arraybuffer',
-      mimeType: 'application/octet-stream').then((req) {
-
+Future<void> initializeTimeZone([String path = tzDataDefaultPath]) {
+  return HttpRequest.request(path,
+          method: 'GET',
+          responseType: 'arraybuffer',
+          mimeType: 'application/octet-stream')
+      .then((req) {
     final response = req.response;
 
-    if (response is! ByteBuffer) {
-      throw new TimeZoneInitException('Invalid response type: ${response.runtimeType}');
+    if (response is ByteBuffer) {
+      initializeDatabase(response.asUint8List());
+    } else {
+      throw TimeZoneInitException(
+          'Invalid response type: ${response.runtimeType}');
     }
-
-    initializeDatabase(response.asUint8List());
-
-  }).catchError((e) {
-    throw new TimeZoneInitException(e.toString());
+  }).catchError((dynamic e) {
+    throw TimeZoneInitException(e.toString());
   }, test: (e) => e is! TimeZoneInitException);
 }

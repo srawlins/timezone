@@ -9,71 +9,56 @@
 ///
 /// initializeTimeZone().then((_) {
 ///  final detroit = getLocation('America/Detroit');
-///  final now = new TZDateTime.now(detroit);
+///  final now = TZDateTime.now(detroit);
 /// });
+/// ```
 library timezone.standalone;
 
-import 'dart:async';
-import 'dart:io';
-import 'package:path/path.dart' as ospath;
+import 'dart:io' hide BytesBuilder;
+import 'dart:isolate';
+import 'dart:typed_data';
+import 'package:path/path.dart' as p;
 import 'package:timezone/timezone.dart';
 
-export 'package:timezone/timezone.dart' show getLocation, setLocalLocation,
-    TZDateTime, Location, TimeZone, timeZoneDatabase;
+export 'package:timezone/timezone.dart'
+    show
+        getLocation,
+        setLocalLocation,
+        TZDateTime,
+        Location,
+        TimeZone,
+        timeZoneDatabase;
 
-final _packagesPrefix = 'packages${ospath.separator}';
+final String tzDataDefaultPath = p.join('data', tzDataDefaultFilename);
 
-final String tzDataDefaultPath = ospath.join('packages',
-    'timezone', 'data', tzDataDefaultFilename);
-
-/// Load file
-Future<List<int>> _loadAsBytes(String path) {
+// Load file
+Future<List<int>> _loadAsBytes(String path) async {
   final script = Platform.script;
   final scheme = Platform.script.scheme;
 
   if (scheme.startsWith('http')) {
-    return new HttpClient().getUrl(
-        new Uri(
+    // TODO: This path is not tested. How would one get to this situation?
+    return HttpClient()
+        .getUrl(Uri(
             scheme: script.scheme,
             host: script.host,
             port: script.port,
-            path: path)).then((req) {
+            path: path))
+        .then((req) {
       return req.close();
     }).then((response) {
       // join byte buffers
-      return response.fold(
-          new BytesBuilder(),
-          (b, d) => b..add(d)).then((builder) {
+      return response
+          .fold(BytesBuilder(), (BytesBuilder b, d) => b..add(d))
+          .then((builder) {
         return builder.takeBytes();
       });
     });
-
-  } else if (scheme == 'file') {
-    final packageRoot = Platform.packageRoot;
-    if (packageRoot.isNotEmpty && path.startsWith(_packagesPrefix)) {
-      final p = ospath.join(packageRoot, path.substring(_packagesPrefix.length));
-      return new File(p).readAsBytes();
-    }
-
-    final p = ospath.join(ospath.dirname(ospath.fromUri(script)), path);
-    return new File(p).readAsBytes();
+  } else {
+    var uri = await Isolate.resolvePackageUri(
+        Uri(scheme: 'package', path: 'timezone/$path'));
+    return File(p.fromUri(uri)).readAsBytes();
   }
-
-  return new Future.error(new UnimplementedError('Unknown script scheme: $scheme'));
-}
-
-List<int> _loadAsBytesSync(String path) {
-  assert(!Platform.script.scheme.startsWith('http'));
-
-  final script = Platform.script;
-  final packageRoot = Platform.packageRoot;
-  if (packageRoot.isNotEmpty && path.startsWith(_packagesPrefix)) {
-    final p = ospath.join(packageRoot, path.substring(_packagesPrefix.length));
-    return new File(p).readAsBytesSync();
-  }
-
-  final p = ospath.join(ospath.dirname(ospath.fromUri(script)), path);
-  return new File(p).readAsBytesSync();
 }
 
 /// Initialize Time Zone database.
@@ -85,39 +70,14 @@ List<int> _loadAsBytesSync(String path) {
 ///
 /// initializeTimeZone().then(() {
 ///   final detroit = getLocation('America/Detroit');
-///   final detroitNow = new TZDateTime.now(detroit);
+///   final detroitNow = TZDateTime.now(detroit);
 /// });
 /// ```
-Future initializeTimeZone([String path]) {
-  if (path == null) {
-    path = tzDataDefaultPath;
-  }
+Future<void> initializeTimeZone([String? path]) {
+  path ??= tzDataDefaultPath;
   return _loadAsBytes(path).then((rawData) {
     initializeDatabase(rawData);
-  }).catchError((e) {
-    throw new TimeZoneInitException(e.toString());
+  }).catchError((dynamic e) {
+    throw TimeZoneInitException(e.toString());
   });
-}
-
-/// Initialize Time Zone database (Sync).
-///
-/// Throws [TimeZoneInitException] when something is worng.
-///
-/// ```dart
-/// import 'package:timezone/standalone.dart';
-///
-/// initializeTimeZoneSync();
-/// final detroit = getLocation('America/Detroit');
-/// final detroitNow = new TZDateTime.now(detroit);
-/// ```
-void initializeTimeZoneSync([String path]) {
-  if (path == null) {
-    path = tzDataDefaultPath;
-  }
-  try {
-    final rawData = _loadAsBytesSync(path);
-    initializeDatabase(rawData);
-  } catch (e) {
-    throw new TimeZoneInitException(e.toString());
-  }
 }

@@ -2,18 +2,12 @@
 // file for details. All rights reserved. Use of this source code is governed
 // by a BSD-style license that can be found in the LICENSE file.
 
-///
 /// TimeZone Location Info.
 ///
 /// Most of this code were taken from the go standard library
 /// [http://golang.org/src/pkg/time/zoneinfo.go](time/zoneinfo.go)
 /// and ported to Dart.
 library timezone.src.location;
-
-import 'package:tuple/tuple.dart';
-
-/// Zone Info header size.
-const int _zoneInfoHeaderSize = 16;
 
 /// Maximum value for time instants.
 const int maxTime = 8640000000000000;
@@ -39,7 +33,7 @@ class Location {
 
   /// [TimeZone] for the current time.
   TimeZone get currentTimeZone =>
-      timeZone(new DateTime.now().millisecondsSinceEpoch);
+      timeZone(DateTime.now().millisecondsSinceEpoch);
 
   // Most lookups will be for the current time.
   // To avoid the binary search through tx, keep a
@@ -50,10 +44,10 @@ class Location {
   // The units for cacheStart and cacheEnd are milliseconds
   // since January 1, 1970 UTC, to match the argument
   // to lookup.
-  static int _cacheNow = new DateTime.now().millisecondsSinceEpoch;
+  static final int _cacheNow = DateTime.now().millisecondsSinceEpoch;
   int _cacheStart = 0;
   int _cacheEnd = 0;
-  TimeZone _cacheZone;
+  late TimeZone _cacheZone;
 
   Location(this.name, this.transitionAt, this.transitionZone, this.zones) {
     // Fill in the cache with information about right now,
@@ -62,7 +56,8 @@ class Location {
       final tAt = transitionAt[i];
 
       if ((tAt <= _cacheNow) &&
-          ((i + 1 == transitionAt.length) || (_cacheNow < transitionAt[i + 1]))) {
+          ((i + 1 == transitionAt.length) ||
+              (_cacheNow < transitionAt[i + 1]))) {
         _cacheStart = tAt;
         _cacheEnd = maxTime;
         if (i + 1 < transitionAt.length) {
@@ -83,9 +78,9 @@ class Location {
   /// January 1, 1970 00:00:00 to UTC.
   int translateToUtc(int millisecondsSinceEpoch) {
     final t = lookupTimeZone(millisecondsSinceEpoch);
-    final tz = t.i1;
-    final start = t.i2;
-    final end = t.i3;
+    final tz = t.timeZone;
+    final start = t.start;
+    final end = t.end;
 
     var utc = millisecondsSinceEpoch;
 
@@ -93,9 +88,10 @@ class Location {
       utc -= tz.offset;
 
       if (utc < start) {
-        utc = millisecondsSinceEpoch - lookupTimeZone(start - 1).i1.offset;
+        utc =
+            millisecondsSinceEpoch - lookupTimeZone(start - 1).timeZone.offset;
       } else if (utc >= end) {
-        utc = millisecondsSinceEpoch - lookupTimeZone(end).i1.offset;
+        utc = millisecondsSinceEpoch - lookupTimeZone(end).timeZone.offset;
       }
     }
 
@@ -104,22 +100,21 @@ class Location {
 
   /// lookup for [TimeZone] and its boundaries for an instant in time expressed
   /// as milliseconds since January 1, 1970 00:00:00 UTC.
-  PersistentTuple3<TimeZone, int, int> lookupTimeZone(int millisecondsSinceEpoch) {
+  TzInstant lookupTimeZone(int millisecondsSinceEpoch) {
     if (zones.isEmpty) {
-      return const PersistentTuple3(const TimeZone(0, false, 'UTC'), minTime, maxTime);
+      return const TzInstant(TimeZone.UTC, minTime, maxTime);
     }
 
-    if (_cacheZone != null &&
-        millisecondsSinceEpoch >= _cacheStart &&
+    if (millisecondsSinceEpoch >= _cacheStart &&
         millisecondsSinceEpoch < _cacheEnd) {
-      return new PersistentTuple3(_cacheZone, _cacheStart, _cacheEnd);
+      return TzInstant(_cacheZone, _cacheStart, _cacheEnd);
     }
 
     if (transitionAt.isEmpty || millisecondsSinceEpoch < transitionAt[0]) {
       final zone = _firstZone();
       final start = minTime;
       final end = transitionAt.isEmpty ? maxTime : transitionAt.first;
-      return new PersistentTuple3(zone, start, end);
+      return TzInstant(zone, start, end);
     }
 
     // Binary search for entry with largest millisecondsSinceEpoch <= sec.
@@ -139,30 +134,30 @@ class Location {
       }
     }
 
-    return new PersistentTuple3(zones[transitionZone[lo]], transitionAt[lo], end);
+    return TzInstant(zones[transitionZone[lo]], transitionAt[lo], end);
   }
 
   /// timeZone method returns [TimeZone] in use at an instant in time expressed
   /// as milliseconds since January 1, 1970 00:00:00 UTC.
   TimeZone timeZone(int millisecondsSinceEpoch) {
-    return lookupTimeZone(millisecondsSinceEpoch).i1;
+    return lookupTimeZone(millisecondsSinceEpoch).timeZone;
   }
 
   /// timeZoneFromLocal method returns [TimeZone] in use at an instant in time
   /// expressed as milliseconds since January 1, 1970 00:00:00.
   TimeZone timeZoneFromLocal(int millisecondsSinceEpoch) {
     final t = lookupTimeZone(millisecondsSinceEpoch);
-    var tz = t.i1;
-    final start = t.i2;
-    final end = t.i3;
+    var tz = t.timeZone;
+    final start = t.start;
+    final end = t.end;
 
     if (tz.offset != 0) {
       final utc = millisecondsSinceEpoch - tz.offset;
 
       if (utc < start) {
-        tz = lookupTimeZone(start - 1).i1;
+        tz = lookupTimeZone(start - 1).timeZone;
       } else if (utc >= end) {
-        tz = lookupTimeZone(end).i1;
+        tz = lookupTimeZone(end).timeZone;
       }
     }
 
@@ -224,11 +219,15 @@ class Location {
     return false;
   }
 
-  String toString() => '$name';
+  @override
+  String toString() => name;
 }
 
 /// A [TimeZone] represents a single time zone such as CEST or CET.
 class TimeZone {
+  // ignore: constant_identifier_names
+  static const TimeZone UTC = TimeZone(0, isDst: false, abbreviation: 'UTC');
+
   /// Milliseconds east of UTC.
   final int offset;
 
@@ -236,23 +235,38 @@ class TimeZone {
   final bool isDst;
 
   /// Abbreviated name, "CET".
-  final String abbr;
+  final String abbreviation;
 
-  const TimeZone(this.offset, this.isDst, this.abbr);
+  const TimeZone(this.offset,
+      {required this.isDst, required this.abbreviation});
 
-  bool operator ==(TimeZone other) {
-    return (offset == other.offset &&
-        isDst == other.isDst &&
-        abbr == other.abbr);
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is TimeZone &&
+            offset == other.offset &&
+            isDst == other.isDst &&
+            abbreviation == other.abbreviation;
   }
 
+  @override
   int get hashCode {
     var result = 17;
     result = 37 * result + offset.hashCode;
     result = 37 * result + isDst.hashCode;
-    result = 37 * result + abbr.hashCode;
+    result = 37 * result + abbreviation.hashCode;
     return result;
   }
 
-  String toString() => '[$abbr offset=$offset dst=$isDst]';
+  @override
+  String toString() => '[$abbreviation offset=$offset dst=$isDst]';
+}
+
+/// A [TzInstant] represents a timezone and an instant in time.
+class TzInstant {
+  final TimeZone timeZone;
+  final int start;
+  final int end;
+
+  const TzInstant(this.timeZone, this.start, this.end);
 }

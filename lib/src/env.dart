@@ -2,24 +2,17 @@
 // file for details. All rights reserved. Use of this source code is governed
 // by a BSD-style license that can be found in the LICENSE file.
 
-library timezone.src.env;
-
-import 'location.dart';
-import 'location_database.dart';
-import 'tzdb.dart';
-
-/// Latest version of the Time Zone database.
-const String tzDataLatestVersion = '2015b';
-
-/// Time Zone database file extension.
-const String tzDataExtension = 'tzf';
+import 'package:timezone/src/location.dart';
+import 'package:timezone/src/location_database.dart';
+import 'package:timezone/src/tzdb.dart';
 
 /// File name of the Time Zone default database.
-const String tzDataDefaultFilename = '$tzDataLatestVersion.$tzDataExtension';
+const String tzDataDefaultFilename = 'latest.tzf';
 
-LocationDatabase _database;
-Location _UTC;
-Location _local;
+final _UTC = Location('UTC', [minTime], [0], [TimeZone.UTC]);
+
+final _database = LocationDatabase();
+late Location _local;
 
 /// Global TimeZone database
 LocationDatabase get timeZoneDatabase => _database;
@@ -53,19 +46,11 @@ void setLocalLocation(Location location) {
 
 /// Initialize Time zone database.
 void initializeDatabase(List<int> rawData) {
-  if (_database == null) {
-    _database = new LocationDatabase();
-  }
+  _database.clear();
 
-  for (final Location l in tzdbDeserialize(rawData)) {
+  for (final l in tzdbDeserialize(rawData)) {
     _database.add(l);
   }
 
-  if (_UTC == null) {
-    _UTC = new Location('UTC', [minTime], [0], [const TimeZone(0, false, 'UTC')]);
-  }
-
-  if (_local == null) {
-    _local = _UTC;
-  }
+  _local = _UTC;
 }

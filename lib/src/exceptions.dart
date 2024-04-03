@@ -2,14 +2,13 @@
 // file for details. All rights reserved. Use of this source code is governed
 // by a BSD-style license that can be found in the LICENSE file.
 
-library timezone.src.exceptions;
-
 class TimeZoneInitException implements Exception {
   final String msg;
 
   TimeZoneInitException(this.msg);
 
-  String toString() => msg == null ? 'TimeZoneInitException' : msg;
+  @override
+  String toString() => msg;
 }
 
 class LocationNotFoundException implements Exception {
@@ -17,5 +16,6 @@ class LocationNotFoundException implements Exception {
 
   LocationNotFoundException(this.msg);
 
-  String toString() => msg == null ? 'LocationNotFoundException' : msg;
+  @override
+  String toString() => msg;
 }

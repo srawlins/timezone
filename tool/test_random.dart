@@ -1,71 +1,59 @@
-/// Run random tests against `date(1)` unix command
-
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:args/args.dart';
-import 'package:logging/logging.dart';
 import 'package:timezone/standalone.dart';
 
-final int minEpochTime = new DateTime.utc(1890).millisecondsSinceEpoch ~/ 1000;
-final int maxEpochTime = new DateTime.utc(2020).millisecondsSinceEpoch ~/ 1000;
+final int minEpochTime = DateTime.utc(1890).millisecondsSinceEpoch ~/ 1000;
+final int maxEpochTime = DateTime.utc(2020).millisecondsSinceEpoch ~/ 1000;
 
 Future<String> dateCmd(int time, String tz) {
-  return Process.run(
-      'date',
-      ['-d', '@$time', '+%Y-%m-%d %H:%M:%S'],
-      environment: {
-    'TZ': tz
-  }).then((r) {
-    return r.stdout;
+  List<String> dateArgs;
+  if (Platform.isMacOS) {
+    dateArgs = ['-r', '$time', '+%Y-%m-%d %H:%M:%S'];
+  } else if (Platform.isLinux) {
+    dateArgs = ['-d', '@$time', '+%Y-%m-%d %H:%M:%S'];
+  } else {
+    throw UnimplementedError(
+        'Tool does not support ${Platform.operatingSystem} yet.');
+  }
+  return Process.run('date', dateArgs, environment: {'TZ': tz}).then((r) {
+    return r.stdout as String;
   });
 }
 
-void main(List<String> arguments) {
-  // Initialize logger
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((LogRecord rec) {
-    print('${rec.level.name}: ${rec.time}: ${rec.message}');
-  });
-  final Logger log = new Logger('main');
-
+/// Run random tests against `date(1)` unix command
+void main(List<String> arguments) async {
   // Parse CLI arguments
-  final parser = new ArgParser()
-  ..addOption('iterations', abbr: 'i', defaultsTo: '1000')
-  ..addOption('seed', abbr: 's', defaultsTo: '0');
+  final parser = ArgParser()
+    ..addOption('iterations', abbr: 'i', defaultsTo: '1000')
+    ..addOption('seed', abbr: 's', defaultsTo: '0');
 
   final argResults = parser.parse(arguments);
 
   final randomRange = maxEpochTime - minEpochTime;
 
-  final seed = int.parse(argResults['seed']);
-  var i = int.parse(argResults['iterations']);
-  var r = new Random(seed);
+  final seed = int.parse(argResults['seed'] as String);
+  var r = Random(seed);
 
-  log.info('Seed: $seed');
-  log.info('Iterations: $i');
+  final iterations = int.parse(argResults['iterations'] as String);
+  print('Seed: $seed');
+  print('Iterations: $iterations');
 
-  initializeTimeZone().then((_) {
-    final zoneNames = timeZoneDatabase.locations.keys.map((k) => k).toList();
-    final zoneCount = zoneNames.length;
+  await initializeTimeZone();
+  final zoneNames = timeZoneDatabase.locations.keys.map((k) => k).toList();
+  final zoneCount = zoneNames.length;
 
-    Future.doWhile(() {
-      final time = r.nextInt(randomRange) + minEpochTime;
-      final tz = zoneNames[r.nextInt(zoneCount)];
+  for (var i = 0; i < iterations; i++) {
+    final time = r.nextInt(randomRange) + minEpochTime;
+    final tz = zoneNames[r.nextInt(zoneCount)];
 
-      return dateCmd(time, tz).then((v) {
-        final x =
-            new TZDateTime.fromMillisecondsSinceEpoch(getLocation(tz), time * 1000);
-        v = v.trim();
+    var dateOutput = (await dateCmd(time, tz)).trim();
+    final tzTime =
+        TZDateTime.fromMillisecondsSinceEpoch(getLocation(tz), time * 1000);
 
-        if (v != x.toString().substring(0, 19)) {
-          log.severe('$tz $time $x != $v');
-        }
-
-        i--;
-        return i == 0 ? false : true;
-      });
-
-    });
-  });
+    if (dateOutput != tzTime.toString().substring(0, 19)) {
+      print('$i: $tz $time "$tzTime" != $dateOutput');
+    }
+  }
 }

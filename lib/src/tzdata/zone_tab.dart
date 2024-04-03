@@ -9,7 +9,8 @@ library timezone.src.tzdata.zone_tab;
 /// in ISO 6709 sign-degrees-minutes-seconds format,
 /// either +-DDMM+-DDDMM or +-DDMMSS+-DDDMMSS,
 /// first latitude (+ is north), then longitude (+ is east).
-final _geoLocationRe = new RegExp(r'^([+\-])(\d{2,3})(\d{2})(\d{2})?([+\-])(\d{2,3})(\d{2})(\d{2})?$');
+final _geoLocationRe =
+    RegExp(r'^([+\-])(\d{2,3})(\d{2})(\d{2})?([+\-])(\d{2,3})(\d{2})(\d{2})?$');
 
 class LocationDescription {
   final String name;
@@ -18,8 +19,8 @@ class LocationDescription {
   final double longitude;
   final String comments;
 
-  LocationDescription(this.name, this.countryCodes, this.latitude, this.longitude,
-      this.comments);
+  LocationDescription(this.name, this.countryCodes, this.latitude,
+      this.longitude, this.comments);
 
   factory LocationDescription.fromString(String line) {
     final parts = line.split('\t');
@@ -27,22 +28,25 @@ class LocationDescription {
     final name = parts[2];
     final comments = parts.length > 3 ? parts[3] : '';
 
-    final match = _geoLocationRe.firstMatch(parts[1]);
+    final match = _geoLocationRe.firstMatch(parts[1])!;
     final latSign = match.group(1) == '+' ? 1 : -1;
-    final latDeg = int.parse(match.group(2));
-    final latMinutes = int.parse(match.group(3));
-    final latSeconds = match.group(4) != null ? int.parse(match.group(4)) : 0;
+    final latDeg = int.parse(match.group(2)!);
+    final latMinutes = int.parse(match.group(3)!);
+    final latSecondsRaw = match.group(4);
+    final latSeconds = latSecondsRaw != null ? int.parse(latSecondsRaw) : 0;
 
     final longSign = match.group(5) == '+' ? 1 : -1;
-    final longDeg = int.parse(match.group(6));
-    final longMinutes = int.parse(match.group(7));
-    final longSeconds = match.group(8) != null ? int.parse(match.group(8)) : 0;
+    final longDeg = int.parse(match.group(6)!);
+    final longMinutes = int.parse(match.group(7)!);
+    final longSecondsRaw = match.group(8);
+    final longSeconds = longSecondsRaw != null ? int.parse(longSecondsRaw) : 0;
 
     final latitude = latSign * (latDeg + (latMinutes + (latSeconds / 60)) / 60);
-    final longitude = longSign * (longDeg + (longMinutes + (longSeconds / 60)) / 60);
+    final longitude =
+        longSign * (longDeg + (longMinutes + (longSeconds / 60)) / 60);
 
-    return new LocationDescription(name, countryCodes, latitude, longitude,
-        comments);
+    return LocationDescription(
+        name, countryCodes, latitude, longitude, comments);
   }
 }
 
@@ -53,15 +57,14 @@ class LocationDescriptionDatabase {
 
   factory LocationDescriptionDatabase.fromString(String data) {
     final lines = data.split('\n');
-    final locations = [];
+    final locations = <LocationDescription>[];
     for (final line in lines) {
       if (line.isEmpty || line[0].startsWith('#')) {
         continue;
       }
-      locations.add(new LocationDescription.fromString(line));
+      locations.add(LocationDescription.fromString(line));
     }
 
-    return new LocationDescriptionDatabase(locations);
+    return LocationDescriptionDatabase(locations);
   }
-
 }

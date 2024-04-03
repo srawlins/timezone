@@ -5,33 +5,51 @@
 /// Locations database
 library timezone.src.location_database;
 
-import 'location.dart';
-import 'exceptions.dart';
+import 'package:timezone/src/exceptions.dart';
+import 'package:timezone/src/location.dart';
 
 /// LocationDatabase provides interface to find [Location]s by their name.
 ///
 ///     List<int> data = load(); // load database
 ///
-///     LocationDatabase db = new LocationDatabase.fromBytes(data);
+///     LocationDatabase db = LocationDatabase.fromBytes(data);
 ///     Location loc = db.get('US/Eastern');
 ///
 class LocationDatabase {
   /// Mapping between [Location] name and [Location].
-  final Map<String, Location> _locations = new Map<String, Location>();
+  final _locations = <String, Location>{};
 
   Map<String, Location> get locations => _locations;
 
-  /// Add [Location] to the database.
+  /// Adds [Location] to the database.
   void add(Location location) {
     _locations[location.name] = location;
   }
 
-  /// Find [Location] by its name.
+  /// Finds [Location] by its name.
   Location get(String name) {
+    if (!isInitialized) {
+      // Before you can get a location, you need to manually initialize the
+      // timezone location database by calling initializeDatabase or similar.
+      throw LocationNotFoundException(
+          'Tried to get location before initializing timezone database');
+    }
+
     final loc = _locations[name];
     if (loc == null) {
-      throw new LocationNotFoundException('Location with the name "$name" doesn\'t exist');
+      throw LocationNotFoundException(
+          'Location with the name "$name" doesn\'t exist');
     }
     return loc;
   }
+
+  /// Clears the database of all [Location] entries.
+  void clear() => _locations.clear();
+
+  /// Returns whether the database is empty, or has [Location] entries.
+  @Deprecated("Use 'isInitialized' instead")
+  bool get isEmpty => isInitialized;
+
+  /// Returns whether the database is empty, or has [Location] entries.
+  bool get isInitialized => _locations.isNotEmpty;
 }
