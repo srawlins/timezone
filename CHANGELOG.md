@@ -1,3 +1,12 @@
+# 0.9.3
+
+- Time zone database updated to 2024d. For your convenience here are the
+  announcements for [2023d], [2024a].
+
+[2023d]: https://mm.icann.org/pipermail/tz-announce/2023-December.txt
+[2024a]: https://mm.icann.org/pipermail/tz-announce/2024-February.txt
+
+
 # 0.9.2
 
 - Time zone database updated to 2023c. For your convenience here are the
