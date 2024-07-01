@@ -221,6 +221,22 @@ class Location {
 
   @override
   String toString() => name;
+
+  // Override equals and hashCode to support comparing
+  // Locations created in different isolates.
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is Location &&
+            runtimeType == other.runtimeType &&
+            name == other.name;
+  }
+
+  @override
+  int get hashCode {
+    return name.hashCode;
+  }
 }
 
 /// A [TimeZone] represents a single time zone such as CEST or CET.
