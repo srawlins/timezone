@@ -1,3 +1,9 @@
+# 0.9.4
+
+- Support cross-isolate issues by overriding `hashCode` and `operator ==` on
+  class `Location`. (see #147)
+- Fix incorrect DST transition. (see #166)
+
 # 0.9.3
 
 - Time zone database updated to 2024a. For your convenience here are the
