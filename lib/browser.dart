@@ -33,7 +33,7 @@ const String tzDataDefaultPath =
 
 /// Initialize Time Zone database.
 ///
-/// Throws [TimeZoneInitException] when something is worng.
+/// Throws [TimeZoneInitException] when something is wrong.
 ///
 /// ```dart
 /// import 'package:timezone/browser.dart';
