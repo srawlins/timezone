@@ -56,7 +56,7 @@ class LocationDescriptionDatabase {
   LocationDescriptionDatabase(this.locations);
 
   factory LocationDescriptionDatabase.fromString(String data) {
-    final lines = data.split('\n');
+    final lines = data.replaceAll('\r\n', '\n').split('\n');
     final locations = <LocationDescription>[];
     for (final line in lines) {
       if (line.isEmpty || line[0].startsWith('#')) {
