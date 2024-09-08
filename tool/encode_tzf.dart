@@ -48,7 +48,7 @@ Future<void> main(List<String> arguments) async {
   final files = await Glob('**').list(root: zoneinfoPath).toList();
   for (final f in files) {
     if (f is pkg_file.File) {
-      final name = p.relative(f.path, from: zoneinfoPath);
+      final name = p.relative(f.path, from: zoneinfoPath).replaceAll('\\', '/');
       log.info('- $name');
       db.add(tzfileLocationToNativeLocation(
           tzfile.Location.fromBytes(name, await f.readAsBytes())));
