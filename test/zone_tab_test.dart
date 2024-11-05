@@ -12,7 +12,7 @@ void main() {
   test('Read zone1970.tab file', () async {
     var packageUri = Uri(scheme: 'package', path: 'timezone/timezone.dart');
     var packagePath = p.dirname(
-        p.dirname((await Isolate.resolvePackageUri(packageUri))!.path));
+        p.dirname((await Isolate.resolvePackageUri(packageUri))!.toFilePath()));
     var locationDir = p.join(packagePath, 'test');
     var rawData =
         await File(p.join(locationDir, 'data/zone1970.tab')).readAsString();
