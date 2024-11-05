@@ -5,6 +5,7 @@ repository: https://github.com/srawlins/timezone
 environment:
   sdk: '>=2.19.0 <3.0.0'
 dependencies:
+  http: ^1.2.1
   path: ^1.8.0
 dev_dependencies:
   args: any

@@ -13,9 +13,7 @@
 /// });
 library timezone.browser;
 
-import 'dart:html';
-import 'dart:typed_data';
-
+import 'package:http/browser_client.dart' as browser;
 import 'package:timezone/timezone.dart';
 
 export 'package:timezone/timezone.dart'
@@ -43,21 +41,25 @@ const String tzDataDefaultPath =
 ///   final detroitNow = TZDateTime.now(detroit);
 /// });
 /// ```
-Future<void> initializeTimeZone([String path = tzDataDefaultPath]) {
-  return HttpRequest.request(path,
-          method: 'GET',
-          responseType: 'arraybuffer',
-          mimeType: 'application/octet-stream')
-      .then((req) {
-    final response = req.response;
-
-    if (response is ByteBuffer) {
-      initializeDatabase(response.asUint8List());
+Future<void> initializeTimeZone([String path = tzDataDefaultPath]) async {
+  final client = browser.BrowserClient();
+  try {
+    final response = await client.get(
+      Uri.parse(path),
+      headers: {'Accept': 'application/octet-stream'},
+    );
+    if (response.statusCode == 200) {
+      initializeDatabase(response.bodyBytes);
     } else {
       throw TimeZoneInitException(
-          'Invalid response type: ${response.runtimeType}');
+        'Request failed with status: ${response.statusCode}',
+      );
     }
-  }).catchError((dynamic e) {
+  } on TimeZoneInitException {
+    rethrow;
+  } on Exception catch (e) {
     throw TimeZoneInitException(e.toString());
-  }, test: (e) => e is! TimeZoneInitException);
+  } finally {
+    client.close();
+  }
 }
