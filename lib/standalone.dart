@@ -63,7 +63,7 @@ Future<List<int>> _loadAsBytes(String path) async {
 
 /// Initialize Time Zone database.
 ///
-/// Throws [TimeZoneInitException] when something is worng.
+/// Throws [TimeZoneInitException] when something is wrong.
 ///
 /// ```dart
 /// import 'package:timezone/standalone.dart';
