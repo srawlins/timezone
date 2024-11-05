@@ -1,3 +1,13 @@
+# 0.10.0
+
+- Update time zone-updating script to use `rearguard.zi`.
+- Convert `browser.dart` to use `package:http` instead of `dart:html` for HTTP
+  requests.
+- Time zone database updated to 2024b. For your convenience here is the
+  announcement for [2024b].
+
+[2024b]: https://lists.iana.org/hyperkitty/list/tz-announce@iana.org/thread/IZ7AO6WRE3W3TWBL5IR6PMQUL433BQIE/
+
 # 0.9.4
 
 - Support cross-isolate issues by overriding `hashCode` and `operator ==` on
