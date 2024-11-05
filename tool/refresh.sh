@@ -14,8 +14,8 @@ curl https://data.iana.org/time-zones/tzdata-latest.tar.gz | tar -zx
 
 echo "Compiling into zoneinfo files..."
 mkdir zoneinfo
-zic -d zoneinfo -b fat africa antarctica asia australasia etcetera europe \
-                northamerica southamerica backward
+make rearguard.zi
+zic -d zoneinfo -b fat rearguard.zi
 
 popd > /dev/null
 
