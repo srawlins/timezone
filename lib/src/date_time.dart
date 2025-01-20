@@ -39,15 +39,20 @@ class TZDateTime implements DateTime {
       // transition, whereas it should be on or after the transition
       if (localOffset - adjustedOffset < 0 &&
           adjustedOffset !=
-              location.lookupTimeZone(localInstant - adjustedOffset).timeZone.offset) {
+              location
+                  .lookupTimeZone(localInstant - adjustedOffset)
+                  .timeZone
+                  .offset) {
         milliseconds = adjustedInstant;
       }
     }
 
     // Ensure original microseconds are preserved regardless of TZ shift.
     final microsecondsSinceEpoch =
-        Duration(milliseconds: milliseconds, microseconds: local.microsecond).inMicroseconds;
-    return DateTime.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch, isUtc: true);
+        Duration(milliseconds: milliseconds, microseconds: local.microsecond)
+            .inMicroseconds;
+    return DateTime.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch,
+        isUtc: true);
   }
 
   /// Native [DateTime] used as a Calendar object.
@@ -137,7 +142,8 @@ class TZDateTime implements DateTime {
       int microsecond = 0])
       : this.from(
             _utcFromLocalDateTime(
-                DateTime.utc(year, month, day, hour, minute, second, millisecond, microsecond),
+                DateTime.utc(year, month, day, hour, minute, second,
+                    millisecond, microsecond),
                 location),
             location);
 
@@ -154,7 +160,8 @@ class TZDateTime implements DateTime {
       int second = 0,
       int millisecond = 0,
       int microsecond = 0])
-      : this(UTC, year, month, day, hour, minute, second, millisecond, microsecond);
+      : this(UTC, year, month, day, hour, minute, second, millisecond,
+            microsecond);
 
   /// Constructs a [TZDateTime] instance specified in the local time zone.
   ///
@@ -169,7 +176,8 @@ class TZDateTime implements DateTime {
       int second = 0,
       int millisecond = 0,
       int microsecond = 0])
-      : this(local, year, month, day, hour, minute, second, millisecond, microsecond);
+      : this(local, year, month, day, hour, minute, second, millisecond,
+            microsecond);
 
   /// Constructs a [TZDateTime] instance with current date and time in the
   /// [location] time zone.
@@ -187,13 +195,19 @@ class TZDateTime implements DateTime {
   /// The constructed [TZDateTime] represents
   /// 1970-01-01T00:00:00Z + [millisecondsSinceEpoch] ms in the given
   /// time zone [location].
-  TZDateTime.fromMillisecondsSinceEpoch(Location location, int millisecondsSinceEpoch)
+  TZDateTime.fromMillisecondsSinceEpoch(
+      Location location, int millisecondsSinceEpoch)
       : this.from(
-            DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch, isUtc: true), location);
+            DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch,
+                isUtc: true),
+            location);
 
-  TZDateTime.fromMicrosecondsSinceEpoch(Location location, int microsecondsSinceEpoch)
+  TZDateTime.fromMicrosecondsSinceEpoch(
+      Location location, int microsecondsSinceEpoch)
       : this.from(
-            DateTime.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch, isUtc: true), location);
+            DateTime.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch,
+                isUtc: true),
+            location);
 
   /// Constructs a new [TZDateTime] instance from the given [DateTime]
   /// in the specified [location].
@@ -203,12 +217,17 @@ class TZDateTime implements DateTime {
   /// final detroitTime = TZDateTime.from(laTime, detroit);
   /// ```
   TZDateTime.from(DateTime other, Location location)
-      : this._(_toNative(other).toUtc(), location,
-            _isUtc(location) ? TimeZone.UTC : location.timeZone(other.millisecondsSinceEpoch));
+      : this._(
+            _toNative(other).toUtc(),
+            location,
+            _isUtc(location)
+                ? TimeZone.UTC
+                : location.timeZone(other.millisecondsSinceEpoch));
 
   TZDateTime._(DateTime native, this.location, this.timeZone)
       : _native = native,
-        _localDateTime = _isUtc(location) ? native : native.add(_timeZoneOffset(timeZone));
+        _localDateTime =
+            _isUtc(location) ? native : native.add(_timeZoneOffset(timeZone));
 
   /// Constructs a new [TZDateTime] instance based on [formattedString].
   ///
@@ -325,12 +344,14 @@ class TZDateTime implements DateTime {
 
   /// Returns a new [TZDateTime] instance with [duration] added to [this].
   @override
-  TZDateTime add(Duration duration) => TZDateTime.from(_native.add(duration), location);
+  TZDateTime add(Duration duration) =>
+      TZDateTime.from(_native.add(duration), location);
 
   /// Returns a new [TZDateTime] instance with [duration] subtracted from
   /// [this].
   @override
-  TZDateTime subtract(Duration duration) => TZDateTime.from(_native.subtract(duration), location);
+  TZDateTime subtract(Duration duration) =>
+      TZDateTime.from(_native.subtract(duration), location);
 
   /// Returns a [Duration] with the difference between [this] and [other].
   @override
@@ -396,7 +417,8 @@ class TZDateTime implements DateTime {
   /// assert(berlinWallFell.isAtSameMomentAs(moonLanding) == false);
   /// ```
   @override
-  bool isAtSameMomentAs(DateTime other) => _native.isAtSameMomentAs(_toNative(other));
+  bool isAtSameMomentAs(DateTime other) =>
+      _native.isAtSameMomentAs(_toNative(other));
 
   /// Compares this [TZDateTime] object to [other],
   /// returning zero if the values occur at the same moment.
@@ -426,7 +448,8 @@ class TZDateTime implements DateTime {
   @override
   Duration get timeZoneOffset => _timeZoneOffset(timeZone);
 
-  static Duration _timeZoneOffset(TimeZone timeZone) => Duration(milliseconds: timeZone.offset);
+  static Duration _timeZoneOffset(TimeZone timeZone) =>
+      Duration(milliseconds: timeZone.offset);
 
   /// The year.
   @override
@@ -469,7 +492,8 @@ class TZDateTime implements DateTime {
 }
 
 extension TZDateTimeCopyWith on TZDateTime {
-  /// Creates a new [TZDateTime] from this one by updating individual properties.
+  /// Creates a new [TZDateTime] from this one by updating individual
+  /// properties.
   ///
   /// The [copyWith] method creates a new [TZDateTime] object with values
   /// for the properties [TZDateTime.year], [TZDateTime.hour], etc, provided by
