@@ -1,3 +1,12 @@
+# 0.10.1
+
+- Time zone database updated to 2025b. For your convenience here is the
+  announcement for [2025a], [2025b].
+- Added a `native` getter for `TZDateTime`. Thanks @klondikedragon!
+
+[2025a]: https://lists.iana.org/hyperkitty/list/tz-announce@iana.org/thread/MWII7R3HMCEDNUCIYQKSSTYYR7UWK4OQ/
+[2025b]: https://lists.iana.org/hyperkitty/list/tz-announce@iana.org/thread/6JVHNHLB6I2WAYTQ75L6KEPEQHFXAJK3/
+
 # 0.10.0
 
 - Update time zone-updating script to use `rearguard.zi`.
