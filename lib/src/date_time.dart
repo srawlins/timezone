@@ -68,6 +68,9 @@ class TZDateTime implements DateTime {
   /// Represents the same moment as this [TZDateTime].
   final DateTime _native;
 
+  /// Returns a native DateTime object representing this same point in time.
+  DateTime get native => _native;
+
   /// The number of milliseconds since
   /// the "Unix epoch" 1970-01-01T00:00:00Z (UTC).
   ///
