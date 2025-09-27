@@ -9,6 +9,8 @@ details.
 You can update to the current IANA time zone database by running
 `tool/refresh.sh`.
 
+Getting the current timezone of the device that the app is running on is  
+highly platform dependent and is not a goal of this package. 
 
 ## Initialization
 
