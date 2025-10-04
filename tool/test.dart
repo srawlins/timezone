@@ -1,27 +1,41 @@
 import 'dart:io';
+import 'package:args/args.dart';
 
-import 'encode_dart.dart' as encodeDart;
-import 'encode_tzf.dart' as encodeTzf;
+import 'encode_dart.dart' as encode_dart;
+import 'encode_tzf.dart' as encode_tzf;
 
 const String _sourceUrl =
     "https://data.iana.org/time-zones/tzdata-latest.tar.gz";
 
-Future<void> main() async {
+Future<void> main(List<String> args) async {
+  final parser = ArgParser()
+    ..addOption('output',
+        abbr: 'o',
+        help: 'Output directory (default: lib/data)',
+        defaultsTo: 'lib/data');
+
+  final argResults = parser.parse(args);
+  final outputPath = argResults['output'] as String;
+  final outputDir = Directory(outputPath);
+
+  await outputDir.create(recursive: true);
+  print('Writing output to: ${outputDir.absolute.path}');
+
   final tmpDir = await _makeTempDirectory();
 
-  await _downloadAndExtractTarGz(Uri.parse(_sourceUrl), tmpDir);
+  try {
+    await _downloadAndExtractTarGz(Uri.parse(_sourceUrl), tmpDir);
+    await runMake(tmpDir);
+    await runZic(tmpDir);
 
-  await runMake(tmpDir);
-  await runZic(tmpDir);
+    await runEncodeTzf('${tmpDir.path}/zoneinfo', outputDir.path);
+    await runEmbedScopes(outputDir.path);
+    await formatDartFiles(outputDir.path);
+  } finally {
+    print('Cleaning up temp files...');
+    await tmpDir.delete(recursive: true);
+  }
 
-  await Directory('lib/data').create(recursive: true);
-
-  await runEncodeTzf('${tmpDir.path}/zoneinfo');
-  await runEmbedScopes();
-  await formatDartFiles();
-
-  print('Cleaning up...');
-  await tmpDir.delete(recursive: true);
   print('Done!');
 }
 
@@ -58,9 +72,9 @@ Future<void> _downloadAndExtractTarGz(Uri url, Directory outputDir) async {
   print('Extracted tzdata to ${outputDir.path}');
 }
 
-Future<void> formatDartFiles() async {
-  print('Formatting Dart files...');
-  final result = await Process.run('dart', ['format', 'lib/data']);
+Future<void> formatDartFiles(String outputPath) async {
+  print('Formatting Dart files in $outputPath...');
+  final result = await Process.run('dart', ['format', outputPath]);
 
   if (result.exitCode != 0) {
     print('Formatting failed:\n${result.stderr}');
@@ -70,20 +84,27 @@ Future<void> formatDartFiles() async {
   print('Formatting complete');
 }
 
-Future<void> runEmbedScopes() async {
+Future<void> runEmbedScopes(String outputPath) async {
   const scopes = ['latest', 'latest_all', 'latest_10y'];
 
   for (final scope in scopes) {
+    final tzfPath = '$outputPath/$scope.tzf';
+    final dartPath = '$outputPath/$scope.dart';
+
     print('Creating embedding: $scope...');
-    await encodeDart.encodeDart('lib/data/$scope.tzf', 'lib/data/$scope.dart');
-    print('Created embedding: $scope');
+    await encode_dart.encodeDart(tzfPath, dartPath);
+    print('Created: $dartPath');
   }
 }
 
-Future<void> runEncodeTzf(String zoneInfoPath) async {
+Future<void> runEncodeTzf(String zoneInfoPath, String outputPath) async {
   print('Running encode_tzf.dart...');
-  await encodeTzf.encodeTzf(zoneInfoPath: zoneInfoPath);
-  print('encode_tzf.dart completed');
+  await encode_tzf.encodeTzf(
+    zoneInfoPath: zoneInfoPath,
+    outputCommon: '$outputPath/latest.tzf',
+    outputAll: '$outputPath/latest_all.tzf',
+    output10y: '$outputPath/latest_10y.tzf',
+  );
 }
 
 Future<void> runZic(Directory dir) async {
