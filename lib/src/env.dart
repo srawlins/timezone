@@ -12,7 +12,7 @@ const String tzDataDefaultFilename = 'latest.tzf';
 final _UTC = Location('UTC', [minTime], [0], [TimeZone.UTC]);
 
 final _database = LocationDatabase();
-late Location _local;
+Location _local = _UTC;
 
 /// Global TimeZone database
 LocationDatabase get timeZoneDatabase => _database;
