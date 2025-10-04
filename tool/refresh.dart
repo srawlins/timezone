@@ -8,6 +8,16 @@ const String _sourceUrl =
     "https://data.iana.org/time-zones/tzdata-latest.tar.gz";
 
 Future<void> main(List<String> args) async {
+  try {
+    await _checkCommand('curl');
+    await _checkCommand('tar');
+    await _checkCommand('make');
+    await _checkCommand('zic');
+  } on Exception catch (e) {
+    print(e);
+    return;
+  }
+
   final parser = ArgParser()
     ..addOption('output',
         abbr: 'o', help: 'Output directory)', defaultsTo: 'lib/data')
@@ -151,4 +161,11 @@ Future<void> runMake(Directory dir) async {
   }
 
   print('make rearguard.zi succeeded');
+}
+
+Future<void> _checkCommand(String cmd) async {
+  final result = await Process.run('which', [cmd]);
+  if (result.exitCode != 0) {
+    throw Exception('Required command `$cmd` not found. Please install it.');
+  }
 }
