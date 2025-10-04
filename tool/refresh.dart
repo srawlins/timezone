@@ -10,34 +10,21 @@ const String _sourceUrl =
 Future<void> main(List<String> args) async {
   final parser = ArgParser()
     ..addOption('output',
-        abbr: 'o',
-        help: 'Output directory (default: lib/data)',
-        defaultsTo: 'lib/data')
+        abbr: 'o', help: 'Output directory)', defaultsTo: 'lib/data')
     ..addOption('source',
-        abbr: 's',
-        help: 'Source URL for timezone data (default: $_sourceUrl)',
-        defaultsTo: _sourceUrl)
-    ..addFlag(
-      'help',
-      abbr: 'h',
-      hide: true,
-    );
+        abbr: 's', help: 'Source URL for timezone data', defaultsTo: _sourceUrl)
+    ..addFlag('help', abbr: 'h', help: 'Show help information');
 
   final argResults = parser.parse(args);
+
   if (argResults['help'] == true) {
     print(
         "\nWELCOME TO TIMEZONE DATA GENERATOR\n\nThis utility is used to generate/regenerate timezone files (*.tzf/*.dart) from the latest archive of timezone data from IANA.\n\nIMPORTANT NOTE: This utility only works on Linux and Unix-like systems due its dependence on ZIC utility. So If you are using Windows, please run this in a WSL environment.\n\nOptions:\n");
-    print(
-    // ignore: lines_longer_than_80_chars
-        '${"--help".padRight(10)} ${"-h".padRight(5)} shows the utility options.');
-    print(
-    // ignore: lines_longer_than_80_chars
-        '${"--output".padRight(10)} ${"-o".padRight(5)} sets the output dir for the generated files.\n${"".padLeft(16)} defaults to \'lib/data\'');
-    print(
-    // ignore: lines_longer_than_80_chars
-        '${"--source".padRight(10)} ${"-s".padRight(5)} Source URL for timezone data.\n${"".padLeft(16)} defaults to: \'$_sourceUrl\'');
+    print('Timezone Data Generator Tool');
+    print(parser.usage);
     return;
   }
+
   final outputPath = argResults['output'] as String;
   final sourceURL = argResults['source'] as String;
   final outputDir = Directory(outputPath);
