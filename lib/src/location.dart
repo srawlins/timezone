@@ -45,27 +45,55 @@ class Location {
   // since January 1, 1970 UTC, to match the argument
   // to lookup.
   static final int _cacheNow = DateTime.now().millisecondsSinceEpoch;
-  int _cacheStart = 0;
-  int _cacheEnd = 0;
-  late TimeZone _cacheZone;
+  final int _cacheStart;
+  final int _cacheEnd;
+  final TimeZone _cacheZone;
 
-  Location(this.name, this.transitionAt, this.transitionZone, this.zones) {
+  Location._(
+    this.name,
+    this.transitionAt,
+    this.transitionZone,
+    this.zones,
+    this._cacheStart,
+    this._cacheEnd,
+    this._cacheZone,
+  );
+
+  factory Location(
+    String name,
+    List<int> transitionAt,
+    List<int> transitionZone,
+    List<TimeZone> zones,
+  ) {
     // Fill in the cache with information about right now,
     // since that will be the most common lookup.
+    int cacheStart = 0;
+    int cacheEnd = maxTime;
+    TimeZone cacheZone = TimeZone.UTC; // fallback
+
     for (var i = 0; i < transitionAt.length; i++) {
       final tAt = transitionAt[i];
 
       if ((tAt <= _cacheNow) &&
           ((i + 1 == transitionAt.length) ||
               (_cacheNow < transitionAt[i + 1]))) {
-        _cacheStart = tAt;
-        _cacheEnd = maxTime;
+        cacheStart = tAt;
+        cacheEnd = maxTime;
         if (i + 1 < transitionAt.length) {
-          _cacheEnd = transitionAt[i + 1];
+          cacheEnd = transitionAt[i + 1];
         }
-        _cacheZone = zones[transitionZone[i]];
+        cacheZone = zones[transitionZone[i]];
       }
     }
+    return Location._(
+      name,
+      transitionAt,
+      transitionZone,
+      zones,
+      cacheStart,
+      cacheEnd,
+      cacheZone,
+    );
   }
 
   /// translate instant in time expressed as milliseconds since
