@@ -86,3 +86,58 @@ Future<void> main(List<String> arguments) async {
   await write(args['output-common'] as String, commonDb.db);
   await write(args['output-10y'] as String, common_10y_Db.db);
 }
+
+
+
+Future<void> encodeTzf({required String zoneInfoPath, String outputAll = 'lib/data/latest_all.tzf', String outputCommon= 'lib/data/latest.tzf',String output10y = 'lib/data/latest_10y.tzf' }) async {
+  // Initialize logger
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((LogRecord rec) {
+    print('${rec.level.name}: ${rec.time}: ${rec.message}');
+  });
+  final log = Logger('main');
+
+  final db = LocationDatabase();
+
+  log.info('Importing zoneinfo files');
+  final files = await Glob('**').list(root: zoneInfoPath).toList();
+  for (final f in files) {
+    if (f is pkg_file.File) {
+      final name = p.relative(f.path, from: zoneInfoPath).replaceAll('\\', '/');
+      log.info('- $name');
+      db.add(tzfileLocationToNativeLocation(
+          tzfile.Location.fromBytes(name, await f.readAsBytes())));
+    }
+  }
+
+  void logReport(FilterReport r) {
+    log.info('  + locations: ${r.originalLocationsCount} => '
+        '${r.newLocationsCount}');
+    log.info('  + transitions: ${r.originalTransitionsCount} => '
+        '${r.newTransitionsCount}');
+  }
+
+  log.info('Building location databases:');
+
+  log.info('- all locations');
+  final allDb = filterTimeZoneData(db);
+  logReport(allDb.report);
+
+  log.info('- common locations from all locations');
+  final commonDb = filterTimeZoneData(allDb.db, locations: commonLocations);
+  logReport(commonDb.report);
+
+  log.info('- [+- 5 years] from common locations');
+  final common_10y_Db = filterTimeZoneData(commonDb.db,
+      dateFrom: DateTime(DateTime.now().year - 5, 1, 1).millisecondsSinceEpoch,
+      dateTo: DateTime(DateTime.now().year + 5, 1, 1).millisecondsSinceEpoch,
+      locations: commonLocations);
+  logReport(common_10y_Db.report);
+
+  log.info('Serializing location databases');
+  Future<void> write(String file, LocationDatabase db) =>
+      File(file).writeAsBytes(tzdbSerialize(db), flush: true);
+  await write(outputAll, allDb.db);
+  await write(outputCommon, commonDb.db);
+  await write(output10y, common_10y_Db.db);
+}

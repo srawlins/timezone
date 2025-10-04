@@ -14,6 +14,16 @@ Future<void> main(List<String> args) async {
   File(dartLibraryPath).writeAsStringSync(generatedDartFile);
 }
 
+Future<void> encodeDart(String tzDataPath, String filePath) async {
+  final bytes = File(tzDataPath).readAsBytesSync();
+  final generatedDartFile = generateDartFile(
+    name: p.basenameWithoutExtension(tzDataPath),
+    data: bytesAsString(bytes),
+  );
+  File(filePath) .writeAsStringSync(generatedDartFile);
+}
+
+
 String bytesAsString(Uint8List bytes) {
   assert(bytes.length.isEven);
   return bytes.buffer
