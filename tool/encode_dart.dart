@@ -20,9 +20,8 @@ Future<void> encodeDart(String tzDataPath, String filePath) async {
     name: p.basenameWithoutExtension(tzDataPath),
     data: bytesAsString(bytes),
   );
-  File(filePath) .writeAsStringSync(generatedDartFile);
+  File(filePath).writeAsStringSync(generatedDartFile);
 }
-
 
 String bytesAsString(Uint8List bytes) {
   assert(bytes.length.isEven);

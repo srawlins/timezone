@@ -87,9 +87,11 @@ Future<void> main(List<String> arguments) async {
   await write(args['output-10y'] as String, common_10y_Db.db);
 }
 
-
-
-Future<void> encodeTzf({required String zoneInfoPath, String outputAll = 'lib/data/latest_all.tzf', String outputCommon= 'lib/data/latest.tzf',String output10y = 'lib/data/latest_10y.tzf' }) async {
+Future<void> encodeTzf(
+    {required String zoneInfoPath,
+    String outputAll = 'lib/data/latest_all.tzf',
+    String outputCommon = 'lib/data/latest.tzf',
+    String output10y = 'lib/data/latest_10y.tzf'}) async {
   // Initialize logger
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((LogRecord rec) {
