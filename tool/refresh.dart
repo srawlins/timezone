@@ -4,8 +4,10 @@ import 'package:args/args.dart';
 import 'encode_dart.dart' as encode_dart;
 import 'encode_tzf.dart' as encode_tzf;
 
-const String _sourceUrl =
+const String _defaultSourceUrl =
     "https://data.iana.org/time-zones/tzdata-latest.tar.gz";
+
+const String _defaultFilePrefix = "latest";
 
 Future<void> main(List<String> args) async {
   try {
@@ -22,21 +24,38 @@ Future<void> main(List<String> args) async {
     ..addOption('output',
         abbr: 'o', help: 'Output directory)', defaultsTo: 'lib/data')
     ..addOption('source',
-        abbr: 's', help: 'Source URL for timezone data', defaultsTo: _sourceUrl)
+        abbr: 's',
+        help: 'Source URL for timezone data',
+        defaultsTo: _defaultSourceUrl)
+    ..addOption('file-prefix',
+        abbr: 'p',
+        help:
+            // ignore: lines_longer_than_80_chars
+            'Prefix for the generated files. E.g.: "latest", "2025", etc.\nRequired when passing a custom source',
+        defaultsTo: _defaultFilePrefix)
     ..addFlag('help', abbr: 'h', help: 'Show help information');
 
   final argResults = parser.parse(args);
 
   if (argResults['help'] == true) {
     print(
-        "\nWELCOME TO TIMEZONE DATA GENERATOR\n\nThis utility is used to generate/regenerate timezone files (*.tzf/*.dart) from the latest archive of timezone data from IANA.\n\nIMPORTANT NOTE: This utility only works on Linux and Unix-like systems due its dependence on ZIC utility. So If you are using Windows, please run this in a WSL environment.\n\nOptions:\n");
+        "\nWELCOME TO TIMEZONE DATA GENERATOR\n\nThis utility is used to generate/regenerate timezone files (*.tzf/*.dart) from IANA timezone data archives. See https://data.iana.org/time-zones.\n\nIMPORTANT NOTE: This utility only works on Linux and Unix-like systems due its dependence on ZIC utility. So If you are using Windows, please run this in a WSL environment.\n\nOptions:\n");
     print('Timezone Data Generator Tool');
     print(parser.usage);
     return;
   }
 
-  final outputPath = argResults['output'] as String;
   final sourceURL = argResults['source'] as String;
+  final filePrefix = argResults['file-prefix'] as String;
+
+  if (sourceURL != _defaultSourceUrl && filePrefix == _defaultFilePrefix) {
+    print(
+        // ignore: lines_longer_than_80_chars
+        "Error: When using a custom source URL, you must also provide a custom --file-prefix to avoid overwriting default files.");
+    return;
+  }
+
+  final outputPath = argResults['output'] as String;
   final outputDir = Directory(outputPath);
 
   await outputDir.create(recursive: true);
@@ -49,8 +68,8 @@ Future<void> main(List<String> args) async {
     await runMake(tmpDir);
     await runZic(tmpDir);
 
-    await runEncodeTzf('${tmpDir.path}/zoneinfo', outputDir.path);
-    await runEmbedScopes(outputDir.path);
+    await runEncodeTzf(filePrefix, '${tmpDir.path}/zoneinfo', outputDir.path);
+    await runEmbedScopes(filePrefix, outputDir.path);
     await formatDartFiles(outputDir.path);
   } finally {
     print('Cleaning up temp files...');
@@ -105,8 +124,8 @@ Future<void> formatDartFiles(String outputPath) async {
   print('Formatting complete');
 }
 
-Future<void> runEmbedScopes(String outputPath) async {
-  const scopes = ['latest', 'latest_all', 'latest_10y'];
+Future<void> runEmbedScopes(String filePrefix, String outputPath) async {
+  final scopes = [filePrefix, '${filePrefix}_all', '${filePrefix}_10y'];
 
   for (final scope in scopes) {
     final tzfPath = '$outputPath/$scope.tzf';
@@ -118,13 +137,14 @@ Future<void> runEmbedScopes(String outputPath) async {
   }
 }
 
-Future<void> runEncodeTzf(String zoneInfoPath, String outputPath) async {
+Future<void> runEncodeTzf(
+    String filePrefix, String zoneInfoPath, String outputPath) async {
   print('Running encode_tzf.dart...');
   await encode_tzf.encodeTzf(
     zoneInfoPath: zoneInfoPath,
-    outputCommon: '$outputPath/latest.tzf',
-    outputAll: '$outputPath/latest_all.tzf',
-    output10y: '$outputPath/latest_10y.tzf',
+    outputCommon: '$outputPath/$filePrefix.tzf',
+    outputAll: '$outputPath/${filePrefix}_all.tzf',
+    output10y: '$outputPath/${filePrefix}_10y.tzf',
   );
 }
 
