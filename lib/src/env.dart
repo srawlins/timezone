@@ -52,5 +52,5 @@ void initializeDatabase(List<int> rawData) {
     _database.add(l);
   }
 
-  _local = _UTC;
+  setLocalLocation(_UTC);
 }
