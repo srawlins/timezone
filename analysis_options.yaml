@@ -20,7 +20,6 @@ linter:
     - avoid_unused_constructor_parameters
     - directives_ordering
     - lines_longer_than_80_chars
-    - package_api_docs
     - prefer_asserts_in_initializer_lists
     - prefer_if_elements_to_conditional_expressions
     - unawaited_futures

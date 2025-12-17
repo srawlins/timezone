@@ -50,16 +50,23 @@ Future<void> main(List<String> arguments) async {
     if (f is pkg_file.File) {
       final name = p.relative(f.path, from: zoneinfoPath).replaceAll('\\', '/');
       log.info('- $name');
-      db.add(tzfileLocationToNativeLocation(
-          tzfile.Location.fromBytes(name, await f.readAsBytes())));
+      db.add(
+        tzfileLocationToNativeLocation(
+          tzfile.Location.fromBytes(name, await f.readAsBytes()),
+        ),
+      );
     }
   }
 
   void logReport(FilterReport r) {
-    log.info('  + locations: ${r.originalLocationsCount} => '
-        '${r.newLocationsCount}');
-    log.info('  + transitions: ${r.originalTransitionsCount} => '
-        '${r.newTransitionsCount}');
+    log.info(
+      '  + locations: ${r.originalLocationsCount} => '
+      '${r.newLocationsCount}',
+    );
+    log.info(
+      '  + transitions: ${r.originalTransitionsCount} => '
+      '${r.newTransitionsCount}',
+    );
   }
 
   log.info('Building location databases:');
@@ -73,10 +80,12 @@ Future<void> main(List<String> arguments) async {
   logReport(commonDb.report);
 
   log.info('- [+- 5 years] from common locations');
-  final common_10y_Db = filterTimeZoneData(commonDb.db,
-      dateFrom: DateTime(DateTime.now().year - 5, 1, 1).millisecondsSinceEpoch,
-      dateTo: DateTime(DateTime.now().year + 5, 1, 1).millisecondsSinceEpoch,
-      locations: commonLocations);
+  final common_10y_Db = filterTimeZoneData(
+    commonDb.db,
+    dateFrom: DateTime(DateTime.now().year - 5, 1, 1).millisecondsSinceEpoch,
+    dateTo: DateTime(DateTime.now().year + 5, 1, 1).millisecondsSinceEpoch,
+    locations: commonLocations,
+  );
   logReport(common_10y_Db.report);
 
   log.info('Serializing location databases');

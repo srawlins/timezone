@@ -12,7 +12,7 @@
 ///  final now = TZDateTime.now(detroit);
 /// });
 /// ```
-library timezone.standalone;
+library;
 
 import 'dart:io' hide BytesBuilder;
 import 'dart:isolate';
@@ -39,24 +39,29 @@ Future<List<int>> _loadAsBytes(String path) async {
   if (scheme.startsWith('http')) {
     // TODO: This path is not tested. How would one get to this situation?
     return HttpClient()
-        .getUrl(Uri(
+        .getUrl(
+          Uri(
             scheme: script.scheme,
             host: script.host,
             port: script.port,
-            path: path))
+            path: path,
+          ),
+        )
         .then((req) {
-      return req.close();
-    }).then((response) {
-      // join byte buffers
-      return response
-          .fold(BytesBuilder(), (BytesBuilder b, d) => b..add(d))
-          .then((builder) {
-        return builder.takeBytes();
-      });
-    });
+          return req.close();
+        })
+        .then((response) {
+          // join byte buffers
+          return response
+              .fold(BytesBuilder(), (BytesBuilder b, d) => b..add(d))
+              .then((builder) {
+                return builder.takeBytes();
+              });
+        });
   } else {
     var uri = await Isolate.resolvePackageUri(
-        Uri(scheme: 'package', path: 'timezone/$path'));
+      Uri(scheme: 'package', path: 'timezone/$path'),
+    );
     return File(p.fromUri(uri)).readAsBytes();
   }
 }
@@ -75,9 +80,11 @@ Future<List<int>> _loadAsBytes(String path) async {
 /// ```
 Future<void> initializeTimeZone([String? path]) {
   path ??= tzDataDefaultPath;
-  return _loadAsBytes(path).then((rawData) {
-    initializeDatabase(rawData);
-  }).catchError((dynamic e) {
-    throw TimeZoneInitException(e.toString());
-  });
+  return _loadAsBytes(path)
+      .then((rawData) {
+        initializeDatabase(rawData);
+      })
+      .catchError((dynamic e) {
+        throw TimeZoneInitException(e.toString());
+      });
 }

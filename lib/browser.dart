@@ -11,7 +11,7 @@
 ///  final detroit = getLocation('America/Detroit');
 ///  final now = TZDateTime.now(detroit);
 /// });
-library timezone.browser;
+library;
 
 import 'package:http/browser_client.dart' as browser;
 import 'package:timezone/timezone.dart';

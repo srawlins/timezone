@@ -15,8 +15,14 @@ Future<void> main() async {
     for (var i = startTime; i >= 0; i -= timeStep) {
       var time1 = DateTime.fromMillisecondsSinceEpoch(i);
 
-      var tzTime1 = TZDateTime(location, time1.year, time1.month, time1.day,
-          time1.hour, time1.minute);
+      var tzTime1 = TZDateTime(
+        location,
+        time1.year,
+        time1.month,
+        time1.day,
+        time1.hour,
+        time1.minute,
+      );
 
       DateTime localTime2 = tzTime1.toLocal();
 
@@ -31,8 +37,14 @@ Future<void> main() async {
     for (var i = startTime; i >= 0; i -= timeStep) {
       var time1 = DateTime.fromMillisecondsSinceEpoch(i);
 
-      var tzTime1 = TZDateTime(location, time1.year, time1.month, time1.day,
-          time1.hour, time1.minute);
+      var tzTime1 = TZDateTime(
+        location,
+        time1.year,
+        time1.month,
+        time1.day,
+        time1.hour,
+        time1.minute,
+      );
 
       DateTime localTime2 = tzTime1.toLocal();
 
@@ -47,8 +59,14 @@ Future<void> main() async {
     for (var i = startTime; i >= 0; i -= timeStep) {
       var time1 = DateTime.fromMillisecondsSinceEpoch(i);
 
-      var tzTime1 = TZDateTime(location, time1.year, time1.month, time1.day,
-          time1.hour, time1.minute);
+      var tzTime1 = TZDateTime(
+        location,
+        time1.year,
+        time1.month,
+        time1.day,
+        time1.hour,
+        time1.minute,
+      );
 
       DateTime localTime2 = tzTime1.toLocal();
 
@@ -63,8 +81,14 @@ Future<void> main() async {
     for (var i = startTime; i >= 0; i -= timeStep) {
       var time1 = DateTime.fromMillisecondsSinceEpoch(i);
 
-      var tzTime1 = TZDateTime(location, time1.year, time1.month, time1.day,
-          time1.hour, time1.minute);
+      var tzTime1 = TZDateTime(
+        location,
+        time1.year,
+        time1.month,
+        time1.day,
+        time1.hour,
+        time1.minute,
+      );
 
       DateTime localTime2 = tzTime1.toLocal();
 

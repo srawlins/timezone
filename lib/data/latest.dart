@@ -10,7 +10,8 @@ import 'package:timezone/src/exceptions.dart';
 void initializeTimeZones() {
   try {
     initializeDatabase(
-        Uint16List.fromList(_embeddedData.codeUnits).buffer.asUint8List());
+      Uint16List.fromList(_embeddedData.codeUnits).buffer.asUint8List(),
+    );
   }
   // ignore: avoid_catches_without_on_clauses
   catch (e) {
