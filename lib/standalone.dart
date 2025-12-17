@@ -80,9 +80,7 @@ Future<List<int>> _loadAsBytes(String path) async {
 /// ```
 Future<void> initializeTimeZone([String? path]) {
   path ??= tzDataDefaultPath;
-  return _loadAsBytes(path)
-      .then(initializeDatabase)
-      .catchError((dynamic e) {
-        throw TimeZoneInitException(e.toString());
-      });
+  return _loadAsBytes(path).then(initializeDatabase).catchError((dynamic e) {
+    throw TimeZoneInitException(e.toString());
+  });
 }
