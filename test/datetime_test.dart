@@ -34,7 +34,7 @@ Future<void> main() async {
       // New York time should be 5 hours behind UTC.
       expect(
         newYorkTime.hour,
-        equals(localTime.toUtc().subtract(Duration(hours: 5)).hour),
+        equals(localTime.toUtc().subtract(const Duration(hours: 5)).hour),
       );
     });
 
@@ -308,7 +308,7 @@ Future<void> main() async {
         'timezone', () {
       expect(
         () => getLocation('non-existent-location'),
-        throwsA(TypeMatcher<LocationNotFoundException>()),
+        throwsA(const TypeMatcher<LocationNotFoundException>()),
       );
     });
   });

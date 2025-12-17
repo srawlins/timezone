@@ -14,15 +14,15 @@
 library;
 
 import 'package:http/browser_client.dart' as browser;
-import 'package:timezone/timezone.dart';
+import 'timezone.dart';
 
 export 'package:timezone/timezone.dart'
     show
+        Location,
+        TZDateTime,
+        TimeZone,
         getLocation,
         setLocalLocation,
-        TZDateTime,
-        Location,
-        TimeZone,
         timeZoneDatabase;
 
 /// Path to the Time Zone default database.

@@ -2,9 +2,9 @@
 // file for details. All rights reserved. Use of this source code is governed
 // by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:timezone/src/location.dart';
-import 'package:timezone/src/location_database.dart';
-import 'package:timezone/src/tzdb.dart';
+import 'location.dart';
+import 'location_database.dart';
+import 'tzdb.dart';
 
 /// File name of the Time Zone default database.
 const String tzDataDefaultFilename = 'latest.tzf';

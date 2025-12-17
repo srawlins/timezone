@@ -18,15 +18,15 @@ import 'dart:io' hide BytesBuilder;
 import 'dart:isolate';
 import 'dart:typed_data';
 import 'package:path/path.dart' as p;
-import 'package:timezone/timezone.dart';
+import 'timezone.dart';
 
 export 'package:timezone/timezone.dart'
     show
+        Location,
+        TZDateTime,
+        TimeZone,
         getLocation,
         setLocalLocation,
-        TZDateTime,
-        Location,
-        TimeZone,
         timeZoneDatabase;
 
 final String tzDataDefaultPath = p.join('data', tzDataDefaultFilename);
@@ -81,9 +81,7 @@ Future<List<int>> _loadAsBytes(String path) async {
 Future<void> initializeTimeZone([String? path]) {
   path ??= tzDataDefaultPath;
   return _loadAsBytes(path)
-      .then((rawData) {
-        initializeDatabase(rawData);
-      })
+      .then(initializeDatabase)
       .catchError((dynamic e) {
         throw TimeZoneInitException(e.toString());
       });

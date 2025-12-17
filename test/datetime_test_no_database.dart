@@ -15,7 +15,7 @@ void main() {
       expect(
         () => getLocation('America/New_York'),
         throwsA(
-          TypeMatcher<LocationNotFoundException>().having(
+          const TypeMatcher<LocationNotFoundException>().having(
             (e) => e.msg,
             'msg',
             contains('database'),

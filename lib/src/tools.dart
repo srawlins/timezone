@@ -4,8 +4,8 @@
 
 import 'dart:collection';
 
-import 'package:timezone/timezone.dart';
-import 'package:timezone/tzdata.dart' as tzfile;
+import '../timezone.dart';
+import '../tzdata.dart' as tzfile;
 
 const commonLocations = [
   'Africa/Abidjan',
