@@ -1,3 +1,9 @@
+# 0.10.2
+
+- Upgrade minimum SDK to `^3.10.0` and the databases to [2025c].
+
+[2025c]: https://lists.iana.org/hyperkitty/list/tz-announce@iana.org/thread/TAGXKYLMAQRZRFTERQ33CEKOW7KRJVAK/
+
 # 0.10.1
 
 - Time zone database updated to 2025b. For your convenience here is the
