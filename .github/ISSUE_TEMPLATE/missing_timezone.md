@@ -7,7 +7,7 @@ assignees: ''
 ---
 
 ### ⚠️ IMPORTANT: Have you tried `latest_all.dart`?
-The standard `latest.dart` library only contains **canonical** (current) timezone names. Many requested timezones (like `Europe/Kiev`) are **deprecated or legacy names** in the IANA database.
+The standard `latest.dart` library only contains **canonical** (current) timezone names. Many requested timezones (like `Europe/Kiev`) are **deprecated or legacy names** in the [IANA database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
 
 **Please check if your timezone is available by importing the "all" library instead:**
 ```dart
