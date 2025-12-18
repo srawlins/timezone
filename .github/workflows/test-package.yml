@@ -22,8 +22,8 @@ jobs:
       matrix:
         sdk: [dev]
     steps:
-      - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+      - uses: dart-lang/setup-dart@21e68f4d54916e6c2f68f8c290b2aed9b02cbd3e
         with:
           sdk: ${{ matrix.sdk }}
       - id: install
@@ -49,8 +49,8 @@ jobs:
         os: [ubuntu-latest]
         sdk: [3.7.0, dev]
     steps:
-      - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+      - uses: dart-lang/setup-dart@21e68f4d54916e6c2f68f8c290b2aed9b02cbd3e
         with:
           sdk: ${{ matrix.sdk }}
       - id: install
@@ -68,8 +68,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+      - uses: dart-lang/setup-dart@21e68f4d54916e6c2f68f8c290b2aed9b02cbd3e
         with:
           sdk: dev
       - id: install
@@ -87,9 +87,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'schedule'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
       
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@21e68f4d54916e6c2f68f8c290b2aed9b02cbd3e
         with:
           sdk: dev
 
