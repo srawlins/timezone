@@ -122,7 +122,7 @@ Uint8List _serializeLocation(Location location) {
   offset = zonesOffset;
   for (var i = 0; i < location.zones.length; i++) {
     final zone = location.zones[i];
-    buffer.setInt32(offset, zone.offset ~/ 1000); // convert to sec
+    buffer.setInt32(offset, zone.offset.inSeconds); // convert to sec
     buffer.setUint8(offset + 4, zone.isDst ? 1 : 0);
     buffer.setUint8(offset + 5, zoneAbbreviationOffsets[i]);
     offset += 8;
@@ -203,7 +203,7 @@ Location _deserializeLocation(Uint8List data) {
   offset = zonesOffset;
   assert((offset % 4) == 0);
   for (var i = 0; i < zonesLength; i++) {
-    final zoneOffset = bdata.getInt32(offset) * 1000; // convert to ms
+    final zoneOffset = Duration(seconds: bdata.getInt32(offset));
     final zoneIsDst = bdata.getUint8(offset + 4);
     final zoneAbbreviationIndex = bdata.getUint8(offset + 5);
     offset += 8;

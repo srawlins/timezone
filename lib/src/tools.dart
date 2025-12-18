@@ -533,7 +533,7 @@ Location tzfileLocationToNativeLocation(tzfile.Location loc) {
   for (final z in loc.zones) {
     zones.add(
       TimeZone(
-        z.offset * 1000,
+        Duration(seconds: z.offset),
         isDst: z.isDst,
         abbreviation: loc.abbreviations[z.abbreviationIndex],
       ),

@@ -1,3 +1,7 @@
+# 0.11.0
+
+- Make `Location.offset` a `Duration` instead of an `int`.
+
 # 0.10.2
 
 - Upgrade minimum SDK to `^3.10.0` and the databases to [2025c].

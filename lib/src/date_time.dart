@@ -22,12 +22,12 @@ class TZDateTime implements DateTime {
     // Get the offset at local (first estimate).
     final localInstant = local.millisecondsSinceEpoch;
     final localTimezone = location.lookupTimeZone(localInstant);
-    final localOffset = localTimezone.timeZone.offset;
+    final localOffset = localTimezone.timeZone.offset.inMilliseconds;
 
     // Adjust localInstant using the estimate and recalculate the offset.
     final adjustedInstant = localInstant - localOffset;
     final adjustedTimezone = location.lookupTimeZone(adjustedInstant);
-    final adjustedOffset = adjustedTimezone.timeZone.offset;
+    final adjustedOffset = adjustedTimezone.timeZone.offset.inMilliseconds;
 
     var milliseconds = localInstant - adjustedOffset;
 
@@ -42,7 +42,8 @@ class TZDateTime implements DateTime {
               location
                   .lookupTimeZone(localInstant - adjustedOffset)
                   .timeZone
-                  .offset) {
+                  .offset
+                  .inMilliseconds) {
         milliseconds = adjustedInstant;
       }
     }
@@ -269,9 +270,7 @@ class TZDateTime implements DateTime {
       );
 
   TZDateTime._(this.native, this.location, this.timeZone)
-    : _localDateTime = _isUtc(location)
-          ? native
-          : native.add(_timeZoneOffset(timeZone));
+    : _localDateTime = _isUtc(location) ? native : native.add(timeZone.offset);
 
   /// Constructs a new [TZDateTime] instance based on [formattedString].
   ///
@@ -377,10 +376,10 @@ class TZDateTime implements DateTime {
     if (isUtc) {
       return '$y-$m-$d$sep$h:$min:$sec.$ms${us}Z';
     } else {
-      final offSign = offset.sign >= 0 ? '+' : '-';
-      offset = offset.abs() ~/ 1000;
-      final offH = _twoDigits(offset ~/ 3600);
-      final offM = _twoDigits((offset % 3600) ~/ 60);
+      final offSign = offset.isNegative ? '-' : '+';
+      final offsetSeconds = offset.abs().inSeconds;
+      final offH = _twoDigits(offsetSeconds ~/ 3600);
+      final offM = _twoDigits((offsetSeconds % 3600) ~/ 60);
 
       return '$y-$m-$d$sep$h:$min:$sec.$ms$us$offSign$offH$offM';
     }
@@ -490,10 +489,7 @@ class TZDateTime implements DateTime {
   /// local time. Java, C# and Ruby return the difference between local time and
   /// UTC.
   @override
-  Duration get timeZoneOffset => _timeZoneOffset(timeZone);
-
-  static Duration _timeZoneOffset(TimeZone timeZone) =>
-      Duration(milliseconds: timeZone.offset);
+  Duration get timeZoneOffset => timeZone.offset;
 
   /// The year.
   @override
