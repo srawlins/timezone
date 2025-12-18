@@ -2,14 +2,14 @@
 // file for details. All rights reserved. Use of this source code is governed
 // by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:timezone/src/location.dart';
-import 'package:timezone/src/location_database.dart';
-import 'package:timezone/src/tzdb.dart';
+import 'location.dart';
+import 'location_database.dart';
+import 'tzdb.dart';
 
 /// File name of the Time Zone default database.
 const String tzDataDefaultFilename = 'latest.tzf';
 
-final _UTC = Location('UTC', [minTime], [0], [TimeZone.UTC]);
+final _utc = Location('UTC', [minTime], [0], [TimeZone.UTC]);
 
 final _database = LocationDatabase();
 late Location _local;
@@ -18,7 +18,8 @@ late Location _local;
 LocationDatabase get timeZoneDatabase => _database;
 
 /// UTC Location
-Location get UTC => _UTC;
+// ignore: non_constant_identifier_names
+Location get UTC => _utc;
 
 /// Local Location
 ///
@@ -52,5 +53,5 @@ void initializeDatabase(List<int> rawData) {
     _database.add(l);
   }
 
-  _local = _UTC;
+  _local = _utc;
 }

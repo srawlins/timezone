@@ -5,7 +5,7 @@
 /// # TimeZone library
 ///
 /// Time zone database and time zone aware DateTime.
-library timezone;
+library;
 
 export 'src/date_time.dart';
 export 'src/env.dart';

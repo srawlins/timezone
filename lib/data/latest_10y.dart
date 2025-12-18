@@ -1,8 +1,8 @@
 // This is a generated file. Do not edit.
 import 'dart:typed_data';
 
-import 'package:timezone/src/env.dart';
-import 'package:timezone/src/exceptions.dart';
+import '../src/env.dart';
+import '../src/exceptions.dart';
 
 /// Initialize Time Zone database from latest_10y.
 ///
@@ -10,7 +10,8 @@ import 'package:timezone/src/exceptions.dart';
 void initializeTimeZones() {
   try {
     initializeDatabase(
-        Uint16List.fromList(_embeddedData.codeUnits).buffer.asUint8List());
+      Uint16List.fromList(_embeddedData.codeUnits).buffer.asUint8List(),
+    );
   }
   // ignore: avoid_catches_without_on_clauses
   catch (e) {

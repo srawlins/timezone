@@ -1,9 +1,7 @@
-include: package:lints/recommended.yaml
+include: package:dart_flutter_team_lints/analysis_options.yaml
 
 analyzer:
   errors:
-    # Just need to clean up existing violations.
-    non_constant_identifier_names: ignore
     todo: ignore
   language:
     strict-casts: true
@@ -13,17 +11,16 @@ analyzer:
 linter:
   rules:
     - always_declare_return_types
-    - always_use_package_imports
     - avoid_catches_without_on_clauses
     - avoid_dynamic_calls
     - avoid_positional_boolean_parameters
     - avoid_unused_constructor_parameters
     - directives_ordering
     - lines_longer_than_80_chars
-    - package_api_docs
     - prefer_asserts_in_initializer_lists
     - prefer_if_elements_to_conditional_expressions
     - unawaited_futures
     - unnecessary_library_directive
     - unnecessary_parenthesis
     - unreachable_from_main
+    - prefer_final_locals

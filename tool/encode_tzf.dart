@@ -50,16 +50,23 @@ Future<void> main(List<String> arguments) async {
     if (f is pkg_file.File) {
       final name = p.relative(f.path, from: zoneinfoPath).replaceAll('\\', '/');
       log.info('- $name');
-      db.add(tzfileLocationToNativeLocation(
-          tzfile.Location.fromBytes(name, await f.readAsBytes())));
+      db.add(
+        tzfileLocationToNativeLocation(
+          tzfile.Location.fromBytes(name, await f.readAsBytes()),
+        ),
+      );
     }
   }
 
   void logReport(FilterReport r) {
-    log.info('  + locations: ${r.originalLocationsCount} => '
-        '${r.newLocationsCount}');
-    log.info('  + transitions: ${r.originalTransitionsCount} => '
-        '${r.newTransitionsCount}');
+    log.info(
+      '  + locations: ${r.originalLocationsCount} => '
+      '${r.newLocationsCount}',
+    );
+    log.info(
+      '  + transitions: ${r.originalTransitionsCount} => '
+      '${r.newTransitionsCount}',
+    );
   }
 
   log.info('Building location databases:');
@@ -73,16 +80,18 @@ Future<void> main(List<String> arguments) async {
   logReport(commonDb.report);
 
   log.info('- [+- 5 years] from common locations');
-  final common_10y_Db = filterTimeZoneData(commonDb.db,
-      dateFrom: DateTime(DateTime.now().year - 5, 1, 1).millisecondsSinceEpoch,
-      dateTo: DateTime(DateTime.now().year + 5, 1, 1).millisecondsSinceEpoch,
-      locations: commonLocations);
-  logReport(common_10y_Db.report);
+  final common10yDb = filterTimeZoneData(
+    commonDb.db,
+    dateFrom: DateTime(DateTime.now().year - 5, 1, 1).millisecondsSinceEpoch,
+    dateTo: DateTime(DateTime.now().year + 5, 1, 1).millisecondsSinceEpoch,
+    locations: commonLocations,
+  );
+  logReport(common10yDb.report);
 
   log.info('Serializing location databases');
   Future<void> write(String file, LocationDatabase db) =>
       File(file).writeAsBytes(tzdbSerialize(db), flush: true);
   await write(args['output-all'] as String, allDb.db);
   await write(args['output-common'] as String, commonDb.db);
-  await write(args['output-10y'] as String, common_10y_Db.db);
+  await write(args['output-10y'] as String, common10yDb.db);
 }

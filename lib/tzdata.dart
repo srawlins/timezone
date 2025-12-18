@@ -8,7 +8,7 @@
 /// - zone.tab
 ///
 /// TODO: move to separate package
-library timezone.tzdata;
+library;
 
 export 'src/tzdata/zicfile.dart';
 export 'src/tzdata/zone_tab.dart';

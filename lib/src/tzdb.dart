@@ -3,22 +3,23 @@
 // by a BSD-style license that can be found in the LICENSE file.
 
 /// TimeZone db file.
-library timezone.src.tzdb;
+library;
 
 import 'dart:collection';
 import 'dart:convert' show ascii;
 import 'dart:typed_data';
-import 'package:timezone/src/location.dart';
-import 'package:timezone/src/location_database.dart';
+import 'location.dart';
+import 'location_database.dart';
 
 /// Serialize TimeZone Database
 List<int> tzdbSerialize(LocationDatabase db) {
   final locationsInBytes = <List<int>>[];
   var bufferLength = 0;
 
-  for (final l in db.locations.values.toList()
-    ..sort((l, r) => l.name.compareTo(r.name))) {
-    List<int> b = _serializeLocation(l);
+  for (final l
+      in db.locations.values.toList()
+        ..sort((l, r) => l.name.compareTo(r.name))) {
+    final List<int> b = _serializeLocation(l);
     locationsInBytes.add(b);
     bufferLength += 8 + b.length;
     bufferLength = _align(bufferLength, 8);
@@ -29,7 +30,7 @@ List<int> tzdbSerialize(LocationDatabase db) {
 
   var offset = 0;
   for (final b in locationsInBytes) {
-    var length = _align(b.length, 8);
+    final length = _align(b.length, 8);
     rb.setUint32(offset, length);
     r.setAll(offset + 8, b);
     offset += 8 + length;
@@ -51,7 +52,8 @@ Iterable<Location> tzdbDeserialize(List<int> rawData) sync* {
     offset += 8;
 
     yield _deserializeLocation(
-        data.buffer.asUint8List(data.offsetInBytes + offset, length));
+      data.buffer.asUint8List(data.offsetInBytes + offset, length),
+    );
     offset += length;
   }
 }
@@ -168,7 +170,8 @@ Location _deserializeLocation(Uint8List data) {
   final transitionsLength = bdata.getUint32(28);
 
   final name = ascii.decode(
-      data.buffer.asUint8List(data.offsetInBytes + nameOffset, nameLength));
+    data.buffer.asUint8List(data.offsetInBytes + nameOffset, nameLength),
+  );
   final abbreviations = <String>[];
   final zones = <TimeZone>[];
   final transitionAt = <int>[];
@@ -182,7 +185,8 @@ Location _deserializeLocation(Uint8List data) {
   for (var i = abbreviationsOffset; i < abbreviationsEnd; i++) {
     if (data[i] == 0) {
       final abbreviation = ascii.decode(
-          data.buffer.asUint8List(data.offsetInBytes + offset, i - offset));
+        data.buffer.asUint8List(data.offsetInBytes + offset, i - offset),
+      );
       abbreviations.add(abbreviation);
       offset = i + 1;
     }
@@ -203,9 +207,13 @@ Location _deserializeLocation(Uint8List data) {
     final zoneIsDst = bdata.getUint8(offset + 4);
     final zoneAbbreviationIndex = bdata.getUint8(offset + 5);
     offset += 8;
-    zones.add(TimeZone(zoneOffset,
+    zones.add(
+      TimeZone(
+        zoneOffset,
         isDst: zoneIsDst == 1,
-        abbreviation: abbreviations[zoneAbbreviationIndex]));
+        abbreviation: abbreviations[zoneAbbreviationIndex],
+      ),
+    );
   }
 
   // Transitions
