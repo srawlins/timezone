@@ -5,7 +5,6 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:collection';
-import 'dart:convert' show ascii;
 import 'dart:typed_data';
 
 /// Time Zone information file magic header "TZif"
@@ -60,11 +59,7 @@ class _Header {
 
   factory _Header.fromBytes(List<int> rawData) {
     final data = rawData is Uint8List ? rawData : Uint8List.fromList(rawData);
-
-    final bdata = data.buffer.asByteData(
-      data.offsetInBytes,
-      data.lengthInBytes,
-    );
+    final bdata = ByteData.sublistView(data);
 
     final tzh_ttisgmtcnt = bdata.getInt32(0);
     final tzh_ttisstdcnt = bdata.getInt32(4);
@@ -86,14 +81,14 @@ class _Header {
 
 /// Read NULL-terminated string
 String _readByteString(Uint8List data, int offset) {
-  for (var i = offset; i < data.length; i++) {
-    if (data[i] == 0) {
-      return ascii.decode(
-        data.buffer.asUint8List(data.offsetInBytes + offset, i - offset),
-      );
-    }
+  var i = offset;
+  for (; i < data.length; i++) {
+    var byte = data[i];
+    if (byte >= 1 && byte < 0x80) continue;
+    if (byte == 0) break;
+    throw FormatException('Not ASCII', data, i);
   }
-  return ascii.decode(data.buffer.asUint8List(data.offsetInBytes + offset));
+  return String.fromCharCodes(data, offset, i);
 }
 
 /// This exception is thrown when Zone Info data is invalid.
@@ -171,10 +166,7 @@ class Location {
   factory Location.fromBytes(String name, List<int> rawData) {
     final data = rawData is Uint8List ? rawData : Uint8List.fromList(rawData);
 
-    final bdata = data.buffer.asByteData(
-      data.offsetInBytes,
-      data.lengthInBytes,
-    );
+    final bdata = ByteData.sublistView(data);
 
     final magic1 = bdata.getUint32(0);
     if (magic1 != _ziMagic) {
@@ -187,8 +179,7 @@ class Location {
     switch (version1) {
       case 0:
         final header = _Header.fromBytes(
-          Uint8List.view(bdata.buffer, offset, _Header.size),
-        );
+            Uint8List.sublistView(bdata, offset, _Header.size));
 
         // calculating data offsets
         final dataOffset = offset + _Header.size;
@@ -218,10 +209,8 @@ class Location {
         }
 
         // function to read from abbreviation buffer
-        final abbreviationsData = data.buffer.asUint8List(
-          data.offsetInBytes + abbreviationsOffset,
-          header.tzh_charcnt,
-        );
+        final abbreviationsData = Uint8List.sublistView(data,
+            abbreviationsOffset, abbreviationsOffset + header.tzh_charcnt);
         final abbreviations = <String>[];
         final abbreviationsCache = HashMap<int, int>();
         int readAbbreviation(int offset) {
@@ -298,8 +287,7 @@ class Location {
       case 51:
         // skip old version header/data
         final header1 = _Header.fromBytes(
-          Uint8List.view(bdata.buffer, offset, _Header.size),
-        );
+            Uint8List.sublistView(bdata, offset, offset + _Header.size));
         offset += _Header.size + header1.dataLength(4);
 
         final magic2 = bdata.getUint32(offset);
@@ -320,8 +308,7 @@ class Location {
         offset += 20;
 
         final header2 = _Header.fromBytes(
-          Uint8List.view(bdata.buffer, offset, _Header.size),
-        );
+            Uint8List.sublistView(bdata, offset, offset + _Header.size));
 
         // calculating data offsets
         final dataOffset = offset + _Header.size;
@@ -351,10 +338,8 @@ class Location {
         }
 
         // function to read from abbreviation buffer
-        final abbreviationsData = data.buffer.asUint8List(
-          data.offsetInBytes + abbreviationsOffset,
-          header2.tzh_charcnt,
-        );
+        final abbreviationsData = Uint8List.sublistView(data,
+            abbreviationsOffset, abbreviationsOffset + header2.tzh_charcnt);
         final abbreviations = <String>[];
         final abbreviationsCache = HashMap<int, int>();
         int readAbbreviation(int offset) {

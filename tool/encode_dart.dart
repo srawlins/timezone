@@ -9,21 +9,40 @@ Future<void> main(List<String> args) async {
   final bytes = File(tzDataPath).readAsBytesSync();
   final generatedDartFile = generateDartFile(
     name: p.basenameWithoutExtension(tzDataPath),
-    data: bytesAsString(bytes),
+    data: bytes,
   );
   File(dartLibraryPath).writeAsStringSync(generatedDartFile);
 }
 
-String bytesAsString(Uint8List bytes) {
-  assert(bytes.length.isEven);
-  return bytes.buffer
-      .asUint16List()
-      .map((u) => '\\u${u.toRadixString(16).padLeft(4, '0')}')
-      .join();
+String bytesAsString(
+  Uint8List bytes, {
+  String prefix = '',
+  String indent = '',
+}) {
+  final buffer = StringBuffer();
+  buffer.write('\'');
+  var column = prefix.length + 1;
+  for (var index = 0; index < bytes.length; index++) {
+    final byte = bytes[index];
+    if (column > 74) {
+      // Not space for one encoding + "';".
+      buffer
+        ..write('\'\n')
+        ..write(indent)
+        ..write('\'');
+      column = indent.length + 1;
+    }
+    buffer
+      ..write(byte < 16 ? r'\x0' : r'\x')
+      ..write(byte.toRadixString(16));
+    column += 4;
+  }
+  buffer.write('\'');
+  return buffer.toString();
 }
 
-String generateDartFile({required String name, required String data}) =>
-    '''// This is a generated file. Do not edit.
+String generateDartFile({required String name, required Uint8List data}) => '''
+// This is a generated file. Do not edit.
 import 'dart:typed_data';
 
 import '../src/env.dart';
@@ -35,7 +54,7 @@ import '../src/exceptions.dart';
 void initializeTimeZones() {
   try {
     initializeDatabase(
-        Uint16List.fromList(_embeddedData.codeUnits).buffer.asUint8List());
+        Uint8List.fromList(_embeddedData.codeUnits));
   }
   // ignore: avoid_catches_without_on_clauses
   catch (e) {
@@ -43,6 +62,9 @@ void initializeTimeZones() {
   }
 }
 
-const _embeddedData =
-    '$data';
+const _embeddedData = ${bytesAsString(
+      data,
+      prefix: 'const _embeddedData = ',
+      indent: '    ',
+    )};
 ''';
