@@ -186,8 +186,8 @@ After initializing the time zone database, the `timeZoneDatabase` top-level
 member contains all of the known time zones. Examples:
 
 ```dart
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 void main() {
   tz.initializeTimeZones();
@@ -200,7 +200,7 @@ void main() {
 
 ## <a name="databases"></a> Time Zone databases
 
-We are using [IANA Time Zone Database](http://www.iana.org/time-zones)
+We are using [IANA Time Zone Database](https://www.iana.org/time-zones)
 to build our databases.
 
 We currently build three different database variants:

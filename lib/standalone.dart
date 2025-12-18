@@ -59,7 +59,7 @@ Future<List<int>> _loadAsBytes(String path) async {
               });
         });
   } else {
-    var uri = await Isolate.resolvePackageUri(
+    final uri = await Isolate.resolvePackageUri(
       Uri(scheme: 'package', path: 'timezone/$path'),
     );
     return File(p.fromUri(uri)).readAsBytes();

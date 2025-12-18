@@ -51,7 +51,7 @@ Future<String> downloadTzData(String version, String dest) async {
   final outPath = p.join(dest, 'tzdata$version.tar.gz');
   final client = HttpClient();
   try {
-    var uri = version == 'latest'
+    final uri = version == 'latest'
         ? Uri.parse('$_repositoryUri/tzdata-$version.tar.gz')
         : Uri.parse('$_repositoryUri/releases/tzdata$version.tar.gz');
 
@@ -177,24 +177,21 @@ Future<void> main(List<String> arguments) async {
   logReport(commonDb.report);
 
   log.info('- [+- 5 years] from common locations');
-  final common_10y_Db = filterTimeZoneData(
+  final common10yDb = filterTimeZoneData(
     commonDb.db,
     dateFrom: DateTime(DateTime.now().year - 5, 1, 1).millisecondsSinceEpoch,
     dateTo: DateTime(DateTime.now().year + 5, 1, 1).millisecondsSinceEpoch,
     locations: commonLocations,
   );
-  logReport(common_10y_Db.report);
+  logReport(common10yDb.report);
 
   log.info('Serializing location databases');
   final allOut = File(p.join(outPath, '${source}_all.tzf'));
   final commonOut = File(p.join(outPath, '$source.tzf'));
-  final common_10y_Out = File(p.join(outPath, '${source}_10y.tzf'));
+  final common10yOut = File(p.join(outPath, '${source}_10y.tzf'));
   await allOut.writeAsBytes(tzdbSerialize(allDb.db), flush: true);
   await commonOut.writeAsBytes(tzdbSerialize(commonDb.db), flush: true);
-  await common_10y_Out.writeAsBytes(
-    tzdbSerialize(common_10y_Db.db),
-    flush: true,
-  );
+  await common10yOut.writeAsBytes(tzdbSerialize(common10yDb.db), flush: true);
 
   exit(0);
 }

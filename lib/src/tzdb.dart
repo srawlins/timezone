@@ -19,7 +19,7 @@ List<int> tzdbSerialize(LocationDatabase db) {
   for (final l
       in db.locations.values.toList()
         ..sort((l, r) => l.name.compareTo(r.name))) {
-    List<int> b = _serializeLocation(l);
+    final List<int> b = _serializeLocation(l);
     locationsInBytes.add(b);
     bufferLength += 8 + b.length;
     bufferLength = _align(bufferLength, 8);
@@ -30,7 +30,7 @@ List<int> tzdbSerialize(LocationDatabase db) {
 
   var offset = 0;
   for (final b in locationsInBytes) {
-    var length = _align(b.length, 8);
+    final length = _align(b.length, 8);
     rb.setUint32(offset, length);
     r.setAll(offset + 8, b);
     offset += 8 + length;

@@ -35,7 +35,7 @@ void main(List<String> arguments) async {
   final randomRange = maxEpochTime - minEpochTime;
 
   final seed = int.parse(argResults['seed'] as String);
-  var r = Random(seed);
+  final r = Random(seed);
 
   final iterations = int.parse(argResults['iterations'] as String);
   print('Seed: $seed');
@@ -49,7 +49,7 @@ void main(List<String> arguments) async {
     final time = r.nextInt(randomRange) + minEpochTime;
     final tz = zoneNames[r.nextInt(zoneCount)];
 
-    var dateOutput = (await dateCmd(time, tz)).trim();
+    final dateOutput = (await dateCmd(time, tz)).trim();
     final tzTime = TZDateTime.fromMillisecondsSinceEpoch(
       getLocation(tz),
       time * 1000,

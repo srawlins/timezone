@@ -311,8 +311,8 @@ class TZDateTime implements DateTime {
   TZDateTime toLocal() => isLocal ? this : TZDateTime.from(native, local);
 
   static String _fourDigits(int n) {
-    var absN = n.abs();
-    var sign = n < 0 ? '-' : '';
+    final absN = n.abs();
+    final sign = n < 0 ? '-' : '';
     if (absN >= 1000) return '$n';
     if (absN >= 100) return '${sign}0$absN';
     if (absN >= 10) return '${sign}00$absN';
@@ -364,23 +364,23 @@ class TZDateTime implements DateTime {
   String _toString({bool iso8601 = true}) {
     var offset = timeZone.offset;
 
-    var y = _fourDigits(year);
-    var m = _twoDigits(month);
-    var d = _twoDigits(day);
-    var sep = iso8601 ? 'T' : ' ';
-    var h = _twoDigits(hour);
-    var min = _twoDigits(minute);
-    var sec = _twoDigits(second);
-    var ms = _threeDigits(millisecond);
-    var us = microsecond == 0 ? '' : _threeDigits(microsecond);
+    final y = _fourDigits(year);
+    final m = _twoDigits(month);
+    final d = _twoDigits(day);
+    final sep = iso8601 ? 'T' : ' ';
+    final h = _twoDigits(hour);
+    final min = _twoDigits(minute);
+    final sec = _twoDigits(second);
+    final ms = _threeDigits(millisecond);
+    final us = microsecond == 0 ? '' : _threeDigits(microsecond);
 
     if (isUtc) {
       return '$y-$m-$d$sep$h:$min:$sec.$ms${us}Z';
     } else {
-      var offSign = offset.sign >= 0 ? '+' : '-';
+      final offSign = offset.sign >= 0 ? '+' : '-';
       offset = offset.abs() ~/ 1000;
-      var offH = _twoDigits(offset ~/ 3600);
-      var offM = _twoDigits((offset % 3600) ~/ 60);
+      final offH = _twoDigits(offset ~/ 3600);
+      final offM = _twoDigits((offset % 3600) ~/ 60);
 
       return '$y-$m-$d$sep$h:$min:$sec.$ms$us$offSign$offH$offM';
     }

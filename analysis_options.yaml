@@ -2,8 +2,6 @@ include: package:dart_flutter_team_lints/analysis_options.yaml
 
 analyzer:
   errors:
-    # Just need to clean up existing violations.
-    non_constant_identifier_names: ignore
     todo: ignore
   language:
     strict-casts: true
@@ -25,3 +23,4 @@ linter:
     - unnecessary_library_directive
     - unnecessary_parenthesis
     - unreachable_from_main
+    - prefer_final_locals

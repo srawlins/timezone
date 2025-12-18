@@ -80,18 +80,18 @@ Future<void> main(List<String> arguments) async {
   logReport(commonDb.report);
 
   log.info('- [+- 5 years] from common locations');
-  final common_10y_Db = filterTimeZoneData(
+  final common10yDb = filterTimeZoneData(
     commonDb.db,
     dateFrom: DateTime(DateTime.now().year - 5, 1, 1).millisecondsSinceEpoch,
     dateTo: DateTime(DateTime.now().year + 5, 1, 1).millisecondsSinceEpoch,
     locations: commonLocations,
   );
-  logReport(common_10y_Db.report);
+  logReport(common10yDb.report);
 
   log.info('Serializing location databases');
   Future<void> write(String file, LocationDatabase db) =>
       File(file).writeAsBytes(tzdbSerialize(db), flush: true);
   await write(args['output-all'] as String, allDb.db);
   await write(args['output-common'] as String, commonDb.db);
-  await write(args['output-10y'] as String, common_10y_Db.db);
+  await write(args['output-10y'] as String, common10yDb.db);
 }

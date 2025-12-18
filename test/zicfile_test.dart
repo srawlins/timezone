@@ -10,12 +10,12 @@ import 'package:timezone/tzdata.dart' as tzdata;
 
 void main() {
   test('Read US/Eastern 2014h tzfile', () async {
-    var packageUri = Uri(scheme: 'package', path: 'timezone/timezone.dart');
-    var packagePath = p.dirname(
+    final packageUri = Uri(scheme: 'package', path: 'timezone/timezone.dart');
+    final packagePath = p.dirname(
       p.dirname((await Isolate.resolvePackageUri(packageUri))!.toFilePath()),
     );
-    var locationDir = p.join(packagePath, 'test');
-    var rawData = await File(
+    final locationDir = p.join(packagePath, 'test');
+    final rawData = await File(
       p.join(locationDir, 'data/US/Eastern'),
     ).readAsBytes();
     final loc = tzdata.Location.fromBytes('US/Eastern', rawData);
