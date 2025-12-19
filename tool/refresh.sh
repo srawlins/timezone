@@ -16,10 +16,10 @@ echo "Compiling into zoneinfo files..."
 mkdir zoneinfo
 make rearguard.zi
 
-echo "Generating lib/common_locations.dart..."
+echo "Generating lib/src/common_locations.dart..."
 
 # Path to the file in your project root
-target_file="$OLDPWD/lib/src//common_locations.dart"
+target_file="$OLDPWD/lib/src/common_locations.dart"
 
 # Create/Overwrite the file with the header
 cat <<EOF > "$target_file"
