@@ -18,6 +18,7 @@ import 'package:glob/glob.dart';
 import 'package:glob/list_local_fs.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
+import 'package:timezone/src/common_locations.dart' show commonLocations;
 
 import 'package:timezone/src/tools.dart';
 import 'package:timezone/src/tzdb.dart';
