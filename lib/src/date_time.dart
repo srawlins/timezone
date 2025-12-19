@@ -191,7 +191,7 @@ class TZDateTime implements DateTime {
   /// Constructs a [TZDateTime] instance specified in the local time zone.
   ///
   /// ```dart
-  /// final dDay = TZDateTime.utc(1944, TZDateTime.JUNE, 6);
+  /// final dDay = TZDateTime.local(1944, TZDateTime.JUNE, 6);
   /// ```
   TZDateTime.local(
     int year, [
