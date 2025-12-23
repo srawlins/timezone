@@ -361,7 +361,7 @@ class TZDateTime implements DateTime {
   String toIso8601String() => _toString(iso8601: true);
 
   String _toString({bool iso8601 = true}) {
-    var offset = timeZone.offset;
+    final offset = timeZone.offset;
 
     final y = _fourDigits(year);
     final m = _twoDigits(month);
