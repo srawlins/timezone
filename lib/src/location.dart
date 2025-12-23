@@ -71,7 +71,8 @@ class Location {
   /// translate instant in time expressed as milliseconds since
   /// January 1, 1970 00:00:00 UTC to this [Location].
   int translate(int millisecondsSinceEpoch) {
-    return millisecondsSinceEpoch + timeZone(millisecondsSinceEpoch).offset;
+    return millisecondsSinceEpoch +
+        timeZone(millisecondsSinceEpoch).offset.inMilliseconds;
   }
 
   /// translate instant in time expressed as milliseconds since
@@ -84,14 +85,18 @@ class Location {
 
     var utc = millisecondsSinceEpoch;
 
-    if (tz.offset != 0) {
-      utc -= tz.offset;
+    final offset = tz.offset.inMilliseconds;
+    if (offset != 0) {
+      utc -= offset;
 
       if (utc < start) {
         utc =
-            millisecondsSinceEpoch - lookupTimeZone(start - 1).timeZone.offset;
+            millisecondsSinceEpoch -
+            lookupTimeZone(start - 1).timeZone.offset.inMilliseconds;
       } else if (utc >= end) {
-        utc = millisecondsSinceEpoch - lookupTimeZone(end).timeZone.offset;
+        utc =
+            millisecondsSinceEpoch -
+            lookupTimeZone(end).timeZone.offset.inMilliseconds;
       }
     }
 
@@ -151,8 +156,9 @@ class Location {
     final start = t.start;
     final end = t.end;
 
-    if (tz.offset != 0) {
-      final utc = millisecondsSinceEpoch - tz.offset;
+    final offset = tz.offset.inMilliseconds;
+    if (offset != 0) {
+      final utc = millisecondsSinceEpoch - offset;
 
       if (utc < start) {
         tz = lookupTimeZone(start - 1).timeZone;
@@ -242,10 +248,14 @@ class Location {
 /// A [TimeZone] represents a single time zone such as CEST or CET.
 class TimeZone {
   // ignore: constant_identifier_names
-  static const TimeZone UTC = TimeZone(0, isDst: false, abbreviation: 'UTC');
+  static const TimeZone UTC = TimeZone(
+    Duration.zero,
+    isDst: false,
+    abbreviation: 'UTC',
+  );
 
   /// Milliseconds east of UTC.
-  final int offset;
+  final Duration offset;
 
   /// Is this [TimeZone] Daylight Savings Time?
   final bool isDst;

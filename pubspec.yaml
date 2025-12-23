@@ -1,7 +1,7 @@
 name: timezone
 description: Time zone databases and time zone aware `DateTime`.
 repository: https://github.com/srawlins/timezone
-version: 0.10.2
+version: 0.11.0
 
 environment:
   sdk: ^3.10.0
