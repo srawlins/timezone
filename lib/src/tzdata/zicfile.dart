@@ -83,7 +83,7 @@ class _Header {
 String _readByteString(Uint8List data, int offset) {
   var i = offset;
   for (; i < data.length; i++) {
-    var byte = data[i];
+    final byte = data[i];
     if (byte >= 1 && byte < 0x80) continue;
     if (byte == 0) break;
     throw FormatException('Not ASCII', data, i);
@@ -179,7 +179,8 @@ class Location {
     switch (version1) {
       case 0:
         final header = _Header.fromBytes(
-            Uint8List.sublistView(bdata, offset, _Header.size));
+          Uint8List.sublistView(bdata, offset, _Header.size),
+        );
 
         // calculating data offsets
         final dataOffset = offset + _Header.size;
@@ -209,8 +210,11 @@ class Location {
         }
 
         // function to read from abbreviation buffer
-        final abbreviationsData = Uint8List.sublistView(data,
-            abbreviationsOffset, abbreviationsOffset + header.tzh_charcnt);
+        final abbreviationsData = Uint8List.sublistView(
+          data,
+          abbreviationsOffset,
+          abbreviationsOffset + header.tzh_charcnt,
+        );
         final abbreviations = <String>[];
         final abbreviationsCache = HashMap<int, int>();
         int readAbbreviation(int offset) {
@@ -287,7 +291,8 @@ class Location {
       case 51:
         // skip old version header/data
         final header1 = _Header.fromBytes(
-            Uint8List.sublistView(bdata, offset, offset + _Header.size));
+          Uint8List.sublistView(bdata, offset, offset + _Header.size),
+        );
         offset += _Header.size + header1.dataLength(4);
 
         final magic2 = bdata.getUint32(offset);
@@ -308,7 +313,8 @@ class Location {
         offset += 20;
 
         final header2 = _Header.fromBytes(
-            Uint8List.sublistView(bdata, offset, offset + _Header.size));
+          Uint8List.sublistView(bdata, offset, offset + _Header.size),
+        );
 
         // calculating data offsets
         final dataOffset = offset + _Header.size;
@@ -338,8 +344,11 @@ class Location {
         }
 
         // function to read from abbreviation buffer
-        final abbreviationsData = Uint8List.sublistView(data,
-            abbreviationsOffset, abbreviationsOffset + header2.tzh_charcnt);
+        final abbreviationsData = Uint8List.sublistView(
+          data,
+          abbreviationsOffset,
+          abbreviationsOffset + header2.tzh_charcnt,
+        );
         final abbreviations = <String>[];
         final abbreviationsCache = HashMap<int, int>();
         int readAbbreviation(int offset) {

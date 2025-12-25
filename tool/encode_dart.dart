@@ -41,7 +41,8 @@ String bytesAsString(
   return buffer.toString();
 }
 
-String generateDartFile({required String name, required Uint8List data}) => '''
+String generateDartFile({required String name, required Uint8List data}) =>
+    '''
 // This is a generated file. Do not edit.
 import 'dart:typed_data';
 
@@ -62,9 +63,5 @@ void initializeTimeZones() {
   }
 }
 
-const _embeddedData = ${bytesAsString(
-      data,
-      prefix: 'const _embeddedData = ',
-      indent: '    ',
-    )};
+const _embeddedData = ${bytesAsString(data, prefix: 'const _embeddedData = ', indent: '    ')};
 ''';

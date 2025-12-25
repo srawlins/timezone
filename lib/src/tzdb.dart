@@ -51,7 +51,8 @@ Iterable<Location> tzdbDeserialize(List<int> rawData) sync* {
     offset += 8;
 
     yield _deserializeLocation(
-        Uint8List.sublistView(data, offset, offset + length));
+      Uint8List.sublistView(data, offset, offset + length),
+    );
     offset += length;
   }
 }
@@ -103,7 +104,7 @@ Uint8List _serializeLocation(Location location) {
 
   // write name
   for (var i = 0; i < name.length; i++) {
-    var char = name.codeUnitAt(i);
+    final char = name.codeUnitAt(i);
     if (char <= 0x7f) {
       buffer.setUint8(nameOffset + i, char);
     } else {
@@ -237,7 +238,7 @@ Location _deserializeLocation(Uint8List data) {
 
 int _align(int offset, int boundary) {
   assert(boundary > 1 && _isPowerOf2(boundary));
-  var mask = boundary - 1;
+  final mask = boundary - 1;
   return (offset + mask) & ~mask;
 }
 
