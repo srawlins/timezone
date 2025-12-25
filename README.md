@@ -3,12 +3,14 @@
 This package provides the [IANA time zone database] and time zone aware
 `DateTime` class, [`TZDateTime`].
 
-The current time zone database version is [2025b]. See [the announcement] for
+The current time zone database version is [2025c]. See [the announcement] for
 details.
 
 You can update to the current IANA time zone database by running
 `tool/refresh.sh`.
 
+Getting the current timezone of the device that the app is running on is  
+highly platform dependent and is not a goal of this package. 
 
 ## Initialization
 
@@ -186,8 +188,8 @@ After initializing the time zone database, the `timeZoneDatabase` top-level
 member contains all of the known time zones. Examples:
 
 ```dart
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 void main() {
   tz.initializeTimeZones();
@@ -200,7 +202,7 @@ void main() {
 
 ## <a name="databases"></a> Time Zone databases
 
-We are using [IANA Time Zone Database](http://www.iana.org/time-zones)
+We are using [IANA Time Zone Database](https://www.iana.org/time-zones)
 to build our databases.
 
 We currently build three different database variants:
@@ -230,4 +232,4 @@ which use WSL.
 [Wikipedia list]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 [`TZDateTime`]: https://pub.dartlang.org/documentation/timezone/latest/timezone.standalone/TZDateTime-class.html
 [`TimeZone`]: https://pub.dartlang.org/documentation/timezone/latest/timezone.standalone/TimeZone-class.html
-[the announcement]: https://lists.iana.org/hyperkitty/list/tz-announce@iana.org/thread/6JVHNHLB6I2WAYTQ75L6KEPEQHFXAJK3/
+[the announcement]: https://lists.iana.org/hyperkitty/list/tz-announce@iana.org/thread/TAGXKYLMAQRZRFTERQ33CEKOW7KRJVAK/

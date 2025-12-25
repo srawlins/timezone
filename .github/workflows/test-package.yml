@@ -22,8 +22,8 @@ jobs:
       matrix:
         sdk: [dev]
     steps:
-      - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+      - uses: dart-lang/setup-dart@e51d8e571e22473a2ddebf0ef8a2123f0ab2c02c
         with:
           sdk: ${{ matrix.sdk }}
       - id: install
@@ -47,10 +47,10 @@ jobs:
       matrix:
         # Add macos-latest and/or windows-latest if relevant for this package.
         os: [ubuntu-latest]
-        sdk: [3.7.0, dev]
+        sdk: [stable, dev]
     steps:
-      - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+      - uses: dart-lang/setup-dart@e51d8e571e22473a2ddebf0ef8a2123f0ab2c02c
         with:
           sdk: ${{ matrix.sdk }}
       - id: install
@@ -68,8 +68,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+      - uses: dart-lang/setup-dart@e51d8e571e22473a2ddebf0ef8a2123f0ab2c02c
         with:
           sdk: dev
       - id: install
@@ -81,3 +81,32 @@ jobs:
         run: dart pub global run dartdoc \
           --no-generate-docs \
           --errors=unresolved-doc-reference,ambiguous-doc-reference,ambiguous-reexport,broken-link,deprecated,no-library-level-docs,unknown-directive,unknown-macro
+
+  # Job to check for new TZ database updates
+  refresh-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+      
+      - uses: dart-lang/setup-dart@e51d8e571e22473a2ddebf0ef8a2123f0ab2c02c
+        with:
+          sdk: dev
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Run refresh script
+        run: |
+          chmod +x tool/refresh.sh
+          ./tool/refresh.sh
+
+      - name: Check for git diff
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "Changes detected after running tool/refresh.sh"
+            git diff
+            exit 1
+          else
+            echo "No changes detected."
+          fi

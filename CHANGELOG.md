@@ -1,3 +1,14 @@
+# 0.11.0
+
+- Make `Location.offset` a `Duration` instead of an `int`.
+- Generate list of common locations fom IANA data.
+
+# 0.10.2
+
+- Upgrade minimum SDK to `^3.10.0` and the databases to [2025c].
+
+[2025c]: https://lists.iana.org/hyperkitty/list/tz-announce@iana.org/thread/TAGXKYLMAQRZRFTERQ33CEKOW7KRJVAK/
+
 # 0.10.1
 
 - Time zone database updated to 2025b. For your convenience here is the
@@ -37,19 +48,19 @@
 - Time zone database updated to 2023c. For your convenience here are the
   announcements for [2023a], [2023b], [2023c].
 
-[2023a]: http://mm.icann.org/pipermail/tz-announce/2023-March/000077.html
-[2023b]: http://mm.icann.org/pipermail/tz-announce/2023-March/000078.html
-[2023c]: http://mm.icann.org/pipermail/tz-announce/2023-March/000079.html
+[2023a]: https://mm.icann.org/pipermail/tz-announce/2023-March/000077.html
+[2023b]: https://mm.icann.org/pipermail/tz-announce/2023-March/000078.html
+[2023c]: https://mm.icann.org/pipermail/tz-announce/2023-March/000079.html
 
 # 0.9.1
 
 - Time zone database updated to 2022g. For your convenience here are the
   announcements for [2022d], [2022e], [2022f], [2022g].
 
-[2022d]: http://mm.icann.org/pipermail/tz-announce/2022-September/000073.html
-[2022e]: http://mm.icann.org/pipermail/tz-announce/2022-October/000074.html
-[2022f]: http://mm.icann.org/pipermail/tz-announce/2022-October/000075.html
-[2022g]: http://mm.icann.org/pipermail/tz-announce/2022-November/000076.html
+[2022d]: https://mm.icann.org/pipermail/tz-announce/2022-September/000073.html
+[2022e]: https://mm.icann.org/pipermail/tz-announce/2022-October/000074.html
+[2022f]: https://mm.icann.org/pipermail/tz-announce/2022-October/000075.html
+[2022g]: https://mm.icann.org/pipermail/tz-announce/2022-November/000076.html
 
 # 0.9.0
 
@@ -58,9 +69,9 @@
 - Removed named database files in `lib/data` (for example, `lib/data/2021e.tzf`).
   The only supported database files are all now named `latest_*`.
 
-[2022a]: http://mm.icann.org/pipermail/tz-announce/2022-March/000070.html
-[2022b]: http://mm.icann.org/pipermail/tz-announce/2022-August/000071.html
-[2022c]: http://mm.icann.org/pipermail/tz-announce/2022-August/000072.html
+[2022a]: https://mm.icann.org/pipermail/tz-announce/2022-March/000070.html
+[2022b]: https://mm.icann.org/pipermail/tz-announce/2022-August/000071.html
+[2022c]: https://mm.icann.org/pipermail/tz-announce/2022-August/000072.html
 
 # 0.8.1
 
@@ -68,10 +79,10 @@
   announcements for [2021b], [2021c], [2021d], [2021e].
 - Fixed encoding script to not skip a few missing time zones.
 
-[2021b]: http://mm.icann.org/pipermail/tz-announce/2021-September/000066.html
-[2021c]: http://mm.icann.org/pipermail/tz-announce/2021-October/000067.html
-[2021d]: http://mm.icann.org/pipermail/tz-announce/2021-October/000068.html
-[2021e]: http://mm.icann.org/pipermail/tz-announce/2021-October/000069.html
+[2021b]: https://mm.icann.org/pipermail/tz-announce/2021-September/000066.html
+[2021c]: https://mm.icann.org/pipermail/tz-announce/2021-October/000067.html
+[2021d]: https://mm.icann.org/pipermail/tz-announce/2021-October/000068.html
+[2021e]: https://mm.icann.org/pipermail/tz-announce/2021-October/000069.html
 
 # 0.8.0
 
@@ -132,7 +143,7 @@
 - Earlier null checking on some TZDateTime constructor arguments.
 - Many internal changes; should not affect API.
 
-[2020a]: http://mm.icann.org/pipermail/tz-announce/2020-April/000058.html
+[2020a]: https://mm.icann.org/pipermail/tz-announce/2020-April/000058.html
 
 # 0.5.6
 
@@ -141,7 +152,7 @@
 - Dart-importable databases made available in `lib/data`. README.md has more
   details.
 
-[2019c]: http://mm.icann.org/pipermail/tz-announce/2019-September/000057.html
+[2019c]: https://mm.icann.org/pipermail/tz-announce/2019-September/000057.html
 
 # 0.5.5
 
@@ -152,7 +163,7 @@
   - `lib/data/latest_2015-2025.tzf`
   - `lib/data/latest_all.tzf`
 
-[2019b]: http://mm.icann.org/pipermail/tz-announce/2019-July/000056.html
+[2019b]: https://mm.icann.org/pipermail/tz-announce/2019-July/000056.html
 
 # 0.5.4
 
@@ -165,25 +176,25 @@
 - Time zone database updated to 2019a. For your convenience here is the
   announcement for [2019a].
 
-[2019a]: http://mm.icann.org/pipermail/tz-announce/2019-March/000055.html
+[2019a]: https://mm.icann.org/pipermail/tz-announce/2019-March/000055.html
 
 # 0.5.2
 
 - Time zone database updated to 2018i. For your convenience here are the
   announcements for [2018h] and [2018i].
 
-[2018h]: http://mm.icann.org/pipermail/tz-announce/2018-December/000053.html
-[2018i]: http://mm.icann.org/pipermail/tz-announce/2018-December/000054.html
+[2018h]: https://mm.icann.org/pipermail/tz-announce/2018-December/000053.html
+[2018i]: https://mm.icann.org/pipermail/tz-announce/2018-December/000054.html
 
 # 0.5.1
 
 - Time zone database updated to 2018g. For your convenience here are the
   announcements for [2018d], [2018e], [2018f], and [2018g].
 
-[2018d]: http://mm.icann.org/pipermail/tz-announce/2018-March/000049.html
-[2018e]: http://mm.icann.org/pipermail/tz-announce/2018-May/000050.html
-[2018f]: http://mm.icann.org/pipermail/tz-announce/2018-October/000051.html
-[2018g]: http://mm.icann.org/pipermail/tz-announce/2018-October/000052.html
+[2018d]: https://mm.icann.org/pipermail/tz-announce/2018-March/000049.html
+[2018e]: https://mm.icann.org/pipermail/tz-announce/2018-May/000050.html
+[2018f]: https://mm.icann.org/pipermail/tz-announce/2018-October/000051.html
+[2018g]: https://mm.icann.org/pipermail/tz-announce/2018-October/000052.html
 
 # 0.5.0
 
@@ -204,24 +215,24 @@
   [2016b], [2016c], [2016d], [2016e], [2016f], [2016g], [2016h], [2016i],
   [2017a], [2017b], [2017c], and [2018c].
 
-[2015c]: http://mm.icann.org/pipermail/tz-announce/2015-April/000030.html
-[2015d]: http://mm.icann.org/pipermail/tz-announce/2015-April/000031.html
-[2015e]: http://mm.icann.org/pipermail/tz-announce/2015-June/000032.html
-[2015f]: http://mm.icann.org/pipermail/tz-announce/2015-August/000033.html
-[2015g]: http://mm.icann.org/pipermail/tz-announce/2015-October/000034.html
-[2016a]: http://mm.icann.org/pipermail/tz-announce/2016-January/000035.html
-[2016b]: http://mm.icann.org/pipermail/tz-announce/2016-March/000036.html
-[2016c]: http://mm.icann.org/pipermail/tz-announce/2016-March/000037.html
-[2016d]: http://mm.icann.org/pipermail/tz-announce/2016-April/000038.html
-[2016e]: http://mm.icann.org/pipermail/tz-announce/2016-June/000039.html
-[2016f]: http://mm.icann.org/pipermail/tz-announce/2016-July/000040.html
-[2016g]: http://mm.icann.org/pipermail/tz-announce/2016-September/000041.html
-[2016h]: http://mm.icann.org/pipermail/tz-announce/2016-October/000042.html
-[2016i]: http://mm.icann.org/pipermail/tz-announce/2016-November/000043.html
-[2017a]: http://mm.icann.org/pipermail/tz-announce/2017-February/000045.html
-[2017b]: http://mm.icann.org/pipermail/tz-announce/2017-March/000046.html
-[2017c]: http://mm.icann.org/pipermail/tz-announce/2017-October/000047.html
-[2018c]: http://mm.icann.org/pipermail/tz-announce/2018-January/000048.html
+[2015c]: https://mm.icann.org/pipermail/tz-announce/2015-April/000030.html
+[2015d]: https://mm.icann.org/pipermail/tz-announce/2015-April/000031.html
+[2015e]: https://mm.icann.org/pipermail/tz-announce/2015-June/000032.html
+[2015f]: https://mm.icann.org/pipermail/tz-announce/2015-August/000033.html
+[2015g]: https://mm.icann.org/pipermail/tz-announce/2015-October/000034.html
+[2016a]: https://mm.icann.org/pipermail/tz-announce/2016-January/000035.html
+[2016b]: https://mm.icann.org/pipermail/tz-announce/2016-March/000036.html
+[2016c]: https://mm.icann.org/pipermail/tz-announce/2016-March/000037.html
+[2016d]: https://mm.icann.org/pipermail/tz-announce/2016-April/000038.html
+[2016e]: https://mm.icann.org/pipermail/tz-announce/2016-June/000039.html
+[2016f]: https://mm.icann.org/pipermail/tz-announce/2016-July/000040.html
+[2016g]: https://mm.icann.org/pipermail/tz-announce/2016-September/000041.html
+[2016h]: https://mm.icann.org/pipermail/tz-announce/2016-October/000042.html
+[2016i]: https://mm.icann.org/pipermail/tz-announce/2016-November/000043.html
+[2017a]: https://mm.icann.org/pipermail/tz-announce/2017-February/000045.html
+[2017b]: https://mm.icann.org/pipermail/tz-announce/2017-March/000046.html
+[2017c]: https://mm.icann.org/pipermail/tz-announce/2017-October/000047.html
+[2018c]: https://mm.icann.org/pipermail/tz-announce/2018-January/000048.html
 
 # 0.4.3
 

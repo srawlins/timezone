@@ -18,6 +18,7 @@ import 'package:glob/glob.dart';
 import 'package:glob/list_local_fs.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
+import 'package:timezone/src/common_locations.dart' show commonLocations;
 
 import 'package:timezone/src/tools.dart';
 import 'package:timezone/src/tzdb.dart';
@@ -35,7 +36,7 @@ const _zicDataFiles = [
   'europe',
   'northamerica',
   'southamerica',
-  'backward'
+  'backward',
 ];
 
 const _repositoryUri = 'https://data.iana.org/time-zones';
@@ -51,7 +52,7 @@ Future<String> downloadTzData(String version, String dest) async {
   final outPath = p.join(dest, 'tzdata$version.tar.gz');
   final client = HttpClient();
   try {
-    var uri = version == 'latest'
+    final uri = version == 'latest'
         ? Uri.parse('$_repositoryUri/tzdata-$version.tar.gz')
         : Uri.parse('$_repositoryUri/releases/tzdata$version.tar.gz');
 
@@ -72,8 +73,11 @@ Future<String> downloadTzData(String version, String dest) async {
 
 /// Unpack IANA Time Zone database to [dest] directory.
 Future<bool> unpackTzData(String archivePath, String dest) async {
-  final result =
-      await Process.run('tar', ['--directory=$dest', '-zxf', archivePath]);
+  final result = await Process.run('tar', [
+    '--directory=$dest',
+    '-zxf',
+    archivePath,
+  ]);
   if (result.exitCode == 0) {
     return true;
   }
@@ -153,10 +157,14 @@ Future<void> main(List<String> arguments) async {
     db.add(tzfileLocationToNativeLocation(loc));
   }
   void logReport(FilterReport r) {
-    log.info('  + locations: ${r.originalLocationsCount} => '
-        '${r.newLocationsCount}');
-    log.info('  + transitions: ${r.originalTransitionsCount} => '
-        '${r.newTransitionsCount}');
+    log.info(
+      '  + locations: ${r.originalLocationsCount} => '
+      '${r.newLocationsCount}',
+    );
+    log.info(
+      '  + transitions: ${r.originalTransitionsCount} => '
+      '${r.newTransitionsCount}',
+    );
   }
 
   log.info('Building location databases:');
@@ -170,20 +178,21 @@ Future<void> main(List<String> arguments) async {
   logReport(commonDb.report);
 
   log.info('- [+- 5 years] from common locations');
-  final common_10y_Db = filterTimeZoneData(commonDb.db,
-      dateFrom: DateTime(DateTime.now().year - 5, 1, 1).millisecondsSinceEpoch,
-      dateTo: DateTime(DateTime.now().year + 5, 1, 1).millisecondsSinceEpoch,
-      locations: commonLocations);
-  logReport(common_10y_Db.report);
+  final common10yDb = filterTimeZoneData(
+    commonDb.db,
+    dateFrom: DateTime(DateTime.now().year - 5, 1, 1).millisecondsSinceEpoch,
+    dateTo: DateTime(DateTime.now().year + 5, 1, 1).millisecondsSinceEpoch,
+    locations: commonLocations,
+  );
+  logReport(common10yDb.report);
 
   log.info('Serializing location databases');
   final allOut = File(p.join(outPath, '${source}_all.tzf'));
   final commonOut = File(p.join(outPath, '$source.tzf'));
-  final common_10y_Out = File(p.join(outPath, '${source}_10y.tzf'));
+  final common10yOut = File(p.join(outPath, '${source}_10y.tzf'));
   await allOut.writeAsBytes(tzdbSerialize(allDb.db), flush: true);
   await commonOut.writeAsBytes(tzdbSerialize(commonDb.db), flush: true);
-  await common_10y_Out.writeAsBytes(tzdbSerialize(common_10y_Db.db),
-      flush: true);
+  await common10yOut.writeAsBytes(tzdbSerialize(common10yDb.db), flush: true);
 
   exit(0);
 }

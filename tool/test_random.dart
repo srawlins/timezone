@@ -15,7 +15,8 @@ Future<String> dateCmd(int time, String tz) {
     dateArgs = ['-d', '@$time', '+%Y-%m-%d %H:%M:%S'];
   } else {
     throw UnimplementedError(
-        'Tool does not support ${Platform.operatingSystem} yet.');
+      'Tool does not support ${Platform.operatingSystem} yet.',
+    );
   }
   return Process.run('date', dateArgs, environment: {'TZ': tz}).then((r) {
     return r.stdout as String;
@@ -34,7 +35,7 @@ void main(List<String> arguments) async {
   final randomRange = maxEpochTime - minEpochTime;
 
   final seed = int.parse(argResults['seed'] as String);
-  var r = Random(seed);
+  final r = Random(seed);
 
   final iterations = int.parse(argResults['iterations'] as String);
   print('Seed: $seed');
@@ -48,9 +49,11 @@ void main(List<String> arguments) async {
     final time = r.nextInt(randomRange) + minEpochTime;
     final tz = zoneNames[r.nextInt(zoneCount)];
 
-    var dateOutput = (await dateCmd(time, tz)).trim();
-    final tzTime =
-        TZDateTime.fromMillisecondsSinceEpoch(getLocation(tz), time * 1000);
+    final dateOutput = (await dateCmd(time, tz)).trim();
+    final tzTime = TZDateTime.fromMillisecondsSinceEpoch(
+      getLocation(tz),
+      time * 1000,
+    );
 
     if (dateOutput != tzTime.toString().substring(0, 19)) {
       print('$i: $tz $time "$tzTime" != $dateOutput');

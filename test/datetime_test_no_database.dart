@@ -10,13 +10,18 @@ void main() {
       TZDateTime.utc(2019);
     });
 
-    test(
-        'getLocation throws $LocationNotFoundException with message about the '
+    test('getLocation throws $LocationNotFoundException with message about the '
         'database not being initialized', () {
       expect(
-          () => getLocation('America/New_York'),
-          throwsA(TypeMatcher<LocationNotFoundException>()
-              .having((e) => e.msg, 'msg', contains('database'))));
+        () => getLocation('America/New_York'),
+        throwsA(
+          const TypeMatcher<LocationNotFoundException>().having(
+            (e) => e.msg,
+            'msg',
+            contains('database'),
+          ),
+        ),
+      );
     });
   });
 }

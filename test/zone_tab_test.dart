@@ -1,5 +1,5 @@
 @TestOn('vm')
-library timezone.test.zone_tab_test;
+library;
 
 import 'dart:io';
 import 'dart:isolate';
@@ -10,12 +10,14 @@ import 'package:timezone/tzdata.dart' as tzdata;
 
 void main() {
   test('Read zone1970.tab file', () async {
-    var packageUri = Uri(scheme: 'package', path: 'timezone/timezone.dart');
-    var packagePath = p.dirname(
-        p.dirname((await Isolate.resolvePackageUri(packageUri))!.toFilePath()));
-    var locationDir = p.join(packagePath, 'test');
-    var rawData =
-        await File(p.join(locationDir, 'data/zone1970.tab')).readAsString();
+    final packageUri = Uri(scheme: 'package', path: 'timezone/timezone.dart');
+    final packagePath = p.dirname(
+      p.dirname((await Isolate.resolvePackageUri(packageUri))!.toFilePath()),
+    );
+    final locationDir = p.join(packagePath, 'test');
+    final rawData = await File(
+      p.join(locationDir, 'data/zone1970.tab'),
+    ).readAsString();
     final db = tzdata.LocationDescriptionDatabase.fromString(rawData);
 
     expect(db.locations[0].name, equals('Europe/Andorra'));
