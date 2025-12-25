@@ -79,7 +79,7 @@ class _Header {
   }
 }
 
-/// Read NULL-terminated string
+/// Read NUL-terminated string
 String _readByteString(Uint8List data, int offset) {
   var i = offset;
   for (; i < data.length; i++) {
