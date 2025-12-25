@@ -530,3 +530,36 @@ class TZDateTime implements DateTime {
   @override
   int get weekday => _localDateTime.weekday;
 }
+
+extension TZDateTimeCopyWith on TZDateTime {
+  /// Creates a new [TZDateTime] from this one by updating individual
+  /// properties.
+  ///
+  /// The [copyWith] method creates a new [TZDateTime] object with values
+  /// for the properties [TZDateTime.year], [TZDateTime.hour], etc, provided by
+  /// similarly named arguments, or using the existing value of the property
+  /// if no argument, or `null`, is provided.
+  TZDateTime copyWith({
+    Location? location,
+    int? year,
+    int? month,
+    int? day,
+    int? hour,
+    int? minute,
+    int? second,
+    int? millisecond,
+    int? microsecond,
+  }) {
+    return TZDateTime(
+      location ?? this.location,
+      year ?? this.year,
+      month ?? this.month,
+      day ?? this.day,
+      hour ?? this.hour,
+      minute ?? this.minute,
+      second ?? this.second,
+      millisecond ?? this.millisecond,
+      microsecond ?? this.microsecond,
+    );
+  }
+}
