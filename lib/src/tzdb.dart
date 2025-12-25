@@ -6,7 +6,6 @@
 library;
 
 import 'dart:collection';
-import 'dart:convert' show ascii;
 import 'dart:typed_data';
 import 'location.dart';
 import 'location_database.dart';
@@ -26,7 +25,7 @@ List<int> tzdbSerialize(LocationDatabase db) {
   }
 
   final r = Uint8List(bufferLength);
-  final rb = r.buffer.asByteData();
+  final rb = ByteData.sublistView(r);
 
   var offset = 0;
   for (final b in locationsInBytes) {
@@ -42,7 +41,7 @@ List<int> tzdbSerialize(LocationDatabase db) {
 /// Deserialize TimeZone Database
 Iterable<Location> tzdbDeserialize(List<int> rawData) sync* {
   final data = rawData is Uint8List ? rawData : Uint8List.fromList(rawData);
-  final bdata = data.buffer.asByteData(data.offsetInBytes, data.lengthInBytes);
+  final bdata = ByteData.sublistView(data);
 
   var offset = 0;
   while (offset < data.length) {
@@ -52,7 +51,7 @@ Iterable<Location> tzdbDeserialize(List<int> rawData) sync* {
     offset += 8;
 
     yield _deserializeLocation(
-      data.buffer.asUint8List(data.offsetInBytes + offset, length),
+      Uint8List.sublistView(data, offset, offset + length),
     );
     offset += length;
   }
@@ -78,10 +77,10 @@ Uint8List _serializeLocation(Location location) {
     zoneAbbreviationOffsets.add(ai);
   }
 
-  final List<int> encName = ascii.encode(location.name);
+  final name = location.name;
 
   final nameOffset = 32;
-  final nameLength = encName.length;
+  final nameLength = name.length;
   final abbreviationsOffset = nameOffset + nameLength;
   final zonesOffset = _align(abbreviationsOffset + abbreviationsLength, 4);
   final zonesLength = location.zones.length;
@@ -91,7 +90,7 @@ Uint8List _serializeLocation(Location location) {
   final bufferLength = _align(transitionsOffset + transitionsLength * 9, 8);
 
   final result = Uint8List(bufferLength);
-  final buffer = ByteData.view(result.buffer);
+  final buffer = ByteData.sublistView(result);
 
   // write header
   buffer.setUint32(0, nameOffset);
@@ -104,9 +103,13 @@ Uint8List _serializeLocation(Location location) {
   buffer.setUint32(28, transitionsLength);
 
   // write name
-  offset = nameOffset;
-  for (final c in encName) {
-    buffer.setUint8(offset++, c);
+  for (var i = 0; i < name.length; i++) {
+    final char = name.codeUnitAt(i);
+    if (char <= 0x7f) {
+      buffer.setUint8(nameOffset + i, char);
+    } else {
+      throw FormatException('Not ASCII', name, i);
+    }
   }
 
   // Write abbreviations.
@@ -145,7 +148,7 @@ Uint8List _serializeLocation(Location location) {
 }
 
 Location _deserializeLocation(Uint8List data) {
-  final bdata = data.buffer.asByteData(data.offsetInBytes, data.lengthInBytes);
+  final bdata = ByteData.sublistView(data);
   var offset = 0;
 
   // Header
@@ -169,9 +172,8 @@ Location _deserializeLocation(Uint8List data) {
   final transitionsOffset = bdata.getUint32(24);
   final transitionsLength = bdata.getUint32(28);
 
-  final name = ascii.decode(
-    data.buffer.asUint8List(data.offsetInBytes + nameOffset, nameLength),
-  );
+  assert(_allAscii(data, nameOffset, nameOffset + nameLength));
+  final name = String.fromCharCodes(data, nameOffset, nameOffset + nameLength);
   final abbreviations = <String>[];
   final zones = <TimeZone>[];
   final transitionAt = <int>[];
@@ -184,9 +186,8 @@ Location _deserializeLocation(Uint8List data) {
   final abbreviationsEnd = abbreviationsOffset + abbreviationsLength;
   for (var i = abbreviationsOffset; i < abbreviationsEnd; i++) {
     if (data[i] == 0) {
-      final abbreviation = ascii.decode(
-        data.buffer.asUint8List(data.offsetInBytes + offset, i - offset),
-      );
+      assert(_allAscii(data, offset, i));
+      final abbreviation = String.fromCharCodes(data, offset, i);
       abbreviations.add(abbreviation);
       offset = i + 1;
     }
@@ -236,6 +237,17 @@ Location _deserializeLocation(Uint8List data) {
 }
 
 int _align(int offset, int boundary) {
-  final i = offset % boundary;
-  return i == 0 ? offset : offset + (boundary - i);
+  assert(boundary > 1 && _isPowerOf2(boundary));
+  final mask = boundary - 1;
+  return (offset + mask) & ~mask;
+}
+
+bool _isPowerOf2(int value) => value > 0 && (value & (value - 1)) == 0;
+
+bool _allAscii(Uint8List bytes, int start, int end) {
+  var bits = 0;
+  for (var i = start; i < end; i++) {
+    bits |= bytes[i];
+  }
+  return bits <= 0x7f;
 }
