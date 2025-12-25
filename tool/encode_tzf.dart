@@ -14,6 +14,7 @@ import 'package:glob/glob.dart';
 import 'package:glob/list_local_fs.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
+import 'package:timezone/src/common_locations.dart' show commonLocations;
 
 import 'package:timezone/src/tools.dart';
 import 'package:timezone/src/tzdb.dart';
@@ -49,7 +50,7 @@ Future<void> main(List<String> arguments) async {
   for (final f in files) {
     if (f is pkg_file.File) {
       final name = p.relative(f.path, from: zoneinfoPath).replaceAll('\\', '/');
-      log.info('- $name');
+      log.info('- $name:$f');
       db.add(
         tzfileLocationToNativeLocation(
           tzfile.Location.fromBytes(name, await f.readAsBytes()),
