@@ -1,3 +1,6 @@
+> [!IMPORTANT]  
+> This repo has moved to https://github.com/dart-lang/labs/tree/main/pkgs/timezone
+
 # TimeZone
 
 This package provides the [IANA time zone database] and time zone aware
